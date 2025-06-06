@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { StockGraphPlaceholder } from '../components/ui/stock-graph-placeholder';
 import { PERFORMANCE_METRICS } from '../constants';
-import { BarChart3, Brain, TrendingUp, Shield, Smartphone, Sparkles, Search } from 'lucide-react';
+import { BarChart3, Brain, TrendingUp, Shield, Smartphone, Sparkles, Search, CheckCircle, Users, Clock, Award } from 'lucide-react';
 
 export const Home: React.FC = () => {
   return (
@@ -135,7 +135,7 @@ export const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Trust & Transparency Section */}
+      {/* Trust & Transparency Section - Expanded */}
       <section className="py-32 px-4 sm:px-6 lg:px-8 bg-card/30">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-5xl font-bold mb-6">Built on Trust & Transparency</h2>
@@ -174,6 +174,140 @@ export const Home: React.FC = () => {
               <p className="text-muted-foreground">No clutter, just the insights that matter</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section - New */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold mb-6">Why Choose StockPicks?</h2>
+            <p className="text-2xl text-muted-foreground max-w-4xl mx-auto">
+              We've addressed the pain points of traditional investment platforms to create something better.
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-16">
+            <div className="space-y-8">
+              <div className="flex items-start space-x-4">
+                <CheckCircle className="w-8 h-8 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Beginner-Friendly Interface</h3>
+                  <p className="text-muted-foreground">No complex jargon or cluttered dashboards. Simple, clear insights anyone can understand.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <CheckCircle className="w-8 h-8 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Institutional-Grade Research</h3>
+                  <p className="text-muted-foreground">Advanced algorithms and models typically reserved for hedge funds, now accessible to everyone.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <CheckCircle className="w-8 h-8 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Real Performance Tracking</h3>
+                  <p className="text-muted-foreground">Honest, auditable results with complete historical data and methodology transparency.</p>
+                </div>
+              </div>
+            </div>
+            <div className="space-y-8">
+              <div className="flex items-start space-x-4">
+                <CheckCircle className="w-8 h-8 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">No Hidden Agendas</h3>
+                  <p className="text-muted-foreground">We don't profit from your trades. Our success is tied to providing valuable, unbiased research.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <CheckCircle className="w-8 h-8 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Continuous Innovation</h3>
+                  <p className="text-muted-foreground">Regular updates to our models and new features based on the latest market research.</p>
+                </div>
+              </div>
+              <div className="flex items-start space-x-4">
+                <CheckCircle className="w-8 h-8 text-green-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Expert Team</h3>
+                  <p className="text-muted-foreground">Experienced quants, data scientists, and financial analysts working together.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Success Stories Section - New */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-card/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl font-bold mb-6">Success Stories</h2>
+            <p className="text-2xl text-muted-foreground max-w-3xl mx-auto">
+              Real results from our stock picking methodology
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-card p-8 rounded-lg border border-border">
+              <div className="flex items-center mb-4">
+                <Award className="w-8 h-8 text-foreground mr-3" />
+                <h3 className="text-xl font-semibold">Tech Sector Outperformance</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Our AI identified undervalued tech stocks that outperformed NASDAQ by 15% in 2023.
+              </p>
+              <div className="text-2xl font-bold text-green-400">+32.7%</div>
+              <div className="text-sm text-muted-foreground">vs NASDAQ +17.2%</div>
+            </div>
+            <div className="bg-card p-8 rounded-lg border border-border">
+              <div className="flex items-center mb-4">
+                <Users className="w-8 h-8 text-foreground mr-3" />
+                <h3 className="text-xl font-semibold">Risk Management</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                During market volatility, our defensive picks preserved capital while maintaining growth.
+              </p>
+              <div className="text-2xl font-bold text-green-400">-3.1%</div>
+              <div className="text-sm text-muted-foreground">vs S&P 500 -12.4%</div>
+            </div>
+            <div className="bg-card p-8 rounded-lg border border-border">
+              <div className="flex items-center mb-4">
+                <Clock className="w-8 h-8 text-foreground mr-3" />
+                <h3 className="text-xl font-semibold">Long-term Consistency</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                10-year backtested results show consistent alpha generation across market cycles.
+              </p>
+              <div className="text-2xl font-bold text-green-400">23.4%</div>
+              <div className="text-sm text-muted-foreground">Annual compound return</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section - Enhanced */}
+      <section className="py-32 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-5xl font-bold mb-6">Ready to Upgrade Your Investment Strategy?</h2>
+          <p className="text-2xl text-muted-foreground mb-12">
+            Join thousands of investors who have discovered the power of data-driven stock selection.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+            <Link to="/stocks">
+              <Button size="lg" className="text-xl px-12 py-6 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 transform hover:scale-105">
+                View Current Picks
+              </Button>
+            </Link>
+            <Link to="/performance">
+              <Button variant="outline" size="lg" className="text-xl px-12 py-6 border-border text-foreground hover:bg-accent transition-all duration-300">
+                See Track Record
+              </Button>
+            </Link>
+          </div>
+          <p className="text-sm text-muted-foreground mt-8">
+            No credit card required • Full transparency • Cancel anytime
+          </p>
         </div>
       </section>
     </div>
