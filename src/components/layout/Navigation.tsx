@@ -7,7 +7,7 @@ export const Navigation: React.FC = () => {
   const location = useLocation();
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-md border-b border-gray-800 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-md border-b border-white/10 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center space-x-2">
@@ -25,7 +25,7 @@ export const Navigation: React.FC = () => {
                 className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                   location.pathname === item.href
                     ? 'text-blue-400 bg-blue-400/10'
-                    : 'text-gray-300 hover:text-white hover:bg-white/5'
+                    : 'text-white/80 hover:text-white hover:bg-white/5'
                 }`}
               >
                 {item.label}
@@ -33,7 +33,7 @@ export const Navigation: React.FC = () => {
             ))}
           </div>
 
-          <button className="md:hidden text-gray-300 hover:text-white">
+          <button className="md:hidden text-white/80 hover:text-white">
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
             </svg>

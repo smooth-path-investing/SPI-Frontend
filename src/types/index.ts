@@ -27,3 +27,20 @@ export interface INavItem {
   label: string;
   href: string;
 }
+
+export interface ITeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio: string;
+  image: string;
+  portfolio: {
+    description: string;
+    achievements: string[];
+    experience: string[];
+    websites: {
+      label: string;
+      url: string;
+    }[];
+  };
+}
