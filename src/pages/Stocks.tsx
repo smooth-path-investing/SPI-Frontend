@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { StockModal } from '../components/ui/stock-modal';
 import { SAMPLE_STOCKS } from '../constants';
 import { IStock } from '../types';
+import { TrendingUp } from 'lucide-react';
 
 export const Stocks: React.FC = () => {
   const [selectedStock, setSelectedStock] = useState<IStock | null>(null);
@@ -21,13 +22,13 @@ export const Stocks: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24">
+    <div className="min-h-screen bg-background text-foreground pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+          <h1 className="text-5xl font-bold mb-6 text-foreground">
             Recommended Stocks
           </h1>
-          <p className="text-xl text-gray-400">
+          <p className="text-xl text-muted-foreground">
             Our AI-powered analysis has identified these high-potential opportunities
           </p>
         </div>
@@ -36,14 +37,14 @@ export const Stocks: React.FC = () => {
           {SAMPLE_STOCKS.map((stock, index) => (
             <Card 
               key={index} 
-              className="bg-gray-900 border-gray-700 hover:border-blue-500 transition-all duration-300 cursor-pointer transform hover:scale-105"
+              className="bg-card border-border hover:border-primary transition-all duration-300 cursor-pointer transform hover:scale-105"
               onClick={() => handleStockClick(stock)}
             >
               <CardContent className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-2xl font-bold text-blue-400">{stock.ticker}</h3>
-                    <p className="text-gray-400 text-sm">{stock.name}</p>
+                    <h3 className="text-2xl font-bold text-foreground">{stock.ticker}</h3>
+                    <p className="text-muted-foreground text-sm">{stock.name}</p>
                   </div>
                   {stock.price && (
                     <div className="text-right">
@@ -59,11 +60,11 @@ export const Stocks: React.FC = () => {
 
                 <div className="space-y-3">
                   <div>
-                    <h4 className="text-sm font-semibold text-purple-400 mb-2">Key Reasons</h4>
+                    <h4 className="text-sm font-semibold text-foreground mb-2">Key Reasons</h4>
                     <ul className="space-y-1">
                       {stock.reason.slice(0, 2).map((reason, reasonIndex) => (
-                        <li key={reasonIndex} className="text-sm text-gray-300 flex items-start">
-                          <div className="w-1.5 h-1.5 bg-blue-500 rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
+                        <li key={reasonIndex} className="text-sm text-muted-foreground flex items-start">
+                          <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 mr-2 flex-shrink-0"></div>
                           {reason}
                         </li>
                       ))}
@@ -71,13 +72,13 @@ export const Stocks: React.FC = () => {
                   </div>
 
                   <div>
-                    <h4 className="text-sm font-semibold text-green-400 mb-2">Top Indicators</h4>
+                    <h4 className="text-sm font-semibold text-foreground mb-2">Top Indicators</h4>
                     <div className="flex flex-wrap gap-1">
                       {stock.indicators.slice(0, 2).map((indicator, indicatorIndex) => (
                         <Badge 
                           key={indicatorIndex} 
                           variant="secondary" 
-                          className="text-xs bg-green-900/30 text-green-300"
+                          className="text-xs bg-secondary text-secondary-foreground"
                         >
                           {indicator}
                         </Badge>
@@ -86,8 +87,8 @@ export const Stocks: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-700">
-                  <p className="text-xs text-gray-500 text-center">
+                <div className="mt-4 pt-4 border-t border-border">
+                  <p className="text-xs text-muted-foreground text-center">
                     Click for detailed analysis
                   </p>
                 </div>
@@ -97,11 +98,13 @@ export const Stocks: React.FC = () => {
 
           {/* Coming Soon Cards */}
           {Array.from({ length: 9 }).map((_, index) => (
-            <Card key={`coming-soon-${index}`} className="bg-gray-900/50 border-gray-700 border-dashed">
+            <Card key={`coming-soon-${index}`} className="bg-card border-border border-dashed">
               <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-4 opacity-50">📈</div>
-                <h3 className="text-lg font-semibold text-gray-500 mb-2">Coming Soon</h3>
-                <p className="text-sm text-gray-600">
+                <div className="flex justify-center mb-4">
+                  <TrendingUp className="w-8 h-8 text-muted-foreground opacity-50" />
+                </div>
+                <h3 className="text-lg font-semibold text-muted-foreground mb-2">Coming Soon</h3>
+                <p className="text-sm text-muted-foreground">
                   More curated picks being analyzed
                 </p>
               </CardContent>
@@ -109,20 +112,20 @@ export const Stocks: React.FC = () => {
           ))}
         </div>
 
-        <div className="mt-16 text-center bg-blue-900/20 rounded-lg p-8 border border-blue-700/30">
+        <div className="mt-16 text-center bg-muted rounded-lg p-8 border border-border">
           <h2 className="text-2xl font-bold mb-4">Stay Updated</h2>
-          <p className="text-gray-300 mb-6">
+          <p className="text-muted-foreground mb-6">
             New stock recommendations are added weekly based on our latest analysis
           </p>
           <div className="flex justify-center space-x-4">
-            <Badge className="bg-yellow-600 text-yellow-100">
-              🔄 Analysis refreshed daily
+            <Badge className="bg-secondary text-secondary-foreground">
+              Analysis refreshed daily
             </Badge>
-            <Badge className="bg-green-600 text-green-100">
-              📊 New picks weekly
+            <Badge className="bg-secondary text-secondary-foreground">
+              New picks weekly
             </Badge>
-            <Badge className="bg-purple-600 text-purple-100">
-              🎯 AI-powered selection
+            <Badge className="bg-secondary text-secondary-foreground">
+              AI-powered selection
             </Badge>
           </div>
         </div>

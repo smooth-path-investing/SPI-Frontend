@@ -26,12 +26,12 @@ export const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-black border-white/20">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-card border-border">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-white">
+          <DialogTitle className="text-2xl font-bold text-foreground">
             {member.name}
           </DialogTitle>
-          <DialogDescription className="text-lg text-white/80">
+          <DialogDescription className="text-lg text-muted-foreground">
             {member.role}
           </DialogDescription>
         </DialogHeader>
@@ -42,34 +42,34 @@ export const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-32 h-32 rounded-lg object-cover border border-white/20"
+                className="w-32 h-32 rounded-lg object-cover border border-border"
               />
             </div>
             <div className="flex-grow">
-              <p className="text-white/90 leading-relaxed">{member.portfolio.description}</p>
+              <p className="text-foreground leading-relaxed">{member.portfolio.description}</p>
             </div>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="text-xl font-semibold text-white mb-4">Key Achievements</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Key Achievements</h3>
               <ul className="space-y-2">
                 {member.portfolio.achievements.map((achievement, index) => (
                   <li key={index} className="flex items-start">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3 flex-shrink-0" />
-                    <span className="text-white/80">{achievement}</span>
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
+                    <span className="text-muted-foreground">{achievement}</span>
                   </li>
                 ))}
               </ul>
             </div>
 
             <div>
-              <h3 className="text-xl font-semibold text-white mb-4">Experience</h3>
+              <h3 className="text-xl font-semibold text-foreground mb-4">Experience</h3>
               <ul className="space-y-2">
                 {member.portfolio.experience.map((exp, index) => (
                   <li key={index} className="flex items-start">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 mr-3 flex-shrink-0" />
-                    <span className="text-white/80">{exp}</span>
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0" />
+                    <span className="text-muted-foreground">{exp}</span>
                   </li>
                 ))}
               </ul>
@@ -77,14 +77,14 @@ export const TeamMemberModal: React.FC<TeamMemberModalProps> = ({
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-white mb-4">Connect</h3>
+            <h3 className="text-xl font-semibold text-foreground mb-4">Connect</h3>
             <div className="flex flex-wrap gap-3">
               {member.portfolio.websites.map((website, index) => (
                 <Button
                   key={index}
                   variant="outline"
                   size="sm"
-                  className="border-white/20 text-white hover:bg-white/10"
+                  className="border-border text-foreground hover:bg-accent"
                   onClick={() => window.open(website.url, '_blank')}
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />

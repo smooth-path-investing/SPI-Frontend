@@ -1,8 +1,9 @@
 
 import React, { useState } from 'react';
-import { TEAM_MEMBERS } from '../constants';
 import { TeamMemberModal } from '../components/ui/team-member-modal';
+import { TEAM_MEMBERS } from '../constants';
 import { ITeamMember } from '../types';
+import { Target, Users, TrendingUp, Shield } from 'lucide-react';
 
 export const About: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<ITeamMember | null>(null);
@@ -13,143 +14,150 @@ export const About: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleCloseModal = () => {
+  const closeModal = () => {
     setIsModalOpen(false);
     setSelectedMember(null);
   };
 
   return (
-    <div className="min-h-screen bg-black text-white pt-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div className="min-h-screen bg-background text-foreground pt-24">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            About Us
+          <h1 className="text-5xl font-bold mb-6 text-foreground">
+            About StockPicks
           </h1>
-          <p className="text-xl text-white/80">
-            Democratizing sophisticated investment strategies through transparency and technology
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            We're revolutionizing investment research with transparent, data-driven stock analysis
           </p>
         </div>
 
-        <div className="space-y-12">
-          <section className="bg-white/5 rounded-lg p-8 border border-white/10">
-            <h2 className="text-3xl font-bold mb-6 text-blue-400">Our Vision</h2>
-            <p className="text-lg text-white/90 leading-relaxed mb-4">
-              We believe that sophisticated investment strategies shouldn't be exclusive to Wall Street. 
-              Our mission is to democratize access to institutional-quality stock analysis through 
-              transparent methodology and cutting-edge technology.
-            </p>
-            <p className="text-lg text-white/90 leading-relaxed">
-              Unlike traditional financial platforms that overwhelm users with noise and aggressive 
-              upselling, we focus on what matters: clear insights, proven performance, and honest communication.
-            </p>
-          </section>
-
-          <section className="bg-white/5 rounded-lg p-8 border border-white/10">
-            <h2 className="text-3xl font-bold mb-6 text-purple-400">Our Values</h2>
-            <div className="grid md:grid-cols-3 gap-6">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Simplicity</h3>
-                <p className="text-white/70">Clean, intuitive design that makes complex analysis accessible to everyone</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Transparency</h3>
-                <p className="text-white/70">Open methodology and honest communication about risks and limitations</p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-semibold mb-2">Performance</h3>
-                <p className="text-white/70">Data-driven strategies backed by rigorous testing and validation</p>
-              </div>
+        {/* Mission & Vision */}
+        <section className="mb-20">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+              <h2 className="text-3xl font-bold mb-6 text-foreground">Our Mission</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                To democratize sophisticated investment research by making institutional-grade 
+                analysis accessible to every investor, regardless of their experience level.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                We believe that transparency, rigorous methodology, and user-friendly design 
+                should be the foundation of modern investment platforms.
+              </p>
             </div>
-          </section>
-
-          <section className="bg-white/5 rounded-lg p-8 border border-white/10">
-            <h2 className="text-3xl font-bold mb-6 text-green-400">Our Team</h2>
-            <p className="text-lg text-white/90 mb-8">
-              Meet the experts behind our cutting-edge investment strategies
-            </p>
-            <div className="grid md:grid-cols-3 gap-6">
-              {TEAM_MEMBERS.map((member) => (
-                <div
-                  key={member.id}
-                  onClick={() => handleMemberClick(member)}
-                  className="bg-white/5 rounded-lg p-6 border border-white/10 cursor-pointer hover:bg-white/10 transition-all duration-300 transform hover:scale-105"
-                >
-                  <div className="text-center">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-white/20"
-                    />
-                    <h3 className="text-xl font-semibold text-white mb-2">{member.name}</h3>
-                    <p className="text-blue-400 font-medium mb-3">{member.role}</p>
-                    <p className="text-white/70 text-sm">{member.bio}</p>
+            <div className="bg-card rounded-lg p-8 border border-border">
+              <h3 className="text-2xl font-semibold mb-6 text-foreground">What Sets Us Apart</h3>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <Target className="w-6 h-6 text-foreground mt-1 mr-3 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-medium text-foreground">Transparency First</h4>
+                    <p className="text-muted-foreground text-sm">Complete methodology disclosure and real performance tracking</p>
                   </div>
                 </div>
-              ))}
+                <div className="flex items-start">
+                  <TrendingUp className="w-6 h-6 text-foreground mt-1 mr-3 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-medium text-foreground">Proven Results</h4>
+                    <p className="text-muted-foreground text-sm">Rigorous backtesting with 10+ years of validated performance</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <Shield className="w-6 h-6 text-foreground mt-1 mr-3 flex-shrink-0" />
+                  <div>
+                    <h4 className="font-medium text-foreground">No Hidden Agenda</h4>
+                    <p className="text-muted-foreground text-sm">No aggressive upselling or cluttered interfaces</p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section className="bg-white/5 rounded-lg p-8 border border-white/10">
-            <h2 className="text-3xl font-bold mb-6 text-green-400">Why We're Different</h2>
-            <div className="space-y-4">
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">No Clutter, No Noise</h3>
-                  <p className="text-white/70">Clean interface focused on what matters most to your investment decisions</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">No Aggressive Upselling</h3>
-                  <p className="text-white/70">Soft CTAs and genuine value, not constant pop-ups and pressure tactics</p>
-                </div>
-              </div>
-              <div className="flex items-start">
-                <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center mr-4 mt-1">
-                  <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold mb-1">Mobile-First Design</h3>
-                  <p className="text-white/70">Responsive, fast-loading interface that works perfectly on any device</p>
-                </div>
-              </div>
+        {/* Company Values */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Our Values</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center bg-card p-8 rounded-lg border border-border">
+              <Target className="w-12 h-12 text-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-4 text-foreground">Simplicity</h3>
+              <p className="text-muted-foreground">
+                Complex strategies made simple. We believe powerful tools should be easy to understand and use.
+              </p>
             </div>
-          </section>
-        </div>
+            <div className="text-center bg-card p-8 rounded-lg border border-border">
+              <Shield className="w-12 h-12 text-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-4 text-foreground">Integrity</h3>
+              <p className="text-muted-foreground">
+                Honest reporting, transparent methodology, and putting our users' interests first, always.
+              </p>
+            </div>
+            <div className="text-center bg-card p-8 rounded-lg border border-border">
+              <TrendingUp className="w-12 h-12 text-foreground mx-auto mb-4" />
+              <h3 className="text-xl font-semibold mb-4 text-foreground">Performance</h3>
+              <p className="text-muted-foreground">
+                Results speak louder than promises. Every recommendation is backed by rigorous data analysis.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Team Section */}
+        <section className="mb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Meet Our Team</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Our diverse team combines decades of financial expertise with cutting-edge technology
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {TEAM_MEMBERS.map((member) => (
+              <div 
+                key={member.id}
+                className="bg-card rounded-lg p-8 border border-border hover:bg-accent/50 transition-all duration-300 cursor-pointer transform hover:scale-105"
+                onClick={() => handleMemberClick(member)}
+              >
+                <div className="text-center">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover border-2 border-border"
+                  />
+                  <h3 className="text-xl font-semibold mb-2 text-foreground">{member.name}</h3>
+                  <p className="text-muted-foreground mb-4">{member.role}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">{member.bio}</p>
+                  <p className="text-xs text-muted-foreground mt-4">Click to view portfolio</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Company Story */}
+        <section className="bg-card rounded-lg p-12 border border-border">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold mb-6 text-foreground">Our Story</h2>
+            <div className="max-w-4xl mx-auto">
+              <p className="text-lg text-muted-foreground leading-relaxed mb-6">
+                Founded by a team of quantitative analysts and technology experts who were frustrated 
+                with the existing landscape of investment research platforms. We saw too many services 
+                that prioritized marketing over methodology, complexity over clarity.
+              </p>
+              <p className="text-lg text-muted-foreground leading-relaxed">
+                StockPicks was born from a simple idea: what if investment research could be both 
+                sophisticated and accessible? What if transparency wasn't just a buzzword, but the 
+                foundation of everything we do?
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
 
-      <TeamMemberModal
-        member={selectedMember}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
+      <TeamMemberModal 
+        member={selectedMember} 
+        isOpen={isModalOpen} 
+        onClose={closeModal} 
       />
     </div>
   );
