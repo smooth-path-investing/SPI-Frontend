@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { TrendingUp, Menu } from 'lucide-react';
@@ -23,6 +22,8 @@ export const Navigation: React.FC = () => {
   const handleTogglePremiumStocks = (show: boolean) => {
     setShowPremiumStocks(show);
     localStorage.setItem('showPremiumStocks', show.toString());
+    // Dispatch custom event to notify the Stocks page
+    window.dispatchEvent(new Event('premiumStocksToggled'));
   };
 
   // Initialize from localStorage on mount

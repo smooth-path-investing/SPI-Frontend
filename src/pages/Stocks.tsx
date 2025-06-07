@@ -16,25 +16,31 @@ export const Stocks: React.FC = () => {
   const [sortBy, setSortBy] = useState('conviction');
   const [showPremiumStocks, setShowPremiumStocks] = useState(true);
 
-  // Read premium stocks visibility from localStorage
+  // Read premium stocks visibility from localStorage and set up listener
   useEffect(() => {
     const stored = localStorage.getItem('showPremiumStocks');
     if (stored !== null) {
       setShowPremiumStocks(stored === 'true');
     }
-  }, []);
 
-  // Listen for changes in localStorage
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const stored = localStorage.getItem('showPremiumStocks');
-      if (stored !== null) {
-        setShowPremiumStocks(stored === 'true');
+    // Custom event listener for changes from the profile dropdown
+    const handleToggleChange = () => {
+      const updated = localStorage.getItem('showPremiumStocks');
+      if (updated !== null) {
+        setShowPremiumStocks(updated === 'true');
       }
     };
 
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+    // Listen for custom events (from profile dropdown)
+    window.addEventListener('premiumStocksToggled', handleToggleChange);
+
+    // Also listen for storage events (for other tabs)
+    window.addEventListener('storage', handleToggleChange);
+
+    return () => {
+      window.removeEventListener('premiumStocksToggled', handleToggleChange);
+      window.removeEventListener('storage', handleToggleChange);
+    };
   }, []);
 
   const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
@@ -53,6 +59,7 @@ export const Stocks: React.FC = () => {
     setSelectedStock(null);
   };
 
+  // ... keep existing code (filterOptions and sortOptions arrays)
   const filterOptions = [
     { value: 'all', label: 'All Picks' },
     { value: 'high-conviction', label: 'High Conviction' },
@@ -87,6 +94,8 @@ export const Stocks: React.FC = () => {
                     onClick={() => {
                       localStorage.setItem('showPremiumStocks', 'true');
                       setShowPremiumStocks(true);
+                      // Dispatch custom event to notify other components
+                      window.dispatchEvent(new Event('premiumStocksToggled'));
                     }}
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                   >
