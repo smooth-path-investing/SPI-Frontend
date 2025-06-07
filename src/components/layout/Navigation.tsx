@@ -1,9 +1,10 @@
 
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { TrendingUp, Menu, User, LogOut } from 'lucide-react';
+import { TrendingUp, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuthModal } from '../ui/auth-modal';
+import { ProfileDropdown } from '../ui/profile-dropdown';
 import { useAuth } from '../../hooks/useAuth';
 import { NAVIGATION_ITEMS } from '../../constants';
 
@@ -11,11 +12,26 @@ export const Navigation: React.FC = () => {
   const location = useLocation();
   const { user, login, signup, logout, isAuthenticated } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [showPremiumStocks, setShowPremiumStocks] = useState(true);
 
   const navigationItems = [
     ...NAVIGATION_ITEMS,
     { href: '/pricing', label: 'Pricing' }
   ];
+
+  // Store the premium stocks visibility in localStorage for persistence
+  const handleTogglePremiumStocks = (show: boolean) => {
+    setShowPremiumStocks(show);
+    localStorage.setItem('showPremiumStocks', show.toString());
+  };
+
+  // Initialize from localStorage on mount
+  React.useEffect(() => {
+    const stored = localStorage.getItem('showPremiumStocks');
+    if (stored !== null) {
+      setShowPremiumStocks(stored === 'true');
+    }
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/90 backdrop-blur-md border-b border-border shadow-lg">
@@ -46,23 +62,12 @@ export const Navigation: React.FC = () => {
 
           <div className="flex items-center space-x-4">
             {isAuthenticated ? (
-              <div className="flex items-center space-x-3">
-                <div className="flex items-center space-x-2">
-                  <User className="w-4 h-4" />
-                  <span className="text-sm">{user?.name}</span>
-                  <span className="text-xs bg-accent px-2 py-1 rounded capitalize">
-                    {user?.plan}
-                  </span>
-                </div>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={logout}
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <LogOut className="w-4 h-4" />
-                </Button>
-              </div>
+              <ProfileDropdown
+                user={user!}
+                onLogout={logout}
+                showPremiumStocks={showPremiumStocks}
+                onTogglePremiumStocks={handleTogglePremiumStocks}
+              />
             ) : (
               <Button
                 variant="outline"

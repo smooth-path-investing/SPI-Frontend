@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { StockModal } from '../components/ui/stock-modal';
@@ -14,9 +14,31 @@ export const Stocks: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterBy, setFilterBy] = useState('all');
   const [sortBy, setSortBy] = useState('conviction');
+  const [showPremiumStocks, setShowPremiumStocks] = useState(true);
+
+  // Read premium stocks visibility from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('showPremiumStocks');
+    if (stored !== null) {
+      setShowPremiumStocks(stored === 'true');
+    }
+  }, []);
+
+  // Listen for changes in localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const stored = localStorage.getItem('showPremiumStocks');
+      if (stored !== null) {
+        setShowPremiumStocks(stored === 'true');
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
 
   const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
-  const canAccessStocks = isAuthenticated && isPremiumUser;
+  const canAccessStocks = isAuthenticated && isPremiumUser && showPremiumStocks;
 
   const handleStockClick = (stock: IStock) => {
     if (!canAccessStocks) {
@@ -45,6 +67,39 @@ export const Stocks: React.FC = () => {
     { value: 'alphabetical', label: 'Alphabetical' },
     { value: 'sector', label: 'Sector' }
   ];
+
+  // Show override message if premium stocks are hidden but user has access
+  if (isAuthenticated && isPremiumUser && !showPremiumStocks) {
+    return (
+      <div className="min-h-screen bg-background text-foreground pt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center">
+            <div className="max-w-2xl mx-auto">
+              <Card className="text-center">
+                <CardContent className="p-12">
+                  <Lock className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
+                  <h2 className="text-2xl font-bold mb-4">Premium Stocks Hidden</h2>
+                  <p className="text-muted-foreground mb-6">
+                    Premium stock features are currently hidden for testing purposes. 
+                    Click on your profile in the navigation to toggle them back on.
+                  </p>
+                  <Button 
+                    onClick={() => {
+                      localStorage.setItem('showPremiumStocks', 'true');
+                      setShowPremiumStocks(true);
+                    }}
+                    className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  >
+                    Show Premium Stocks
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!canAccessStocks) {
     return (
