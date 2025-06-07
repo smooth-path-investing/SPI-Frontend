@@ -20,14 +20,19 @@ export const Stocks: React.FC = () => {
   useEffect(() => {
     const stored = localStorage.getItem('showPremiumStocks');
     if (stored !== null) {
-      setShowPremiumStocks(stored === 'true');
+      const value = stored === 'true';
+      console.log('Stocks: Initialized showPremiumStocks from localStorage:', value);
+      setShowPremiumStocks(value);
     }
 
     // Custom event listener for changes from the profile dropdown
-    const handleToggleChange = () => {
+    const handleToggleChange = (event?: any) => {
+      console.log('Stocks: Received toggle event:', event);
       const updated = localStorage.getItem('showPremiumStocks');
       if (updated !== null) {
-        setShowPremiumStocks(updated === 'true');
+        const value = updated === 'true';
+        console.log('Stocks: Updating showPremiumStocks to:', value);
+        setShowPremiumStocks(value);
       }
     };
 
@@ -43,8 +48,15 @@ export const Stocks: React.FC = () => {
     };
   }, []);
 
+  // Add debug logging for showPremiumStocks changes
+  useEffect(() => {
+    console.log('Stocks: showPremiumStocks state changed to:', showPremiumStocks);
+  }, [showPremiumStocks]);
+
   const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
   const canAccessStocks = isAuthenticated && isPremiumUser && showPremiumStocks;
+
+  console.log('Stocks: Current state - isAuthenticated:', isAuthenticated, 'isPremiumUser:', isPremiumUser, 'showPremiumStocks:', showPremiumStocks, 'canAccessStocks:', canAccessStocks);
 
   const handleStockClick = (stock: IStock) => {
     if (!canAccessStocks) {
@@ -92,10 +104,12 @@ export const Stocks: React.FC = () => {
                   </p>
                   <Button 
                     onClick={() => {
+                      console.log('Stocks: Manual toggle button clicked');
                       localStorage.setItem('showPremiumStocks', 'true');
                       setShowPremiumStocks(true);
                       // Dispatch custom event to notify other components
-                      window.dispatchEvent(new Event('premiumStocksToggled'));
+                      const event = new CustomEvent('premiumStocksToggled', { detail: { show: true } });
+                      window.dispatchEvent(event);
                     }}
                     className="bg-primary text-primary-foreground hover:bg-primary/90"
                   >

@@ -20,17 +20,23 @@ export const Navigation: React.FC = () => {
 
   // Store the premium stocks visibility in localStorage for persistence
   const handleTogglePremiumStocks = (show: boolean) => {
+    console.log('Navigation: Toggling premium stocks to:', show);
     setShowPremiumStocks(show);
     localStorage.setItem('showPremiumStocks', show.toString());
+    
     // Dispatch custom event to notify the Stocks page
-    window.dispatchEvent(new Event('premiumStocksToggled'));
+    const event = new CustomEvent('premiumStocksToggled', { detail: { show } });
+    window.dispatchEvent(event);
+    console.log('Navigation: Dispatched premiumStocksToggled event');
   };
 
   // Initialize from localStorage on mount
   React.useEffect(() => {
     const stored = localStorage.getItem('showPremiumStocks');
     if (stored !== null) {
-      setShowPremiumStocks(stored === 'true');
+      const value = stored === 'true';
+      console.log('Navigation: Initialized showPremiumStocks from localStorage:', value);
+      setShowPremiumStocks(value);
     }
   }, []);
 
