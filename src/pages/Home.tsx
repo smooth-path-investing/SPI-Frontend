@@ -1,16 +1,19 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { StockGraphPlaceholder } from '../components/ui/stock-graph-placeholder';
+import { AnimatedKeywords } from '../components/ui/animated-keywords';
 import { PERFORMANCE_METRICS } from '../constants';
 import { BarChart3, Brain, TrendingUp, Shield, Smartphone, Sparkles, Search, CheckCircle, Users, Clock, Award } from 'lucide-react';
 
 export const Home: React.FC = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground relative">
+      {/* Animated Keywords Background */}
+      <AnimatedKeywords />
+      
       {/* Hero Section - Expanded */}
-      <section className="pt-40 pb-32 px-4 sm:px-6 lg:px-8">
+      <section className="relative pt-40 pb-32 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-6xl md:text-8xl font-bold mb-8 text-foreground leading-tight">
             Smarter Stock Picks
@@ -55,7 +58,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Performance Snapshot - Expanded */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-card/30 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6">Proven Performance</h2>
@@ -91,7 +94,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Our Methodology Preview - Expanded */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6">Our Methodology</h2>
@@ -136,7 +139,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Trust & Transparency Section - Expanded */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-card/30 z-10">
         <div className="max-w-7xl mx-auto text-center">
           <h2 className="text-5xl font-bold mb-6">Built on Trust & Transparency</h2>
           <p className="text-2xl text-muted-foreground mb-16 max-w-4xl mx-auto">
@@ -178,7 +181,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Why Choose Us Section - New */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6">Why Choose StockPicks?</h2>
@@ -239,7 +242,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Success Stories Section - New */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8 bg-card/30">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 bg-card/30 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-5xl font-bold mb-6">Success Stories</h2>
@@ -287,7 +290,7 @@ export const Home: React.FC = () => {
       </section>
 
       {/* Call to Action Section - Enhanced */}
-      <section className="py-32 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-32 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-5xl font-bold mb-6">Ready to Upgrade Your Investment Strategy?</h2>
           <p className="text-2xl text-muted-foreground mb-12">

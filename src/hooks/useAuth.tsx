@@ -14,6 +14,7 @@ interface AuthContextType {
   signup: (email: string, password: string, name: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
+  canAccessPremiumStocks: () => boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,8 +50,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const isAuthenticated = !!user;
 
+  // For debugging purposes, allow access if the toggle is enabled
+  const canAccessPremiumStocks = () => {
+    if (!isAuthenticated) return false;
+    
+    const showPremiumStocks = localStorage.getItem('showPremiumStocks') === 'true';
+    const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
+    
+    // Allow access if user is premium OR if debug toggle is enabled
+    return isPremiumUser || showPremiumStocks;
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, isAuthenticated, canAccessPremiumStocks }}>
       {children}
     </AuthContext.Provider>
   );
