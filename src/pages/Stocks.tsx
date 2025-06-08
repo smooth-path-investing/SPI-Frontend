@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '../hooks/useAuth';
 
 export const Stocks: React.FC = () => {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, canAccessPremiumStocks } = useAuth();
   const [selectedStock, setSelectedStock] = useState<IStock | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterBy, setFilterBy] = useState('all');
@@ -54,7 +54,8 @@ export const Stocks: React.FC = () => {
   }, [showPremiumStocks]);
 
   const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
-  const canAccessStocks = isAuthenticated && isPremiumUser && showPremiumStocks;
+  // Fixed logic: Allow access if user is authenticated AND (is premium OR debug toggle is enabled)
+  const canAccessStocks = isAuthenticated && (isPremiumUser || showPremiumStocks);
 
   console.log('Stocks: Current state - isAuthenticated:', isAuthenticated, 'isPremiumUser:', isPremiumUser, 'showPremiumStocks:', showPremiumStocks, 'canAccessStocks:', canAccessStocks);
 
