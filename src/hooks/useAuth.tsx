@@ -6,6 +6,7 @@ interface User {
   name: string;
   email: string;
   plan: 'free' | 'pro' | 'elite';
+  isPremium: boolean;
 }
 
 interface AuthContextType {
@@ -25,22 +26,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = (email: string, password: string) => {
     // Mock login - in real app, this would call your auth API
     console.log('Mock login:', email, password);
+    const plan = 'free';
     setUser({
       id: '1',
       name: 'Demo User',
       email: email,
-      plan: 'free'
+      plan: plan,
+      isPremium: plan === 'pro' || plan === 'elite'
     });
   };
 
   const signup = (email: string, password: string, name: string) => {
     // Mock signup - in real app, this would call your auth API
     console.log('Mock signup:', email, password, name);
+    const plan = 'free';
     setUser({
       id: '1',
       name: name,
       email: email,
-      plan: 'free'
+      plan: plan,
+      isPremium: plan === 'pro' || plan === 'elite'
     });
   };
 
