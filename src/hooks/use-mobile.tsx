@@ -35,6 +35,7 @@ export function useResponsive() {
     isMobile: windowSize.width !== undefined ? windowSize.width < MOBILE_BREAKPOINT : false,
     isTablet: windowSize.width !== undefined ? windowSize.width >= MOBILE_BREAKPOINT && windowSize.width < TABLET_BREAKPOINT : false,
     isDesktop: windowSize.width !== undefined ? windowSize.width >= TABLET_BREAKPOINT : true,
+    isSmallMobile: windowSize.width !== undefined ? windowSize.width < 480 : false,
     width: windowSize.width,
     height: windowSize.height,
   };
@@ -54,4 +55,20 @@ export function useIsMobile() {
   }, [])
 
   return !!isMobile
+}
+
+export function useIsSmallMobile() {
+  const [isSmallMobile, setIsSmallMobile] = React.useState<boolean | undefined>(undefined)
+
+  React.useEffect(() => {
+    const mql = window.matchMedia(`(max-width: 479px)`)
+    const onChange = () => {
+      setIsSmallMobile(window.innerWidth < 480)
+    }
+    mql.addEventListener("change", onChange)
+    setIsSmallMobile(window.innerWidth < 480)
+    return () => mql.removeEventListener("change", onChange)
+  }, [])
+
+  return !!isSmallMobile
 }

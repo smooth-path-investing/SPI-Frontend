@@ -23,17 +23,19 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <div className="min-h-screen w-full bg-black">
+          <div className="min-h-screen w-full bg-black overflow-x-hidden">
             <Navigation />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/approach" element={<Approach />} />
-              <Route path="/performance" element={<Performance />} />
-              <Route path="/stocks" element={<Stocks />} />
-              <Route path="/pricing" element={<Pricing />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
+            <main className="pt-16">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/approach" element={<Approach />} />
+                <Route path="/performance" element={<Performance />} />
+                <Route path="/stocks" element={<Stocks />} />
+                <Route path="/pricing" element={<Pricing />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
           </div>
         </BrowserRouter>
       </AuthProvider>
