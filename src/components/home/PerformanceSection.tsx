@@ -1,5 +1,5 @@
 import React from 'react';
-import { StockGraphPlaceholder } from '../ui/stock-graph-placeholder';
+import { PerformanceChart } from '../charts/PerformanceChart';
 import { PERFORMANCE_METRICS } from '../../constants';
 
 export const PerformanceSection: React.FC = () => {
@@ -16,8 +16,7 @@ export const PerformanceSection: React.FC = () => {
 
         <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
           <div className="order-2 lg:order-1">
-            <StockGraphPlaceholder height="h-64 sm:h-80 lg:h-96" className="shadow-2xl border border-border" />
-            <p className="text-center text-muted-foreground mt-3 sm:mt-4 text-sm sm:text-base">Real-time performance visualization coming soon</p>
+            <PerformanceChart height="h-64 sm:h-80 lg:h-96" className="shadow-2xl" />
           </div>
           
           <div className="space-y-4 sm:space-y-6 lg:space-y-8 order-1 lg:order-2">
