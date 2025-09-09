@@ -28,6 +28,14 @@ export interface INavItem {
   href: string;
 }
 
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  plan: 'free' | 'pro' | 'elite';
+  isPremium: boolean;
+}
+
 export interface ITeamMember {
   id: string;
   name: string;

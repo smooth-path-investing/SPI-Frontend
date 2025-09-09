@@ -7,63 +7,6 @@ import { Badge } from '@/components/ui/badge';
 import { PRICING_PLANS } from '../data/pricing';
 
 export const Pricing: React.FC = () => {
-  const plans = [
-    {
-      name: 'Free',
-      price: '$0',
-      period: '/month',
-      description: 'Basic market insights',
-      features: [
-        'Weekly market updates',
-        'Basic stock analysis',
-        'Performance dashboard',
-        'Community access'
-      ],
-      limitations: [
-        'No stock recommendations',
-        'Limited historical data',
-        'No advanced analytics'
-      ],
-      buttonText: 'Get Started',
-      popular: false
-    },
-    {
-      name: 'Pro',
-      price: '$49',
-      period: '/month',
-      description: 'Complete investment toolkit',
-      features: [
-        'All Free features',
-        'AI-powered stock picks',
-        'Real-time alerts',
-        'Advanced analytics',
-        'Risk assessment tools',
-        'Portfolio optimization',
-        'Priority support'
-      ],
-      limitations: [],
-      buttonText: 'Start Pro Trial',
-      popular: true
-    },
-    {
-      name: 'Elite',
-      price: '$149',
-      period: '/month',
-      description: 'Professional-grade analysis',
-      features: [
-        'All Pro features',
-        'Custom strategies',
-        '1-on-1 consultation',
-        'Institutional-grade research',
-        'API access',
-        'White-label reports',
-        'Dedicated account manager'
-      ],
-      limitations: [],
-      buttonText: 'Contact Sales',
-      popular: false
-    }
-  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -80,7 +23,7 @@ export const Pricing: React.FC = () => {
 
         {/* Plans Grid */}
         <div className="space-y-4 sm:space-y-6 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-6 xl:gap-8 mb-8 sm:mb-12 lg:mb-16">
-          {plans.map((plan, index) => (
+          {PRICING_PLANS.map((plan, index) => (
             <Card key={index} className={`relative ${plan.popular ? 'ring-2 ring-primary shadow-lg' : 'shadow-sm'} ${index === 1 ? 'lg:scale-105 lg:z-10' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1">

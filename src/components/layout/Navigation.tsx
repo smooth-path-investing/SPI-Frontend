@@ -1,6 +1,5 @@
-
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AuthModal } from '../ui/auth-modal';
 import { useAuth } from '../../hooks/useAuth';
 import { NAVIGATION_ITEMS } from '../../constants';
@@ -81,149 +80,33 @@ export const Navigation: React.FC = () => {
               <span className="text-foreground font-bold text-xl">Smooth Path Investing</span>
             </Link>
             
-            {/* Desktop Navigation */}
-            <div className="hidden md:flex space-x-8">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                    location.pathname === item.href
-                      ? 'text-foreground bg-accent'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
-            </div>
-
             <div className="flex items-center space-x-4">
-              {/* Desktop Auth */}
-              <div className="hidden md:block">
-                {isAuthenticated ? (
-                  <ProfileDropdown
-                    user={user!}
-                    onLogout={logout}
-                    showPremiumStocks={showPremiumStocks}
-                    onTogglePremiumStocks={handleTogglePremiumStocks}
-                  />
-                ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsAuthModalOpen(true)}
-                  >
-                    Login
-                  </Button>
-                )}
-              </div>
+              <DesktopNavigation
+                navigationItems={navigationItems}
+                isAuthenticated={isAuthenticated}
+                user={user}
+                onAuthClick={() => setIsAuthModalOpen(true)}
+                onLogout={logout}
+                showPremiumStocks={showPremiumStocks}
+                onTogglePremiumStocks={handleTogglePremiumStocks}
+              />
 
-              {/* Mobile Menu Button */}
-              <button 
-                className="md:hidden text-muted-foreground hover:text-foreground p-2 transition-colors"
-                onClick={toggleMobileMenu}
-                aria-label="Toggle mobile menu"
-                aria-expanded={isMobileMenuOpen}
-              >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
-              </button>
+              <MobileNavigation
+                navigationItems={navigationItems}
+                isAuthenticated={isAuthenticated}
+                user={user}
+                isMobileMenuOpen={isMobileMenuOpen}
+                onToggleMobileMenu={toggleMobileMenu}
+                onCloseMobileMenu={closeMobileMenu}
+                onAuthClick={() => setIsAuthModalOpen(true)}
+                onLogout={logout}
+                showPremiumStocks={showPremiumStocks}
+                onTogglePremiumStocks={handleTogglePremiumStocks}
+              />
             </div>
           </div>
         </div>
       </nav>
-
-      {/* Mobile Navigation Overlay */}
-      {isMobileMenuOpen && (
-        <div 
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
-          onClick={closeMobileMenu}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Mobile Navigation Menu */}
-      <div className={`fixed top-16 left-0 right-0 bottom-0 z-50 bg-background/98 backdrop-blur-md transform transition-transform duration-300 ease-in-out md:hidden ${
-        isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
-        <div className="flex flex-col h-full overflow-y-auto">
-          <div className="flex-1 px-4 py-6 space-y-1">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.href}
-                to={item.href}
-                onClick={closeMobileMenu}
-                className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                  location.pathname === item.href
-                    ? 'text-foreground bg-accent'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                }`}
-              >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          
-          {/* Mobile Auth Section */}
-          <div className="border-t border-border p-4">
-            {isAuthenticated ? (
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3 px-4 py-2">
-                  <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                    <span className="text-primary-foreground text-sm font-medium">
-                      {user?.email?.[0]?.toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-foreground">{user?.email}</p>
-                    <p className="text-xs text-muted-foreground">
-                      {user?.isPremium ? 'Premium Member' : 'Free Member'}
-                    </p>
-                  </div>
-                </div>
-                <div className="px-4">
-                  <label className="flex items-center space-x-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={showPremiumStocks}
-                      onChange={(e) => handleTogglePremiumStocks(e.target.checked)}
-                      className="rounded border-border"
-                    />
-                    <span className="text-muted-foreground">Show Premium Stocks</span>
-                  </label>
-                </div>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full"
-                  onClick={() => {
-                    logout();
-                    closeMobileMenu();
-                  }}
-                >
-                  Logout
-                </Button>
-              </div>
-            ) : (
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full"
-                onClick={() => {
-                  setIsAuthModalOpen(true);
-                  closeMobileMenu();
-                }}
-              >
-                Login
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
 
       <AuthModal
         isOpen={isAuthModalOpen}
