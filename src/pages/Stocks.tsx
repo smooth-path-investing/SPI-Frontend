@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { StockModal } from '../components/ui/stock-modal';
 import { SAMPLE_STOCKS } from '../constants';
 import { IStock } from '../types';
-import { TrendingUp, Star, Filter, Search, SortAsc, BarChart3, Target, Lock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { useAuth } from '../hooks/useAuth';
+import { PortfolioOverview } from '../components/stocks/PortfolioOverview';
+import { FilteringSorting } from '../components/stocks/FilteringSorting';
+import { FeaturedPicks } from '../components/stocks/FeaturedPicks';
+import { StockRecommendations } from '../components/stocks/StockRecommendations';
+import { AccessDenied } from '../components/stocks/AccessDenied';
+import { PremiumStocksHidden } from '../components/stocks/PremiumStocksHidden';
 
 export const Stocks: React.FC = () => {
   const { user, isAuthenticated, canAccessPremiumStocks } = useAuth();
@@ -72,115 +74,22 @@ export const Stocks: React.FC = () => {
     setSelectedStock(null);
   };
 
-  // ... keep existing code (filterOptions and sortOptions arrays)
-  const filterOptions = [
-    { value: 'all', label: 'All Picks' },
-    { value: 'high-conviction', label: 'High Conviction' },
-    { value: 'value', label: 'Value Plays' },
-    { value: 'growth', label: 'Growth Stories' },
-    { value: 'momentum', label: 'Momentum' }
-  ];
-
-  const sortOptions = [
-    { value: 'conviction', label: 'Conviction Level' },
-    { value: 'performance', label: 'Recent Performance' },
-    { value: 'alphabetical', label: 'Alphabetical' },
-    { value: 'sector', label: 'Sector' }
-  ];
+  const handleShowPremiumStocks = () => {
+    console.log('Stocks: Manual toggle button clicked');
+    localStorage.setItem('showPremiumStocks', 'true');
+    setShowPremiumStocks(true);
+    // Dispatch custom event to notify other components
+    const event = new CustomEvent('premiumStocksToggled', { detail: { show: true } });
+    window.dispatchEvent(event);
+  };
 
   // Show override message if premium stocks are hidden but user has access
   if (isAuthenticated && isPremiumUser && !showPremiumStocks) {
-    return (
-      <div className="min-h-screen bg-background text-foreground pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center">
-            <div className="max-w-2xl mx-auto">
-              <Card className="text-center">
-                <CardContent className="p-12">
-                  <Lock className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-                  <h2 className="text-2xl font-bold mb-4">Premium Stocks Hidden</h2>
-                  <p className="text-muted-foreground mb-6">
-                    Premium stock features are currently hidden for testing purposes. 
-                    Click on your profile in the navigation to toggle them back on.
-                  </p>
-                  <Button 
-                    onClick={() => {
-                      console.log('Stocks: Manual toggle button clicked');
-                      localStorage.setItem('showPremiumStocks', 'true');
-                      setShowPremiumStocks(true);
-                      // Dispatch custom event to notify other components
-                      const event = new CustomEvent('premiumStocksToggled', { detail: { show: true } });
-                      window.dispatchEvent(event);
-                    }}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90"
-                  >
-                    Show Premium Stocks
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return <PremiumStocksHidden onShowPremiumStocks={handleShowPremiumStocks} />;
   }
 
   if (!canAccessStocks) {
-    return (
-      <div className="min-h-screen bg-background text-foreground pt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6 text-foreground">
-              Premium Stock Recommendations
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Access our AI-powered stock picks with a Pro or Elite subscription
-            </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto">
-            <Card className="text-center">
-              <CardContent className="p-12">
-                <Lock className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-                <h2 className="text-2xl font-bold mb-4">Unlock Premium Features</h2>
-                <p className="text-muted-foreground mb-6">
-                  Get access to our carefully curated stock recommendations, advanced analytics, 
-                  and real-time alerts with a Pro or Elite subscription.
-                </p>
-                <div className="space-y-3 mb-8">
-                  <div className="flex items-center justify-center space-x-2">
-                    <Star className="w-4 h-4 text-primary" />
-                    <span className="text-sm">AI-powered stock analysis</span>
-                  </div>
-                  <div className="flex items-center justify-center space-x-2">
-                    <TrendingUp className="w-4 h-4 text-primary" />
-                    <span className="text-sm">Real-time market alerts</span>
-                  </div>
-                  <div className="flex items-center justify-center space-x-2">
-                    <BarChart3 className="w-4 h-4 text-primary" />
-                    <span className="text-sm">Advanced portfolio analytics</span>
-                  </div>
-                </div>
-                <div className="space-x-4">
-                  {!isAuthenticated ? (
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                      Sign Up Now
-                    </Button>
-                  ) : (
-                    <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-                      Upgrade to Pro
-                    </Button>
-                  )}
-                  <Button variant="outline">
-                    View Pricing
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </div>
-    );
+    return <AccessDenied isAuthenticated={isAuthenticated} />;
   }
 
   return (

@@ -1,12 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import { AuthModal } from '../ui/auth-modal';
-import { ProfileDropdown } from '../ui/profile-dropdown';
 import { useAuth } from '../../hooks/useAuth';
 import { NAVIGATION_ITEMS } from '../../constants';
+import { DesktopNavigation } from '../navigation/DesktopNavigation';
+import { MobileNavigation } from '../navigation/MobileNavigation';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
