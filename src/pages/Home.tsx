@@ -13,6 +13,76 @@ export const Home: React.FC = () => {
       {/* Animated Keywords Background */}
       <AnimatedKeywords />
       
+      {/* Mission Section - Fixed at top */}
+      <section className="relative pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-card/20 z-10">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8">Our Mission</h2>
+          <div className="space-y-4">
+            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-2">
+                <span className="text-primary mr-2">→</span>
+                <span className="text-foreground">Make institutional stock investment available to retail investors.</span>
+              </div>
+            </div>
+            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-2">
+                <span className="text-primary mr-2">→</span>
+                <span className="text-foreground">Integrate common sense, math*, risk budgets*, market expertise* and reflections.</span>
+              </div>
+            </div>
+            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-2">
+                <span className="text-primary mr-2">→</span>
+                <span className="text-foreground">Offer A-to-Z stock investing, from signals to portfolios in your pocket, A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P*.</span>
+              </div>
+            </div>
+            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-2">
+                <span className="text-primary mr-2">→</span>
+                <span className="text-foreground">Order, segregate, integrate, condition, exclude, and concentrate</span>
+              </div>
+            </div>
+          </div>
+          
+          {/* Expandable Details */}
+          <div className="mt-8 space-y-4">
+            <details className="bg-card p-4 rounded-lg border border-border">
+              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*math: SigGA Algorithm</summary>
+              <div className="mt-3 text-sm text-muted-foreground">
+                <p>SigGA (Signature Genetic Algorithm) is a proprietary quantitative modeling framework developed entirely in-house by Ramy Sukarieh. It integrates advanced mathematical tools—including path signatures from rough path theory, genetic algorithms, biology-inspired evolutionary computation, for factor selection, and custom regression architectures—to identify predictive signals in financial time series.</p>
+              </div>
+            </details>
+            
+            <details className="bg-card p-4 rounded-lg border border-border">
+              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*risk budgets: Portfolio Guidelines</summary>
+              <div className="mt-3 text-sm text-muted-foreground space-y-2">
+                <p><strong>Aggressive:</strong> 10-13 stocks, 8-10% each</p>
+                <p><strong>Moderate:</strong> 14-25 stocks, 4-5% each, 5-10% in S&P 500</p>
+                <p><strong>Conservative:</strong> 27-40 stocks, 2-3% each, 10-25% in market index</p>
+                <p>Our AI system RAs "the Sun God of Stocks" guides buy/sell decisions.</p>
+              </div>
+            </details>
+            
+            <details className="bg-card p-4 rounded-lg border border-border">
+              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*market expertise: Key Principles</summary>
+              <div className="mt-3 text-sm text-muted-foreground space-y-1">
+                <p>• Sell only if returned ≥30% or 10-15% above S&P 500</p>
+                <p>• Never bet against the S&P 500 long-term</p>
+                <p>• Always buy when market drops significantly</p>
+                <p>• Best predictions ignore daily news</p>
+              </div>
+            </details>
+            
+            <details className="bg-card p-4 rounded-lg border border-border">
+              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P: Our Framework</summary>
+              <div className="mt-3 text-sm text-muted-foreground">
+                <p>From A to Z, Squared: Complete investment pipeline from signal extraction to portfolio execution. Dynamic stock portfolios (S<sub>p</sub>) within an evolving space (P) of advanced investment strategies—all in your pocket.</p>
+              </div>
+            </details>
+          </div>
+        </div>
+      </section>
+      
       {/* Hero Section - Mobile Optimized */}
       <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-7xl mx-auto text-center">
@@ -185,7 +255,7 @@ export const Home: React.FC = () => {
       <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 z-10">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Why Choose StockPicks?</h2>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Why Choose Smooth Path Investing?</h2>
             <p className="text-base sm:text-lg lg:text-2xl text-muted-foreground max-w-4xl mx-auto px-2">
               We've addressed the pain points of traditional investment platforms to create something better.
             </p>

@@ -20,7 +20,7 @@ export const StockGraphPlaceholder: React.FC<StockGraphPlaceholderProps> = ({
           <BarChart3 className="w-8 h-8 text-foreground" />
         </div>
         <p className="text-foreground font-medium">
-          {ticker ? `${ticker} Chart` : 'Performance Chart'}
+          {ticker ? `${ticker} Analysis` : 'Smooth Path Logo'}
         </p>
         <p className="text-muted-foreground text-sm mt-1">Coming Soon</p>
       </div>

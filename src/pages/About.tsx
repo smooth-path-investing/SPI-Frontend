@@ -24,7 +24,7 @@ export const About: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 text-foreground">
-            About StockPicks
+            About Smooth Path Investing
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
             We're revolutionizing investment research with transparent, data-driven stock analysis
@@ -243,7 +243,7 @@ export const About: React.FC = () => {
                 that prioritized marketing over methodology, complexity over clarity.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                StockPicks was born from a simple idea: what if investment research could be both 
+                Smooth Path Investing was born from a simple idea: what if investment research could be both 
                 sophisticated and accessible? What if transparency wasn't just a buzzword, but the 
                 foundation of everything we do?
               </p>
@@ -298,15 +298,15 @@ export const About: React.FC = () => {
             <div className="grid md:grid-cols-3 gap-8 text-center">
               <div>
                 <h3 className="font-semibold text-foreground mb-2">General Inquiries</h3>
-                <p className="text-muted-foreground">hello@stockpicks.ai</p>
+                <p className="text-muted-foreground">hello@smoothpathinvesting.com</p>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-2">Research Team</h3>
-                <p className="text-muted-foreground">research@stockpicks.ai</p>
+                <p className="text-muted-foreground">research@smoothpathinvesting.com</p>
               </div>
               <div>
                 <h3 className="font-semibold text-foreground mb-2">Partnerships</h3>
-                <p className="text-muted-foreground">partners@stockpicks.ai</p>
+                <p className="text-muted-foreground">partners@smoothpathinvesting.com</p>
               </div>
             </div>
           </div>

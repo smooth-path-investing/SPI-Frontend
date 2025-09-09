@@ -46,7 +46,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle>Welcome to StockPicks</DialogTitle>
+          <DialogTitle>Welcome to Smooth Path Investing</DialogTitle>
         </DialogHeader>
         
         <Tabs defaultValue="login" className="w-full">

@@ -79,7 +79,7 @@ export const Performance: React.FC = () => {
                 <thead>
                   <tr className="border-b border-border">
                     <th className="text-left py-3 px-4 font-semibold text-foreground">Year</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">StockPicks</th>
+                    <th className="text-right py-3 px-4 font-semibold text-foreground">Smooth Path</th>
                     <th className="text-right py-3 px-4 font-semibold text-foreground">S&P 500</th>
                     <th className="text-right py-3 px-4 font-semibold text-foreground">Outperformance</th>
                     <th className="text-right py-3 px-4 font-semibold text-foreground">Volatility</th>
