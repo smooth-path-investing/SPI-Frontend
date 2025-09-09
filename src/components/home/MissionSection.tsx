@@ -40,17 +40,17 @@ export const MissionSection: React.FC = () => {
         {/* Technical Details - Collapsible */}
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-4">
-            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200 min-h-[120px]">
+            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
               <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
                 SigGA Algorithm
                 <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <div className="mt-4 text-sm text-muted-foreground leading-relaxed">
-                Proprietary quantitative framework integrating path signatures, genetic algorithms, and custom regression architectures for predictive financial modeling. Advanced mathematical techniques for market pattern recognition and trend prediction.
+                Proprietary quantitative framework integrating path signatures, genetic algorithms, and custom regression architectures for predictive financial modeling.
               </div>
             </details>
             
-            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200 min-h-[120px]">
+            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
               <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
                 Risk Management
                 <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
@@ -59,15 +59,12 @@ export const MissionSection: React.FC = () => {
                 <div><strong className="text-foreground">Aggressive:</strong> 10-13 stocks (8-10% each)</div>
                 <div><strong className="text-foreground">Moderate:</strong> 14-25 stocks (4-5% each + index)</div>
                 <div><strong className="text-foreground">Conservative:</strong> 27-40 stocks (2-3% each + index)</div>
-                <div className="mt-2 pt-2 border-t border-border/30">
-                  <em>Dynamic allocation based on market volatility and correlation matrices</em>
-                </div>
               </div>
             </details>
           </div>
           
           <div className="space-y-4">
-            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200 min-h-[120px]">
+            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
               <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
                 Market Principles
                 <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
@@ -77,21 +74,16 @@ export const MissionSection: React.FC = () => {
                 <div>• Buy significant market drops</div>
                 <div>• Ignore daily market noise</div>
                 <div>• Systematic profit-taking rules</div>
-                <div>• Factor-based security selection</div>
-                <div>• Momentum and mean reversion synthesis</div>
               </div>
             </details>
             
-            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200 min-h-[120px]">
+            <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
               <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
-                A<sub>z</sub><sup>2</sup> → S<sub>p</sub> ∈ P* Framework
+                A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P Framework
                 <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <div className="mt-4 text-sm text-muted-foreground leading-relaxed">
                 Complete investment pipeline: from signal extraction to dynamic portfolio construction within an evolving space of advanced strategies—all accessible on mobile.
-                <div className="mt-3 text-xs opacity-75">
-                  Where A<sub>z</sub><sup>2</sup> represents algorithmic analysis squared, S<sub>p</sub> denotes strategic positioning, and P* indicates the optimal strategy space.
-                </div>
               </div>
             </details>
           </div>
