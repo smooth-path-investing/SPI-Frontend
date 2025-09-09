@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { TrendingUp, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AuthModal } from '../ui/auth-modal';
 import { ProfileDropdown } from '../ui/profile-dropdown';
@@ -74,9 +74,11 @@ export const Navigation: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-primary-foreground" />
-              </div>
+              <img 
+                src="/lovable-uploads/90c91ea3-0281-4a04-9490-78e894e448df.png" 
+                alt="Smooth Path Investing Logo" 
+                className="w-8 h-8 object-contain"
+              />
               <span className="text-foreground font-bold text-xl">Smooth Path Investing</span>
             </Link>
             
