@@ -13,72 +13,92 @@ export const Home: React.FC = () => {
       {/* Animated Keywords Background */}
       <AnimatedKeywords />
       
-      {/* Mission Section - Fixed at top */}
-      <section className="relative pt-24 pb-12 px-4 sm:px-6 lg:px-8 bg-card/20 z-10">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-8">Our Mission</h2>
-          <div className="space-y-4">
-            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
-              <div className="flex items-center mb-2">
-                <span className="text-primary mr-2">→</span>
-                <span className="text-foreground">Make institutional stock investment available to retail investors.</span>
+      {/* Mission Section - Clean & Professional */}
+      <section className="relative pt-24 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-card/30 to-transparent z-10">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 text-foreground">Our Mission</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Democratizing institutional-grade investment strategies through advanced AI and transparent methodology
+            </p>
+          </div>
+          
+          {/* Core Mission Points */}
+          <div className="bg-card/50 backdrop-blur-sm p-6 sm:p-8 rounded-xl border border-border mb-8">
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground">Make institutional stock investment available to retail investors</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground">Integrate advanced mathematics with market wisdom</p>
+                </div>
               </div>
-            </div>
-            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
-              <div className="flex items-center mb-2">
-                <span className="text-primary mr-2">→</span>
-                <span className="text-foreground">Integrate common sense, math*, risk budgets*, market expertise* and reflections.</span>
-              </div>
-            </div>
-            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
-              <div className="flex items-center mb-2">
-                <span className="text-primary mr-2">→</span>
-                <span className="text-foreground">Offer A-to-Z stock investing, from signals to portfolios in your pocket, A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P*.</span>
-              </div>
-            </div>
-            <div className="bg-card p-4 sm:p-6 rounded-lg border border-border">
-              <div className="flex items-center mb-2">
-                <span className="text-primary mr-2">→</span>
-                <span className="text-foreground">Order, segregate, integrate, condition, exclude, and concentrate</span>
+              <div className="space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground">Deliver A-to-Z investing: A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
+                  <p className="text-foreground">Provide intelligent portfolio construction and risk management</p>
+                </div>
               </div>
             </div>
           </div>
           
-          {/* Expandable Details */}
-          <div className="mt-8 space-y-4">
-            <details className="bg-card p-4 rounded-lg border border-border">
-              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*math: SigGA Algorithm</summary>
-              <div className="mt-3 text-sm text-muted-foreground">
-                <p>SigGA (Signature Genetic Algorithm) is a proprietary quantitative modeling framework developed entirely in-house by Ramy Sukarieh. It integrates advanced mathematical tools—including path signatures from rough path theory, genetic algorithms, biology-inspired evolutionary computation, for factor selection, and custom regression architectures—to identify predictive signals in financial time series.</p>
-              </div>
-            </details>
+          {/* Technical Details - Collapsible */}
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="space-y-4">
+              <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
+                <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
+                  SigGA Algorithm
+                  <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                  Proprietary quantitative framework integrating path signatures, genetic algorithms, and custom regression architectures for predictive financial modeling.
+                </div>
+              </details>
+              
+              <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
+                <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
+                  Risk Management
+                  <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="mt-4 text-sm text-muted-foreground space-y-2">
+                  <div><strong className="text-foreground">Aggressive:</strong> 10-13 stocks (8-10% each)</div>
+                  <div><strong className="text-foreground">Moderate:</strong> 14-25 stocks (4-5% each + index)</div>
+                  <div><strong className="text-foreground">Conservative:</strong> 27-40 stocks (2-3% each + index)</div>
+                </div>
+              </details>
+            </div>
             
-            <details className="bg-card p-4 rounded-lg border border-border">
-              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*risk budgets: Portfolio Guidelines</summary>
-              <div className="mt-3 text-sm text-muted-foreground space-y-2">
-                <p><strong>Aggressive:</strong> 10-13 stocks, 8-10% each</p>
-                <p><strong>Moderate:</strong> 14-25 stocks, 4-5% each, 5-10% in S&P 500</p>
-                <p><strong>Conservative:</strong> 27-40 stocks, 2-3% each, 10-25% in market index</p>
-                <p>Our AI system RAs "the Sun God of Stocks" guides buy/sell decisions.</p>
-              </div>
-            </details>
-            
-            <details className="bg-card p-4 rounded-lg border border-border">
-              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*market expertise: Key Principles</summary>
-              <div className="mt-3 text-sm text-muted-foreground space-y-1">
-                <p>• Sell only if returned ≥30% or 10-15% above S&P 500</p>
-                <p>• Never bet against the S&P 500 long-term</p>
-                <p>• Always buy when market drops significantly</p>
-                <p>• Best predictions ignore daily news</p>
-              </div>
-            </details>
-            
-            <details className="bg-card p-4 rounded-lg border border-border">
-              <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors">*A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P: Our Framework</summary>
-              <div className="mt-3 text-sm text-muted-foreground">
-                <p>From A to Z, Squared: Complete investment pipeline from signal extraction to portfolio execution. Dynamic stock portfolios (S<sub>p</sub>) within an evolving space (P) of advanced investment strategies—all in your pocket.</p>
-              </div>
-            </details>
+            <div className="space-y-4">
+              <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
+                <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
+                  Market Principles
+                  <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="mt-4 text-sm text-muted-foreground space-y-1">
+                  <div>• Long-term S&P 500 bullish stance</div>
+                  <div>• Buy significant market drops</div>
+                  <div>• Ignore daily market noise</div>
+                  <div>• Systematic profit-taking rules</div>
+                </div>
+              </details>
+              
+              <details className="group bg-card/30 p-5 rounded-lg border border-border/50 hover:bg-card/50 transition-all duration-200">
+                <summary className="cursor-pointer font-semibold text-foreground hover:text-primary transition-colors flex items-center justify-between">
+                  A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P Framework
+                  <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+                </summary>
+                <div className="mt-4 text-sm text-muted-foreground leading-relaxed">
+                  Complete investment pipeline: from signal extraction to dynamic portfolio construction within an evolving space of advanced strategies—all accessible on mobile.
+                </div>
+              </details>
+            </div>
           </div>
         </div>
       </section>
