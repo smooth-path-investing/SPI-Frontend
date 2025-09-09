@@ -35,7 +35,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
     <>
       {/* Mobile Menu Button */}
       <button 
-        className="md:hidden text-muted-foreground hover:text-foreground p-2 transition-colors"
+        className="md:hidden text-muted-foreground hover:text-foreground p-2 transition-colors relative z-[60] min-w-[44px] min-h-[44px] flex items-center justify-center"
         onClick={onToggleMobileMenu}
         aria-label="Toggle mobile menu"
         aria-expanded={isMobileMenuOpen}
@@ -50,14 +50,14 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
       {/* Mobile Navigation Overlay */}
       {isMobileMenuOpen && (
         <div 
-          className="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm md:hidden"
+          className="fixed inset-0 z-[45] bg-black/50 backdrop-blur-sm md:hidden"
           onClick={onCloseMobileMenu}
           aria-hidden="true"
         />
       )}
 
       {/* Mobile Navigation Menu */}
-      <div className={`fixed top-16 left-0 right-0 bottom-0 z-50 bg-background/98 backdrop-blur-md transform transition-transform duration-300 ease-in-out md:hidden ${
+      <div className={`fixed top-16 left-0 right-0 bottom-0 z-[55] bg-background/98 backdrop-blur-md transform transition-transform duration-300 ease-in-out md:hidden ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex flex-col h-full overflow-y-auto">
