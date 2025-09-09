@@ -88,15 +88,8 @@ export const MissionSection: React.FC = () => {
                 <span className="text-xs text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <div className="mt-4 text-sm text-muted-foreground leading-relaxed">
-                <div className="mb-3 font-mono text-center bg-background/50 rounded px-3 py-2 border border-border/30">
-                  <span className="text-primary font-semibold">A<sub>z</sub><sup>2</sup></span> 
-                  <span className="mx-2">→</span>
-                  <span className="text-primary font-semibold">S<sub>p</sub></span>
-                  <span className="mx-2">∈</span>
-                  <span className="text-primary font-semibold">P*</span>
-                </div>
-                <p>Complete investment pipeline: from signal extraction (A<sub>z</sub><sup>2</sup>) to dynamic portfolio construction (S<sub>p</sub>) within an evolving space of advanced strategies (P*)—all accessible on mobile.</p>
-                <div className="mt-2 text-xs opacity-75">
+                Complete investment pipeline: from signal extraction to dynamic portfolio construction within an evolving space of advanced strategies—all accessible on mobile.
+                <div className="mt-3 text-xs opacity-75">
                   Where A<sub>z</sub><sup>2</sup> represents algorithmic analysis squared, S<sub>p</sub> denotes strategic positioning, and P* indicates the optimal strategy space.
                 </div>
               </div>
