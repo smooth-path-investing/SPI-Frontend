@@ -13,10 +13,7 @@ export const Navigation: React.FC = () => {
   const [showPremiumStocks, setShowPremiumStocks] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navigationItems = [
-    ...NAVIGATION_ITEMS,
-    { href: '/pricing', label: 'Pricing' }
-  ];
+  const navigationItems = NAVIGATION_ITEMS;
 
   // Store the premium stocks visibility in localStorage for persistence
   const handleTogglePremiumStocks = (show: boolean) => {

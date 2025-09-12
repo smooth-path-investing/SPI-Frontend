@@ -4,7 +4,7 @@ export const NAVIGATION_ITEMS: INavItem[] = [
   { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Our Approach', href: '/approach' },
-  { label: 'Performance', href: '/performance' },
+  { label: 'Backtests', href: '/performance' },
   { label: 'Recommended Stocks', href: '/stocks' }
 ];
 
