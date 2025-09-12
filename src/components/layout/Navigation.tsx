@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { AuthModal } from '../ui/auth-modal';
+import { Button } from '../ui/button';
+import { ProfileDropdown } from '../ui/profile-dropdown';
 import { useAuth } from '../../hooks/useAuth';
 import { NAVIGATION_ITEMS } from '../../constants';
 import { DesktopNavigation } from '../navigation/DesktopNavigation';
@@ -67,7 +69,7 @@ export const Navigation: React.FC = () => {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+          <div className="flex items-center justify-between h-16">
             <Link to="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
               <img 
                 src="/lovable-uploads/90c91ea3-0281-4a04-9490-78e894e448df.png" 
@@ -77,16 +79,41 @@ export const Navigation: React.FC = () => {
               <span className="text-foreground font-bold text-xl">Smooth Path Investing</span>
             </Link>
             
+            <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-8">
+              {navigationItems.map((item) => (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    location.pathname === item.href
+                      ? 'text-foreground bg-accent'
+                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
+            
             <div className="flex items-center space-x-4">
-              <DesktopNavigation
-                navigationItems={navigationItems}
-                isAuthenticated={isAuthenticated}
-                user={user}
-                onAuthClick={() => setIsAuthModalOpen(true)}
-                onLogout={logout}
-                showPremiumStocks={showPremiumStocks}
-                onTogglePremiumStocks={handleTogglePremiumStocks}
-              />
+              <div className="hidden md:block">
+                {isAuthenticated ? (
+                  <ProfileDropdown
+                    user={user!}
+                    onLogout={logout}
+                    showPremiumStocks={showPremiumStocks}
+                    onTogglePremiumStocks={handleTogglePremiumStocks}
+                  />
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsAuthModalOpen(true)}
+                  >
+                    Login
+                  </Button>
+                )}
+              </div>
 
               <MobileNavigation
                 navigationItems={navigationItems}

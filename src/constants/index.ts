@@ -1,7 +1,6 @@
 import { IStock, IPerformanceMetric, IApproachSection, INavItem, ITeamMember } from '../types';
 
 export const NAVIGATION_ITEMS: INavItem[] = [
-  { label: 'Home', href: '/' },
   { label: 'About Us', href: '/about' },
   { label: 'Our Approach', href: '/approach' },
   { label: 'Backtests', href: '/performance' },
