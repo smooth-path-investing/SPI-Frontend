@@ -9,44 +9,40 @@ export const HeroSection: React.FC = () => {
       {/* Enhanced 3D Blob Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
       
-      {/* Animated 3D Blobs */}
-      <div className="absolute -top-20 -left-20 w-80 h-80 bg-gradient-to-br from-primary/20 via-primary/10 to-transparent rounded-[40%_60%_70%_30%] blur-xl animate-[spin_20s_linear_infinite] opacity-80" />
-      <div className="absolute top-1/3 right-0 w-96 h-96 bg-gradient-to-bl from-secondary/15 via-accent/10 to-transparent rounded-[60%_40%_30%_70%] blur-2xl animate-[spin_25s_linear_infinite_reverse] opacity-70" />
-      <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-gradient-to-tr from-primary/15 via-primary/8 to-transparent rounded-[30%_70%_40%_60%] blur-xl animate-[spin_30s_linear_infinite] opacity-60" />
+      {/* Animated 3D Blobs with Color */}
+      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blob-primary/30 rounded-full blur-3xl animate-pulse [animation-duration:4s]" />
+      <div className="absolute top-1/3 -right-32 w-80 h-80 bg-blob-secondary/25 rounded-full blur-2xl animate-pulse [animation-duration:6s] [animation-delay:2s]" />
+      <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-blob-accent/35 rounded-full blur-xl animate-pulse [animation-duration:5s] [animation-delay:1s]" />
       
       {/* Floating Wave Lines */}
-      <div className="absolute top-1/4 left-0 w-full h-32 opacity-20">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/30 to-transparent transform rotate-12 animate-pulse [animation-duration:3s]" 
-             style={{clipPath: 'polygon(0% 50%, 25% 40%, 50% 60%, 75% 30%, 100% 50%, 100% 100%, 0% 100%)'}} />
+      <div className="absolute top-1/4 left-0 w-full h-32 opacity-30">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blob-primary/40 to-transparent h-2 top-1/2 animate-pulse [animation-duration:3s]" />
       </div>
-      <div className="absolute bottom-1/4 right-0 w-full h-24 opacity-15">
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-secondary/25 to-transparent transform -rotate-6 animate-pulse [animation-duration:4s] [animation-delay:1s]" 
-             style={{clipPath: 'polygon(0% 40%, 30% 60%, 60% 35%, 90% 55%, 100% 45%, 100% 100%, 0% 100%)'}} />
+      <div className="absolute bottom-1/3 right-0 w-full h-24 opacity-25">
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-blob-secondary/35 to-transparent h-2 top-1/2 animate-pulse [animation-duration:4s] [animation-delay:1s]" />
       </div>
       
+      {/* Moving Orb */}
+      <div className="absolute top-20 right-20 w-32 h-32 bg-blob-accent/20 rounded-full blur-lg animate-bounce [animation-duration:3s]" />
+      
       {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-10">
         <div className="w-full h-full" 
              style={{
                backgroundImage: `
-                 linear-gradient(hsl(var(--primary)) 1px, transparent 1px),
-                 linear-gradient(90deg, hsl(var(--primary)) 1px, transparent 1px)
+                 linear-gradient(hsl(var(--primary-blob)) 1px, transparent 1px),
+                 linear-gradient(90deg, hsl(var(--primary-blob)) 1px, transparent 1px)
                `,
                backgroundSize: '60px 60px'
              }} />
       </div>
       
-      {/* Floating Orbs with Lines */}
-      <div className="absolute top-20 right-10 opacity-10">
+      {/* Floating Icon with Glow */}
+      <div className="absolute top-20 right-10 opacity-30">
         <div className="relative">
-          <TrendingUp className="w-32 h-32 text-primary animate-pulse" />
-          <div className="absolute -inset-4 border border-primary/20 rounded-full animate-ping [animation-duration:4s]" />
+          <TrendingUp className="w-32 h-32 text-blob-primary animate-pulse" />
+          <div className="absolute inset-0 w-32 h-32 bg-blob-primary/20 rounded-full blur-xl animate-ping [animation-duration:4s]" />
         </div>
-      </div>
-      
-      {/* Morphing Background Shapes */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] opacity-10">
-        <div className="w-full h-full bg-gradient-conic from-primary/20 via-secondary/10 to-accent/15 rounded-[40%_60%_30%_70%] blur-3xl animate-[spin_40s_linear_infinite]" />
       </div>
       
       <div className="max-w-7xl mx-auto text-center relative z-10">
