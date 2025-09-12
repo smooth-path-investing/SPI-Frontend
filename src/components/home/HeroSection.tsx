@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { TrendingUp, Shield, Users } from 'lucide-react';
+import { Shield, Users } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
   return (
@@ -24,26 +24,6 @@ export const HeroSection: React.FC = () => {
       
       {/* Moving Orb */}
       <div className="absolute top-20 right-20 w-32 h-32 bg-blob-accent/20 rounded-full blur-lg animate-bounce [animation-duration:3s]" />
-      
-      {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="w-full h-full" 
-             style={{
-               backgroundImage: `
-                 linear-gradient(hsl(var(--primary-blob)) 1px, transparent 1px),
-                 linear-gradient(90deg, hsl(var(--primary-blob)) 1px, transparent 1px)
-               `,
-               backgroundSize: '60px 60px'
-             }} />
-      </div>
-      
-      {/* Floating Icon with Glow */}
-      <div className="absolute top-20 right-10 opacity-30">
-        <div className="relative">
-          <TrendingUp className="w-32 h-32 text-blob-primary animate-pulse" />
-          <div className="absolute inset-0 w-32 h-32 bg-blob-primary/20 rounded-full blur-xl animate-ping [animation-duration:4s]" />
-        </div>
-      </div>
       
       <div className="max-w-7xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
