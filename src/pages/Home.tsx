@@ -6,6 +6,7 @@ import { PerformanceSection } from '../components/home/PerformanceSection';
 import { MethodologySection } from '../components/home/MethodologySection';
 import { TrustSection } from '../components/home/TrustSection';
 import { WhyChooseUsSection } from '../components/home/WhyChooseUsSection';
+import { AboutUsSection } from '../components/home/AboutUsSection';
 
 export const Home: React.FC = () => {
   return (
@@ -17,6 +18,7 @@ export const Home: React.FC = () => {
       <MethodologySection />
       <TrustSection />
       <WhyChooseUsSection />
+      <AboutUsSection />
     </div>
   );
 };
