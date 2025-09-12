@@ -9,21 +9,21 @@ export const HeroSection: React.FC = () => {
       {/* Enhanced 3D Blob Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
       
-      {/* Animated 3D Blobs with Color */}
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-blob-primary/30 rounded-full blur-3xl animate-pulse [animation-duration:4s]" />
-      <div className="absolute top-1/3 -right-32 w-80 h-80 bg-blob-secondary/25 rounded-full blur-2xl animate-pulse [animation-duration:6s] [animation-delay:2s]" />
-      <div className="absolute bottom-0 left-1/4 w-64 h-64 bg-blob-accent/35 rounded-full blur-xl animate-pulse [animation-duration:5s] [animation-delay:1s]" />
+      {/* Floating Abstract Shapes */}
+      <div className="fixed -top-40 -left-40 w-96 h-96 bg-blob-primary/25 blur-3xl animate-pulse [animation-duration:8s] transform rotate-45" 
+           style={{clipPath: 'polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)'}} />
       
-      {/* Floating Wave Lines */}
-      <div className="absolute top-1/4 left-0 w-full h-32 opacity-30">
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-blob-primary/40 to-transparent h-2 top-1/2 animate-pulse [animation-duration:3s]" />
-      </div>
-      <div className="absolute bottom-1/3 right-0 w-full h-24 opacity-25">
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent via-blob-secondary/35 to-transparent h-2 top-1/2 animate-pulse [animation-duration:4s] [animation-delay:1s]" />
-      </div>
+      <div className="fixed top-1/4 -right-32 w-80 h-80 bg-blob-secondary/20 blur-2xl animate-pulse [animation-duration:12s] [animation-delay:3s] transform -rotate-12" 
+           style={{clipPath: 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)'}} />
       
-      {/* Moving Orb */}
-      <div className="absolute top-20 right-20 w-32 h-32 bg-blob-accent/20 rounded-full blur-lg animate-bounce [animation-duration:3s]" />
+      <div className="fixed bottom-10 left-1/4 w-64 h-64 bg-blob-accent/30 blur-xl animate-pulse [animation-duration:10s] [animation-delay:2s] transform rotate-12" 
+           style={{clipPath: 'polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)'}} />
+      
+      <div className="fixed top-1/2 left-10 w-48 h-48 bg-blob-primary/15 blur-2xl animate-pulse [animation-duration:14s] [animation-delay:1s] transform rotate-45" 
+           style={{clipPath: 'polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%)'}} />
+      
+      <div className="fixed bottom-1/3 right-10 w-56 h-56 bg-blob-accent/25 blur-xl animate-pulse [animation-duration:16s] [animation-delay:4s] transform -rotate-30" 
+           style={{clipPath: 'polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%)'}} />
       
       <div className="max-w-7xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
