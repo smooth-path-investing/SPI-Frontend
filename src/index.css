@@ -38,9 +38,9 @@
     --radius: 0.5rem;
 
     /* Blob Colors */
-    --primary-blob: 220 70% 50%;
-    --secondary-blob: 280 60% 50%;
-    --accent-blob: 160 50% 45%;
+    --primary-blob: 45 85% 55%;
+    --secondary-blob: 40 80% 50%;
+    --accent-blob: 50 75% 60%;
 
     --sidebar-background: 0 0% 0%;
     --sidebar-foreground: 0 0% 100%;
@@ -82,9 +82,9 @@
     --ring: 0 0% 100%;
     
     /* Blob Colors */
-    --primary-blob: 220 70% 50%;
-    --secondary-blob: 280 60% 50%;
-    --accent-blob: 160 50% 45%;
+    --primary-blob: 45 75% 45%;
+    --secondary-blob: 40 70% 40%;
+    --accent-blob: 50 65% 50%;
     
     --sidebar-background: 0 0% 0%;
     --sidebar-foreground: 0 0% 100%;
