@@ -173,5 +173,77 @@ export const TEAM_MEMBERS: ITeamMember[] = [
         { label: 'Market Analysis Blog', url: 'https://marketinsights.jason.com' }
       ]
     }
+  },
+  {
+    id: '5',
+    name: 'Sarah Chen',
+    role: 'Head of Research',
+    bio: 'Research director specializing in emerging markets and alternative investment strategies',
+    image: '/placeholder.svg',
+    portfolio: {
+      description: 'Sarah leads our research initiatives, identifying new market opportunities and developing innovative investment strategies.',
+      achievements: [
+        'Discovered untapped sectors delivering 45% returns',
+        'Published 25+ investment research reports',
+        'Led research team of 15+ analysts'
+      ],
+      experience: [
+        'Head of Research (2020-2023)',
+        'Senior Research Analyst (2017-2020)',
+        'PhD in Economics (2015-2017)'
+      ],
+      websites: [
+        { label: 'LinkedIn', url: 'https://linkedin.com/in/sarahchen' },
+        { label: 'Research Publications', url: 'https://research.sarahchen.com' }
+      ]
+    }
+  },
+  {
+    id: '6',
+    name: 'Michael Torres',
+    role: 'Data Science Lead',
+    bio: 'Data scientist focused on alternative datasets and predictive modeling for financial markets',
+    image: '/placeholder.svg',
+    portfolio: {
+      description: 'Michael harnesses big data and advanced analytics to uncover market signals invisible to traditional analysis.',
+      achievements: [
+        'Built models processing 10TB+ of market data daily',
+        'Improved signal accuracy by 55% using satellite data',
+        'Created proprietary ESG scoring algorithms'
+      ],
+      experience: [
+        'Senior Data Scientist (2018-2023)',
+        'Data Analyst (2015-2018)',
+        'MS in Statistics & Machine Learning (2013-2015)'
+      ],
+      websites: [
+        { label: 'GitHub', url: 'https://github.com/michaeltorres' },
+        { label: 'Data Science Portfolio', url: 'https://datascience.torres.com' }
+      ]
+    }
+  },
+  {
+    id: '7',
+    name: 'Emily Rodriguez',
+    role: 'Portfolio Strategy Director',
+    bio: 'Strategic portfolio architect with expertise in asset allocation and systematic trading',
+    image: '/placeholder.svg',
+    portfolio: {
+      description: 'Emily designs and optimizes our portfolio construction strategies, ensuring consistent risk-adjusted performance across market cycles.',
+      achievements: [
+        'Achieved 28% annual returns with 15% volatility',
+        'Developed multi-asset allocation framework',
+        'Managed $3B+ in systematic strategies'
+      ],
+      experience: [
+        'Portfolio Strategy Director (2019-2023)',
+        'Quantitative Portfolio Manager (2016-2019)',
+        'CFA & FRM Certified (2016)'
+      ],
+      websites: [
+        { label: 'LinkedIn', url: 'https://linkedin.com/in/emilyrodriguez' },
+        { label: 'Strategy Insights', url: 'https://portfolio.emily.com' }
+      ]
+    }
   }
 ];
