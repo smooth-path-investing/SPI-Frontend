@@ -10,7 +10,7 @@ export const MissionSection: React.FC = () => {
   ];
 
   return (
-    <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-background to-muted/20">
+    <section className="relative min-h-screen flex items-center py-40 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-background via-background to-muted/20">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary to-primary/80 bg-clip-text text-transparent">
