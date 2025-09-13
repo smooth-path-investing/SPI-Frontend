@@ -37,21 +37,6 @@ export const HeroSection: React.FC = () => {
             Make institutional stock investment available to retail investors
           </p>
         </div>
-        
-        {/* Enhanced CTAs - Side by side on desktop */}
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center mb-16 sm:mb-20 px-4 animate-fade-in [animation-delay:0.2s]">
-          <Link to="/stocks" className="w-full sm:w-auto">
-            <Button size="lg" className="w-full sm:w-auto text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary/25">
-              Explore Our Picks
-            </Button>
-          </Link>
-          <p className="text-sm text-muted-foreground hidden sm:block">or</p>
-          <Link to="/approach" className="w-full sm:w-auto">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto text-lg sm:text-xl px-8 sm:px-12 py-4 sm:py-6 border-border text-foreground hover:bg-accent transition-all duration-300 hover:shadow-lg">
-              See Our Method
-            </Button>
-          </Link>
-        </div>
       </div>
     </section>
   );
