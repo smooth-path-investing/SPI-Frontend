@@ -112,7 +112,7 @@ export const MissionSection: React.FC = () => {
   const missionPoints = [
     "Make institutional stock investment available to retail investors.",
     "Integrate common sense, math, risk budgets, market expertise and reflections.",
-    "Offer A-to-Z stock investing, from signals to portfolios in your pocket, Az2→Sp∈P.",
+    <>Offer A-to-Z stock investing, from signals to portfolios in your pocket, A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P.</>,
     "Order, segregate, integrate, condition, exclude, and concentrate"
   ];
 
