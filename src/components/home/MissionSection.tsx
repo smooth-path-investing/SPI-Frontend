@@ -27,13 +27,16 @@ export const MissionSection: React.FC = () => {
       ]
     },
     'risk budgets': {
-      title: 'Risk Budget Management',
-      description: 'Strategic allocation of risk to maximize returns while protecting capital.',
+      title: 'Risk Budget Management & Portfolio Allocation',
+      description: 'Guide investors to dial up or down risks in their portfolio based on their risk tolerance.',
       details: [
-        'Systematic risk allocation across asset classes',
-        'Dynamic position sizing based on volatility',
-        'Stress testing under various market conditions',
-        'Portfolio-level risk monitoring and adjustment'
+        'Aggressive investor (high risk tolerance): Hold no more than 10-13 stocks in portfolio, allocate at least 8-10% of your money in each stock',
+        'Moderate investor: Aim to have 14-25 stocks portfolio, hold no less than 4-5% in each stock, with 5-10% in market index (S&P500)',
+        'Conservative investor (low risk tolerance): Hold between 27-40 stocks, hold no less than 2-3% in each stock with 10-25% in market index',
+        'When you sell a stock, buy another stock from the same sector or industry',
+        'Our in-house AI system RAs "the Sun God of Stocks" will guide you through when to sell existing stock(s) and when to buy new ones',
+        'RAs can tell you what to do if you want to buy a particular stock, but waiting until it goes down',
+        'RAs can help you place a bet that makes you money while waiting until the stock goes down, such as selling put options'
       ]
     },
     'market expertise': {
