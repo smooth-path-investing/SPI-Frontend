@@ -1,10 +1,10 @@
 import { IStock, IPerformanceMetric, IApproachSection, INavItem, ITeamMember } from '../types';
 
 export const NAVIGATION_ITEMS: INavItem[] = [
-  { label: 'About Us', href: '/about' },
   { label: 'Our Approach', href: '/approach' },
   { label: 'Backtests', href: '/performance' },
-  { label: 'Recommended Stocks', href: '/stocks' }
+  { label: 'Recommended Stocks', href: '/stocks' },
+  { label: 'About Us', href: '/about' }
 ];
 
 export const SAMPLE_STOCKS: IStock[] = [
