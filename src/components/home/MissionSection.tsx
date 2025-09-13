@@ -128,7 +128,7 @@ export const MissionSection: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-background/95 to-background">
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
