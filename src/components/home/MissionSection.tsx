@@ -40,13 +40,19 @@ export const MissionSection: React.FC = () => {
       ]
     },
     'market expertise': {
-      title: 'Market Expertise',
-      description: 'Deep understanding of market dynamics and institutional insights.',
+      title: 'Market Expertise & Trading Principles',
+      description: 'Core trading principles and market insights for successful long-term investing.',
       details: [
-        'Sector-specific analysis and industry knowledge',
-        'Institutional-grade research and due diligence',
-        'Market timing and cyclical awareness',
-        'Regulatory and macroeconomic impact assessment'
+        'Sell only if returned at least >= 30% or 10-15% above S&P500. Always sell in 2-3 stages',
+        'Increase stocks\' weights, only after at least 5-7% drop. Always buy in 2-3 stages',
+        'Best stock prediction, never listen to daily news',
+        'The S&P 500 has an unparalleled/unmatched desire & ability to always climb up',
+        'Never bet against the S&P 500/U.S. stock market, especially long-term',
+        'Never bet the world is going to end',
+        'Never, sell when the market is down, especially significantly down',
+        'Always, buy when the market drops, especially when it significantly drops',
+        'Always, sell following 40-50% increase. But, never sell all holdings in one trade',
+        'Always, have at least 3-7 stocks on your to-buy list, waiting for the right price'
       ]
     }
   };
