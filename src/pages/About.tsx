@@ -35,7 +35,7 @@ export const About: React.FC = () => {
           {TEAM_MEMBERS.map((member) => (
             <div 
               key={member.id}
-              className="group relative bg-card/50 backdrop-blur-sm rounded-2xl p-6 border border-border/50 hover:border-primary/20 transition-all duration-300 cursor-pointer hover:bg-card/70"
+              className="group relative bg-card/50 backdrop-blur-sm rounded-2xl p-8 min-h-[320px] border border-border/50 hover:border-primary/20 transition-all duration-300 cursor-pointer hover:bg-card/70"
               onClick={() => handleMemberClick(member)}
             >
               {/* Profile Image */}
