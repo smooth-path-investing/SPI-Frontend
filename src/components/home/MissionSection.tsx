@@ -54,6 +54,13 @@ export const MissionSection: React.FC = () => {
         'Always, sell following 40-50% increase. But, never sell all holdings in one trade',
         'Always, have at least 3-7 stocks on your to-buy list, waiting for the right price'
       ]
+    },
+    'reflections': {
+      title: 'Reflections',
+      description: 'To be continued...',
+      details: [
+        'Content coming soon'
+      ]
     }
   };
 
@@ -66,7 +73,7 @@ export const MissionSection: React.FC = () => {
   };
 
   const renderTextWithKeywords = (text: string) => {
-    const keywords = ['math', 'risk budgets', 'market expertise'];
+    const keywords = ['math', 'risk budgets', 'market expertise', 'reflections'];
     let result = text;
     
     keywords.forEach(keyword => {
