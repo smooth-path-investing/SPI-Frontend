@@ -5,7 +5,7 @@ import { Shield, Users } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
   return (
-    <section className="relative pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative pt-40 pb-40 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-screen flex items-center">
       {/* Enhanced 3D Blob Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-secondary/5" />
       
