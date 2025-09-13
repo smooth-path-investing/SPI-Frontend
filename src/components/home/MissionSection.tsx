@@ -61,6 +61,20 @@ export const MissionSection: React.FC = () => {
       details: [
         'Content coming soon'
       ]
+    },
+    'Az2→Sp∈P': {
+      title: 'Smooth Path Investing Framework',
+      description: 'Encapsulates our complete investment framework from A to Z, delivering comprehensive services to put smart stock portfolios in your pocket.',
+      details: [
+        'A_z^2 (From A to Z, Squared): Complete and optimized investment pipeline from signal extraction to stock selection, sizing, re-sizing, balancing, re-balancing, risk calibration, and derivative overlays',
+        'The "squared" aspect suggests a richer, second-order layer of refinement and depth of ranking and all service offerings',
+        'Covers what/when/how/why to: buy/sell, risk/de-risk, weight/min/max stocks, + personalize AI RAs',
+        'S_p (Stock Portfolios): Personalized or strategy-specific portfolio output created by our system',
+        'Each portfolio is dynamically constructed based on unique combinations of company financials, macroeconomic, and market factors (e.g., PE, GDP, Gold)',
+        'P (Portfolio Space): The set of all possible investment strategies generated under our modeling framework',
+        'Includes contrarian, trend-following, smart beta, country/sector allocations, and more',
+        'The space of dynamically generated investment strategies in your Pocket'
+      ]
     }
   };
 
@@ -73,7 +87,7 @@ export const MissionSection: React.FC = () => {
   };
 
   const renderTextWithKeywords = (text: string) => {
-    const keywords = ['math', 'risk budgets', 'market expertise', 'reflections'];
+    const keywords = ['math', 'risk budgets', 'market expertise', 'reflections', 'Az2→Sp∈P'];
     let result = text;
     
     keywords.forEach(keyword => {
@@ -98,7 +112,7 @@ export const MissionSection: React.FC = () => {
   const missionPoints = [
     "Make institutional stock investment available to retail investors.",
     "Integrate common sense, math, risk budgets, market expertise and reflections.",
-    <>Offer A-to-Z stock investing, from signals to portfolios in your pocket, A<sub>z</sub><sup>2</sup>→S<sub>p</sub>∈P.</>,
+    "Offer A-to-Z stock investing, from signals to portfolios in your pocket, Az2→Sp∈P.",
     "Order, segregate, integrate, condition, exclude, and concentrate"
   ];
 
