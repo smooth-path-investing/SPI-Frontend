@@ -110,7 +110,7 @@ export const MissionSection: React.FC = () => {
   };
 
   const missionPoints = [
-    "Make institutional stock investment available to retail investors.",
+    "Create a money-making engine from the growth of companies and economies.",
     "Integrate common sense, math, risk budgets, market expertise and reflections.",
     <>Offer A-to-Z stock investing, from signals to portfolios in your pocket, <span 
       className="keyword-link cursor-pointer font-bold text-primary hover:text-primary/80 transition-colors duration-200"
