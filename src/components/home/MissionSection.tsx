@@ -14,13 +14,16 @@ export const MissionSection: React.FC = () => {
 
   const keywordData: Record<string, KeywordInfo> = {
     'math': {
-      title: 'Mathematical Analysis',
-      description: 'Rigorous quantitative models drive our investment decisions.',
+      title: 'SigGA (Signature Genetic Algorithm)',
+      description: 'A proprietary quantitative modeling framework developed entirely in-house by Ramy Sukarieh.',
       details: [
-        'Statistical analysis of market patterns and trends',
-        'Algorithmic risk assessment and probability calculations',
-        'Mathematical modeling of portfolio optimization',
-        'Quantitative backtesting of investment strategies'
+        'Not an off-the-shelf or pre-packaged machine learning solution',
+        'Integrates advanced mathematical tools including path signatures from rough path theory',
+        'Uses genetic algorithms - a biology-inspired evolutionary computation for factor selection',
+        'Features custom regression architectures to identify predictive signals in financial time series',
+        'Supported by original academic research and purpose-built for asset ranking',
+        'Designed for portfolio construction and signal interpretation',
+        'Reflects deep domain expertise and addresses structural limitations found in standard machine learning approaches when applied to financial data'
       ]
     },
     'risk budgets': {
