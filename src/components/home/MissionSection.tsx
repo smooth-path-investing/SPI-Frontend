@@ -59,7 +59,7 @@ export const MissionSection: React.FC = () => {
     
     keywords.forEach(keyword => {
       const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-      result = result.replace(regex, `<span class="keyword-link">${keyword}*</span>`);
+      result = result.replace(regex, `<span class="keyword-link">${keyword}</span>`);
     });
     
     return (
@@ -68,7 +68,7 @@ export const MissionSection: React.FC = () => {
         onClick={(e) => {
           const target = e.target as HTMLElement;
           if (target.classList.contains('keyword-link')) {
-            const keyword = target.textContent?.replace('*', '') || '';
+            const keyword = target.textContent || '';
             handleKeywordClick(keyword);
           }
         }}
