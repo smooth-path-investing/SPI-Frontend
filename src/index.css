@@ -7,15 +7,12 @@
 
 /* Interactive keyword styles */
 .keyword-link {
-  @apply cursor-pointer text-primary hover:text-primary/80 transition-colors duration-200;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
-  font-weight: 600;
+  @apply cursor-pointer text-primary/80 hover:text-primary transition-colors duration-300;
+  font-weight: 500;
 }
 
 .keyword-link:hover {
-  text-decoration-thickness: 2px;
+  text-shadow: 0 0 8px hsl(var(--primary) / 0.3);
 }
 
 @layer base {

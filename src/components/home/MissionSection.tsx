@@ -90,32 +90,33 @@ export const MissionSection: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-    <section className="relative min-h-screen flex items-center py-40 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-primary via-primary to-primary/80 bg-clip-text text-transparent">
-            Our Mission
-          </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary/60 mx-auto rounded-full"></div>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
-          {missionPoints.map((point, index) => (
-            <Card key={index} className="group relative p-8 border border-border/50 bg-card/50 backdrop-blur-sm hover:bg-card/80 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1">
-              <div className="flex items-start gap-6">
-                <div className="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <span className="text-primary-foreground font-bold text-lg">→</span>
+      <section className="relative min-h-screen flex items-center py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="mb-20">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-light mb-8 text-foreground tracking-wide">
+              Our Mission
+            </h2>
+            <div className="w-16 h-0.5 bg-primary mx-auto"></div>
+          </div>
+          
+          <div className="space-y-12">
+            {missionPoints.map((point, index) => (
+              <div key={index} className="group">
+                <div className="flex items-center justify-center mb-4">
+                  <div className="w-8 h-0.5 bg-muted-foreground/30 group-hover:bg-primary/50 transition-colors duration-300"></div>
+                  <span className="mx-4 text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors duration-300 tracking-wider">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div className="w-8 h-0.5 bg-muted-foreground/30 group-hover:bg-primary/50 transition-colors duration-300"></div>
                 </div>
-                <p className="text-lg sm:text-xl text-foreground leading-relaxed group-hover:text-primary transition-colors duration-300">
+                <p className="text-lg sm:text-xl lg:text-2xl font-light leading-relaxed text-foreground/90 group-hover:text-foreground transition-colors duration-300 max-w-3xl mx-auto">
                   {typeof point === 'string' ? renderTextWithKeywords(point) : point}
                 </p>
               </div>
-              <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
-            </Card>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
     </>
   );
 };
