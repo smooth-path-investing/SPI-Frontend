@@ -1,7 +1,81 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { KeywordModal } from '@/components/ui/keyword-modal';
 import { Card } from '@/components/ui/card';
 
+interface KeywordInfo {
+  title: string;
+  description: string;
+  details: string[];
+}
+
 export const MissionSection: React.FC = () => {
+  const [selectedKeyword, setSelectedKeyword] = useState<KeywordInfo | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const keywordData: Record<string, KeywordInfo> = {
+    'math': {
+      title: 'Mathematical Analysis',
+      description: 'Rigorous quantitative models drive our investment decisions.',
+      details: [
+        'Statistical analysis of market patterns and trends',
+        'Algorithmic risk assessment and probability calculations',
+        'Mathematical modeling of portfolio optimization',
+        'Quantitative backtesting of investment strategies'
+      ]
+    },
+    'risk budgets': {
+      title: 'Risk Budget Management',
+      description: 'Strategic allocation of risk to maximize returns while protecting capital.',
+      details: [
+        'Systematic risk allocation across asset classes',
+        'Dynamic position sizing based on volatility',
+        'Stress testing under various market conditions',
+        'Portfolio-level risk monitoring and adjustment'
+      ]
+    },
+    'market expertise': {
+      title: 'Market Expertise',
+      description: 'Deep understanding of market dynamics and institutional insights.',
+      details: [
+        'Sector-specific analysis and industry knowledge',
+        'Institutional-grade research and due diligence',
+        'Market timing and cyclical awareness',
+        'Regulatory and macroeconomic impact assessment'
+      ]
+    }
+  };
+
+  const handleKeywordClick = (keyword: string) => {
+    const keywordInfo = keywordData[keyword];
+    if (keywordInfo) {
+      setSelectedKeyword(keywordInfo);
+      setIsModalOpen(true);
+    }
+  };
+
+  const renderTextWithKeywords = (text: string) => {
+    const keywords = ['math', 'risk budgets', 'market expertise'];
+    let result = text;
+    
+    keywords.forEach(keyword => {
+      const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
+      result = result.replace(regex, `<span class="keyword-link">${keyword}*</span>`);
+    });
+    
+    return (
+      <span 
+        dangerouslySetInnerHTML={{ __html: result }}
+        onClick={(e) => {
+          const target = e.target as HTMLElement;
+          if (target.classList.contains('keyword-link')) {
+            const keyword = target.textContent?.replace('*', '') || '';
+            handleKeywordClick(keyword);
+          }
+        }}
+      />
+    );
+  };
+
   const missionPoints = [
     "Make institutional stock investment available to retail investors.",
     "Integrate common sense, math, risk budgets, market expertise and reflections.",
@@ -10,6 +84,12 @@ export const MissionSection: React.FC = () => {
   ];
 
   return (
+    <>
+      <KeywordModal 
+        keyword={selectedKeyword}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     <section className="relative min-h-screen flex items-center py-40 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
@@ -27,7 +107,7 @@ export const MissionSection: React.FC = () => {
                   <span className="text-primary-foreground font-bold text-lg">→</span>
                 </div>
                 <p className="text-lg sm:text-xl text-foreground leading-relaxed group-hover:text-primary transition-colors duration-300">
-                  {point}
+                  {typeof point === 'string' ? renderTextWithKeywords(point) : point}
                 </p>
               </div>
               <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
@@ -36,5 +116,6 @@ export const MissionSection: React.FC = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
