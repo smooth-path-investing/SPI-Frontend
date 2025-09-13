@@ -132,11 +132,6 @@ export const MissionSection: React.FC = () => {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-4 mb-6">
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
-              <span className="text-sm font-medium text-primary tracking-wider uppercase">Mission</span>
-              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
-            </div>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
               Our Mission
             </h2>
@@ -176,15 +171,6 @@ export const MissionSection: React.FC = () => {
                 <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               </Card>
             ))}
-          </div>
-          
-          {/* Bottom Accent */}
-          <div className="mt-20 text-center">
-            <div className="inline-flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary/60 animate-pulse"></div>
-              <div className="w-1 h-1 rounded-full bg-primary/40"></div>
-              <div className="w-1 h-1 rounded-full bg-primary/20"></div>
-            </div>
           </div>
         </div>
       </section>
