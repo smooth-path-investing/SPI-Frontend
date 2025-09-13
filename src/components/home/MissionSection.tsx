@@ -128,29 +128,63 @@ export const MissionSection: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-      <section className="relative min-h-screen flex items-center py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="mb-20">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-8 text-foreground tracking-wide">
+      <section className="relative py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background via-background/95 to-background">
+        <div className="max-w-5xl mx-auto">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-4 mb-6">
+              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+              <span className="text-sm font-medium text-primary tracking-wider uppercase">Mission</span>
+              <div className="w-12 h-px bg-gradient-to-r from-transparent via-primary to-transparent"></div>
+            </div>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
               Our Mission
             </h2>
+            <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Transforming institutional-grade investment strategies for every investor
+            </p>
           </div>
           
-          <div className="space-y-12">
+          {/* Mission Points Grid */}
+          <div className="grid gap-8 md:gap-10">
             {missionPoints.map((point, index) => (
-              <div key={index} className="group">
-                <div className="flex items-center justify-center mb-4">
-                  <div className="w-8 h-0.5 bg-muted-foreground/30 group-hover:bg-primary/50 transition-colors duration-300"></div>
-                  <span className="mx-4 text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors duration-300 tracking-wider">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <div className="w-8 h-0.5 bg-muted-foreground/30 group-hover:bg-primary/50 transition-colors duration-300"></div>
+              <Card key={index} className="group relative overflow-hidden border-border/50 bg-card/30 backdrop-blur-sm hover:bg-card/50 transition-all duration-500 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5">
+                <div className="p-8 sm:p-10">
+                  <div className="flex items-start gap-6">
+                    {/* Number Badge */}
+                    <div className="flex-shrink-0">
+                      <div className="relative">
+                        <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300">
+                          <span className="text-lg font-bold text-primary">
+                            {index + 1}
+                          </span>
+                        </div>
+                        <div className="absolute inset-0 rounded-full bg-primary/5 scale-0 group-hover:scale-150 transition-transform duration-500 ease-out"></div>
+                      </div>
+                    </div>
+                    
+                    {/* Content */}
+                    <div className="flex-1 min-w-0">
+                      <div className="text-xl sm:text-2xl font-medium leading-relaxed text-foreground group-hover:text-foreground transition-colors duration-300">
+                        {typeof point === 'string' ? renderTextWithKeywords(point) : point}
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-lg sm:text-xl lg:text-2xl font-light leading-relaxed text-foreground/90 group-hover:text-foreground transition-colors duration-300 max-w-3xl mx-auto">
-                  {typeof point === 'string' ? renderTextWithKeywords(point) : point}
-                </p>
-              </div>
+                
+                {/* Subtle gradient overlay */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+              </Card>
             ))}
+          </div>
+          
+          {/* Bottom Accent */}
+          <div className="mt-20 text-center">
+            <div className="inline-flex items-center gap-2">
+              <div className="w-2 h-2 rounded-full bg-primary/60 animate-pulse"></div>
+              <div className="w-1 h-1 rounded-full bg-primary/40"></div>
+              <div className="w-1 h-1 rounded-full bg-primary/20"></div>
+            </div>
           </div>
         </div>
       </section>
