@@ -31,8 +31,7 @@ export const HeroSection: React.FC = () => {
             Smarter Stock Picks
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-2 [line-height:1.4]">
-            AI-powered investment strategies backed by rigorous backtesting. 
-            Transparent methodology, superior performance, designed for everyone.
+            Make institutional stock investment available to retail investors
           </p>
         </div>
         
