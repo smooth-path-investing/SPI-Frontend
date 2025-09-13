@@ -2,7 +2,8 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { APPROACH_SECTIONS } from '../constants';
-import { BarChart3, Brain, TrendingUp, Database, Cpu, LineChart, Shield, Clock } from 'lucide-react';
+import { BarChart3, Brain, TrendingUp, Database, Cpu, LineChart, Shield, Clock, FileText, ExternalLink } from 'lucide-react';
+import turtleFoxImg from '@/assets/turtle-fox-illustration.png';
 
 const getIcon = (iconName: string) => {
   switch (iconName) {
@@ -26,6 +27,91 @@ export const Approach: React.FC = () => {
             to identify winning stocks with institutional-grade precision
           </p>
         </div>
+
+        {/* Our Approach Section with Background Image */}
+        <section className="mb-20">
+          <div 
+            className="relative bg-card rounded-lg p-12 border border-border overflow-hidden"
+            style={{
+              backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${turtleFoxImg})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat'
+            }}
+          >
+            <div className="relative z-10">
+              <h2 className="text-3xl font-bold text-center mb-8 text-white">Our Approach</h2>
+              <div className="text-center text-white/80 text-lg">
+                <p>...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Research Documents Links */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Research Documents</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="bg-card p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-4">
+                <FileText className="w-8 h-8 text-primary mr-3" />
+                <h3 className="text-xl font-semibold text-foreground">SPI Stock Stories</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Real-world case studies and practical applications of our SPI methodology
+              </p>
+              <Button variant="outline" className="w-full" disabled>
+                <ExternalLink className="w-4 h-4 mr-2" />
+                View Document
+                <span className="text-xs ml-2">(Coming Soon)</span>
+              </Button>
+            </div>
+            
+            <div className="bg-card p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-4">
+                <FileText className="w-8 h-8 text-primary mr-3" />
+                <h3 className="text-xl font-semibold text-foreground">Research Paper #1</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Academic research supporting our quantitative methodology
+              </p>
+              <Button variant="outline" className="w-full" disabled>
+                <ExternalLink className="w-4 h-4 mr-2" />
+                View Paper
+                <span className="text-xs ml-2">(Coming Soon)</span>
+              </Button>
+            </div>
+            
+            <div className="bg-card p-6 rounded-lg border border-border">
+              <div className="flex items-center mb-4">
+                <FileText className="w-8 h-8 text-primary mr-3" />
+                <h3 className="text-xl font-semibold text-foreground">Research Paper #2</h3>
+              </div>
+              <p className="text-muted-foreground mb-4">
+                Technical analysis and validation of our AI-driven signals
+              </p>
+              <Button variant="outline" className="w-full" disabled>
+                <ExternalLink className="w-4 h-4 mr-2" />
+                View Paper
+                <span className="text-xs ml-2">(Coming Soon)</span>
+              </Button>
+            </div>
+          </div>
+        </section>
+
+        {/* Practical Implications of SPI Implementations */}
+        <section className="mb-20">
+          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Practical Implications of SPI Implementations</h2>
+          <div className="bg-card rounded-lg p-12 border border-border">
+            <div className="text-center text-muted-foreground">
+              <p className="text-lg mb-4">AI Summary of SPI Stock Stories</p>
+              <p className="italic">
+                Please provide the "SPI Stock Stories" document so I can generate a comprehensive AI summary 
+                of the practical implications and real-world applications of our SPI methodology.
+              </p>
+            </div>
+          </div>
+        </section>
 
         {/* Philosophy Section - New */}
         <section className="mb-20">
