@@ -23,11 +23,132 @@ export const About: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-20">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight">
-            Meet Our Team
+            About Ramy Sukarieh
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Our diverse team combines decades of financial expertise with cutting-edge technology
+          <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Applied mathematician and Managing Director at EyeLand Capital Management, specializing in quantitative investment strategies using machine learning, artificial intelligence, and advanced risk management.
           </p>
+        </div>
+
+        {/* Professional Summary */}
+        <div className="mb-16 bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border/50">
+          <h2 className="text-2xl font-bold mb-6 text-foreground">Professional Summary</h2>
+          <div className="space-y-4 text-muted-foreground">
+            <p className="leading-relaxed">
+              Applied mathematician with expertise in market & credit risk (CCR CVA CCAR), coding/debugging expert in Python, Matlab, R, SQL, and various financial platforms including Barra, FactSet, Bloomberg, and Aladdin.
+            </p>
+            <p className="leading-relaxed">
+              Developer of innovative stock selection models using signatures from rough path theory with genetic algorithms. For the 10-year period analyzed, the SigGA portfolios returned 191% vs. S&P500 68% with a Sharpe ratio of 3.3.
+            </p>
+            <div className="flex items-center gap-2 text-primary">
+              <span>GitHub:</span>
+              <a href="https://github.com/ecoramy/signature-genetic-algorithm" target="_blank" rel="noopener noreferrer" className="underline hover:text-primary/80">
+                signature-genetic-algorithm
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Current Role */}
+        <div className="mb-16 bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border/50">
+          <h2 className="text-2xl font-bold mb-6 text-foreground">Current Position</h2>
+          <div className="space-y-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <h3 className="text-xl font-semibold text-foreground">Managing Director</h3>
+                <p className="text-primary font-medium">EyeLand Capital Management, LLC</p>
+                <p className="text-muted-foreground">September 2023 – Present</p>
+              </div>
+            </div>
+            <ul className="space-y-2 text-muted-foreground">
+              <li>• Built quantitative investment strategies using machine learning and artificial intelligence to manage $6 million portfolio of stocks and debt securities</li>
+              <li>• Coded stock ranking models using signatures from rough path theory and genetic algorithm</li>
+              <li>• Computed stress tests, scenario analysis, risk measures ES, stressVaR, VaR, backtesting</li>
+              <li>• Built fundamental U.S. trading strategy using polynomials and vector autoregressive models</li>
+              <li>• Led execution and review of enterprise and operational risk management programs</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Education */}
+        <div className="mb-16 bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border/50">
+          <h2 className="text-2xl font-bold mb-6 text-foreground">Education</h2>
+          <div className="space-y-4">
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-semibold text-foreground">M.Sc. Mathematics</h3>
+                <p className="text-primary">Courant Institute, New York University</p>
+                <p className="text-muted-foreground text-sm">December 2014</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">M.A. Mathematical Finance</h3>
+                <p className="text-primary">Boston University</p>
+                <p className="text-muted-foreground text-sm">May 2005</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">M.A. International Economics & Finance</h3>
+                <p className="text-primary">Brandeis University</p>
+                <p className="text-muted-foreground text-sm">May 2003</p>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground">B.Sc. Economics</h3>
+                <p className="text-primary">Lebanese University</p>
+                <p className="text-muted-foreground text-sm">May 2002</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Key Experience */}
+        <div className="mb-16 bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border/50">
+          <h2 className="text-2xl font-bold mb-6 text-foreground">Key Professional Experience</h2>
+          <div className="space-y-6">
+            <div>
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Senior Risk Manager</h3>
+                  <p className="text-primary font-medium">United Nations Pension Fund</p>
+                </div>
+                <span className="text-muted-foreground text-sm">Jan 2013 – Jun 2022</span>
+              </div>
+              <ul className="space-y-1 text-muted-foreground text-sm">
+                <li>• Managed investment risk budgets of $60+ billion on behalf of the UN Secretary-General</li>
+                <li>• Developed quantitative models for asset allocation leading to billions in investments</li>
+                <li>• Created Bayesian ML private equity VaR models for $1+ billion investments</li>
+                <li>• Led market-risk due diligence using AI/ML to rank funds</li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Risk Consultant</h3>
+                  <p className="text-primary font-medium">Citibank</p>
+                </div>
+                <span className="text-muted-foreground text-sm">Mar 2023 – Aug 2023</span>
+              </div>
+              <ul className="space-y-1 text-muted-foreground text-sm">
+                <li>• Assisted in regulatory comprehensive capital analysis CCAR review</li>
+                <li>• Calculated credit risks for MBS, loans, swaps, CDO, CLO</li>
+                <li>• Resolved mispricing of assets related to stress-testing and hedges</li>
+              </ul>
+            </div>
+
+            <div>
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <h3 className="text-lg font-semibold text-foreground">Senior Risk Manager Consultant</h3>
+                  <p className="text-primary font-medium">MSCI (Riskmetrics & BarraOne)</p>
+                </div>
+                <span className="text-muted-foreground text-sm">Feb 2011 – Jul 2012</span>
+              </div>
+              <ul className="space-y-1 text-muted-foreground text-sm">
+                <li>• Helped institutional clients including World Bank, CPPIB, UN manage risk</li>
+                <li>• Developed VaR and ES solutions for investments over $100 billion</li>
+                <li>• Built risk dashboards and explained analytics to major institutions</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Team Grid */}

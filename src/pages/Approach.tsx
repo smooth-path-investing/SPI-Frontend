@@ -101,14 +101,160 @@ export const Approach: React.FC = () => {
 
         {/* Practical Implications of SPI Implementations */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Practical Implications of SPI Implementations</h2>
-          <div className="bg-card rounded-lg p-12 border border-border">
-            <div className="text-center text-muted-foreground">
-              <p className="text-lg mb-4">AI Summary of SPI Stock Stories</p>
-              <p className="italic">
-                Please provide the "SPI Stock Stories" document so I can generate a comprehensive AI summary 
-                of the practical implications and real-world applications of our SPI methodology.
-              </p>
+          <div className="container mx-auto px-4">
+            <h2 className="text-3xl font-bold text-center mb-12 text-foreground">
+              Practical Implications of SPI Implementations
+            </h2>
+            <div className="max-w-6xl mx-auto space-y-8">
+              {/* Story 1 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">1. The Stock-Data Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  What data should you use to understand stock behavior? At SPI we start from the most basic and essential set of information: 
+                  a) indicators affecting each stock independently such as accounting information like balance sheet, income statement, and cash flows (non-traded indicators); 
+                  b) indicators impacting the overall economy such as GDP, inflation, and housing sales (non-traded indicators); 
+                  c) indicators influencing companies, economies, and stocks such as gold, silver, and global/international equities or bonds (traded indicators). 
+                  Every stock is influenced by three layers of context: the company itself, the broader economy, and the overall market. We examine the quarterly movements of all three to gain a full understanding using three sets of information: company-specific/unique, country-specific/common, and market-specific/common.
+                </p>
+              </div>
+
+              {/* Story 2 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">2. The Stock-Human Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  What models should you use to understand stocks' behavior? There are three types of investment behaviors: 1) people who follow, 2) people who rebel, and 3) people who stay neutral. 
+                  EyeLand Capital Management uses math to identify patterns, trends, and paths that align with investment themes like behavior, now labeled 1) Trend, 2) Contrarian or mean-reverting, and 3) Linear. 
+                  We apply 1) highly nonlinear models, such as recurrent neural networks like LSTM, for trend-following stocks, 2) moderately nonlinear models, like polynomials, for mean-reverting, contrarian stocks, and 3) dynamical system models, such as VARX, for neutral, linear-trending stocks. 
+                  Our investment approach concentrates stock picks into a concise, high-confidence, 10-stock list per quarter.
+                </p>
+              </div>
+
+              {/* Story 3 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">3. The Stock-Tracker Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  When and how do you sell/buy a stock? Trade based on pre-determined levels and targeted risk metrics, implementing trades in 2-3 measured stages to reduce regret and capitalize on momentum. 
+                  Only sell when at least one of these conditions is met: a) (relative basis) the stock rises 15-25% above the S&P 500, b) (absolute basis) it gains 25-40% from entry, or c) (risk management) it falls 15-20% below average cost or significantly underperforms for extended periods. 
+                  We combine systematic rules with prudent and clear risk management targets, acknowledging that no strategy eliminates all risks, but disciplined execution can help stack the odds in your favor while protecting your capital when markets don't cooperate.
+                </p>
+              </div>
+
+              {/* Story 4 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">4. The Stock-Speed Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  How do you know a stock has reached its upside or downside potential? Consider how people behave (followers, rebels, or neutrals) within each group, stocks move to their own rhythm, advancing, retreating, or wandering across a wide spectrum of paths, leaving behind rough, smooth, irregular, long, or short traces (signatures) along the way. 
+                  These dynamics influence the speed at which a stock may reach its upside or downside potential. We measure the uncertainties surrounding these potentials by analyzing historical behavior through the lenses of both simplicity and complexity, defining boundaries and corners to guide the pace of entries and exits.
+                </p>
+              </div>
+
+              {/* Story 5 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">5. The Stock-Bump Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Which stocks have the biggest drop/loss potential and which have the biggest increase/gain potential? Stocks move with wild, unpredictable swings—others glide along steadily. We help you figure out which stocks fit into each group, so you're never caught off guard. 
+                  SPI stock picks will let you know which stocks might see sudden shifts, moderate changes, or slow moves, using tools like stress-VaR, VaR, CVaR, maximum drawdowns to gauge the large/sudden swings. Plus, we consider the direction, so you can decide to trade them long or short.
+                </p>
+              </div>
+
+              {/* Story 6 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">6. The Stock-Limit Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  What number of stocks should you hold in your portfolio? We actively adjust your portfolio size to fit your needs. For risk takers, always keep 10-12 stocks in your portfolio. 
+                  Those with a moderate risk appetite should aim for 17-30 stocks. If you prefer a conservative approach, plan for at least 30 stocks but keep the total under 40-45. 
+                  Suggested allocations: Risk takers: 7–13 stocks, Moderate risk: 13–27 stocks, Conservative: 27–40 stocks. As a rule of thumb, at least have 2.5% with no more than 20% allocation to a given stock.
+                </p>
+              </div>
+
+              {/* Story 7 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">7. The Stock-Slice Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Which stocks you can trade actively during the quarter and which ones you hold longer? Stocks don't all move to the same beat, and they tend to shift in groups over different time frames. 
+                  SPI stock picks' approach encodes, through the indicators, features like increments, interactions, and higher-order effects. This temporal structure guides stocks' classification into short-term versus long-term signals. 
+                  We'll tell you which stocks in your portfolio you can hold past a quarter and which ones you should wrap up by quarter's end, always selling or buying at the right price or moment.
+                </p>
+              </div>
+
+              {/* Story 8 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">8. The Stock-Theme Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Each SPI pick has a theme: macro-driven, fundamentally strong, or hybrid. We classify stocks by traits: corporate-driven, economy-sensitive, market-driven, or neutral. 
+                  Each SPI stock recommendation comes with a DNA classification: a) Fundamental - Companies that move based on corporate performance, b) Macroeconomic - Stocks influenced by economic cycles, c) Market-driven - Securities that respond primarily to trading patterns, d) Hybrid - Stocks influenced by multiple factors, e) Neutral - Securities with no clear dominant pattern. 
+                  This classification helps align recommendations with investor goals.
+                </p>
+              </div>
+
+              {/* Story 9 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">9. The Stock-Model Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Our recommendations come from a data-driven model that adjusts to changing conditions—based on solid signals, not hype or trends. 
+                  At SPI, we blend this challenge with common sense, simplicity, and investment know-how. We start by noting that investors tend to fall into three moves: contrarians, followers, or doing nothing neutral. 
+                  Then, we pick math models that fit these styles: polynomials, LSTM, and VARX. The SPI approach manages to dynamically create a unique model for each stock, edging close to the max of 500 models for the S&P 500.
+                </p>
+              </div>
+
+              {/* Story 10 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">10. The Stock-Independence Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Once we pick a stock, we don't flip-flop on a whim. Our confidence comes from data, not media hype. We tolerate short-term ups and downs for the sake of long-term sense. 
+                  The worst move you can make is selling when a stock dips. The SPI way of picking stocks is all about independence and sticking it out: form your own views, hold firm even if the stock drops—especially if it drops big, because that's when you should buy more. 
+                  We base conviction on data—not noise. Long-term conviction matters more than short-term volatility.
+                </p>
+              </div>
+
+              {/* Story 11 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">11. The Stock-Success Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Success depends on perspective; failure is often a decision you make. Alongside our recommended list, we always keep a watchlist—stocks with big potential we're ready to jump on when the timing's right. 
+                  With every stock pick recommendation at the end of the quarter, we include a watchlist of stocks to buy, designed to catch any model slip-ups. If a stock looks like it's in a never-ending dive, we'll have a solid replacement ready to swap in, keeping your losses low and your portfolio's growth potential steady. 
+                  Success is relative; failure is often impatience.
+                </p>
+              </div>
+
+              {/* Story 12 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">12. The Stock-Hunter Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  Our philosophy blends patience with power. Like a hunter, we wait for the right moment. Like a steelmaker, we forge stronger positions in downturns. 
+                  If a stock we believe in drops—we add more. Fire intensifies conviction. This approach requires discipline and long-term thinking, but it's how we build substantial positions in quality companies at attractive prices.
+                </p>
+              </div>
+
+              {/* Story 13 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">13. The Stock-Anchor Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  We create a stock investment portfolio by combining two sub-portfolios: "Anchor & Twin," which can be seen as strategic and tactical components. 
+                  The anchor portfolio usually includes 5-7 of your favorite or strategic stocks, closely tied to the broader economy, with large-cap companies that carry significant weight in the index—think Apple, Amazon, Google, NVIDIA, Microsoft, and maybe the IVV ETF itself—holding about 15% to 25% of the total portfolio. 
+                  The twin, or tactical portfolio, reflects your dynamic bets or views on the economy, focusing on overall or pockets of growth, specific sectors, or industries, and is refreshed quarterly with the stocks we recommend.
+                </p>
+              </div>
+
+              {/* Story 14 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">14. The Stock-Child Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  What should you do at the end of each quarter when the new recommended stock list is released? The aim is to: 1) hold the anchor portfolio long-term, 2) trade as little as possible, 3) maximize returns, keep volatility under control, while avoiding steep losses. 
+                  A twin/tactical stock is only sold when two conditions are met: 1) the stock has gained at least 40%-50% over the quarter, and 2) it has risen at least 20%-30% above the index. 
+                  Then, the plan is to replace the sold stock with one from the same sector or industry on the new recommended stock list (i.e., a child portfolio).
+                </p>
+              </div>
+
+              {/* Story 15 */}
+              <div className="bg-card/80 backdrop-blur-sm rounded-lg p-6 border border-border">
+                <h3 className="text-2xl font-bold mb-4 text-primary">15. The Stock-Iteration Story</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  The final story in our SPI methodology focuses on continuous improvement and calibration. Our models and approaches are constantly refined based on market feedback and performance data. 
+                  We iterate on our strategies, learning from both successes and setbacks to enhance our stock selection process. This iterative approach ensures that our methodology remains robust and adaptive to changing market conditions, 
+                  providing investors with a dynamic framework that evolves with the markets while maintaining core disciplined principles.
+                </p>
+              </div>
             </div>
           </div>
         </section>
