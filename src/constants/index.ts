@@ -176,7 +176,7 @@ export const TEAM_MEMBERS: ITeamMember[] = [
   },
   {
     id: '5',
-    name: 'Sarah Chen',
+    name: 'Member 1',
     role: 'Head of Research',
     bio: 'Research director specializing in emerging markets and alternative investment strategies',
     image: '/placeholder.svg',
@@ -200,7 +200,7 @@ export const TEAM_MEMBERS: ITeamMember[] = [
   },
   {
     id: '6',
-    name: 'Michael Torres',
+    name: 'Member 2',
     role: 'Data Science Lead',
     bio: 'Data scientist focused on alternative datasets and predictive modeling for financial markets',
     image: '/placeholder.svg',
@@ -224,7 +224,7 @@ export const TEAM_MEMBERS: ITeamMember[] = [
   },
   {
     id: '7',
-    name: 'Emily Rodriguez',
+    name: 'Member 3',
     role: 'Portfolio Strategy Director',
     bio: 'Strategic portfolio architect with expertise in asset allocation and systematic trading',
     image: '/placeholder.svg',
