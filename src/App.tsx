@@ -11,7 +11,6 @@ import { About } from "./pages/About";
 import { Approach } from "./pages/Approach";
 import { Performance } from "./pages/Performance";
 import { Stocks } from "./pages/Stocks";
-import { Backtest } from "./pages/Backtest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,7 +31,6 @@ const App = () => (
                 <Route path="/approach" element={<Approach />} />
                 <Route path="/performance" element={<Performance />} />
                 <Route path="/stocks" element={<Stocks />} />
-                <Route path="/backtest" element={<Backtest />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
