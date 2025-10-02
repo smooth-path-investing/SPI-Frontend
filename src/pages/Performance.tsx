@@ -9,6 +9,24 @@ import { runBacktest, BacktestResult } from '@/utils/backtestEngine';
 import { SimulatorResults } from '@/components/backtest/SimulatorResults';
 import { useToast } from '@/hooks/use-toast';
 
+const EXAMPLE_CSV = `Start Date,Assets,Weights
+6/1/2017,"UPS, NVDA, BBY, T, UNM, KO, MCD, BMY, ABT","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+9/30/2017,"T, CVX, MRK, RL, PRGO, MCD, BMY, TXN","12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%"
+12/31/2017,"T, MSFT, ABT, DLTR, SBUX, CSCO, WMT, FITB","12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%"
+3/31/2018,"GE, APA, DLTR, IBM, KR, TXN, CSCO, FITB","12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%"
+6/30/2018,"KR, CVS, HD, TSCO, GE, TXN, CSCO","14.1%, 14.1%, 14.1%, 14.1%, 14.1%, 14.1%, 15.4%"
+9/30/2018,"KO, VZ, QCOM, BBY, ABT, WMT, APA, FITB","12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%"
+12/31/2018,"SBUX, TSCO, PG, LEN, PFE, MRK, CSCO, INTC, FRT","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+3/31/2019,"ACN, PRGO, JPM, LLY, WY, LEN, PNR, CSCO","12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%"
+6/30/2019,"INTU, BBY, SBUX, LEN, FITB, PRGO, RMD, CVS","12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%, 12.5%"
+9/30/2019,"WFC, DVA, APA, TGT, T, HD, AMGN, LLY, PRGO","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+12/31/2019,"AMGN, KR, BAC, LLY, NFLX, SEE, UNH, DVA, XOM","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+3/31/2020,NVDA,100.00%
+6/30/2020,"ZBRA, ABT, INTU, ADBE, XOM, PVH, AMZN, BEN, LLY","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+9/30/2020,"APA, VNO, ROL, ABT, QCOM, XOM, DE, CRM, AMZN","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+12/31/2020,"HD, ORLY, CRM, GOOGL, FITB, TSCO, BXP, FRT, LEN","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"
+3/31/2021,"HD, ORLY, CRM, GOOGL, FITB, TSCO, BXP, FRT, LEN","11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.11%, 11.12%"`;
+
 export const Performance: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overall');
   const [initialCapital, setInitialCapital] = useState(10000);
@@ -16,6 +34,14 @@ export const Performance: React.FC = () => {
   const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
   const [isRunning, setIsRunning] = useState(false);
   const { toast } = useToast();
+
+  const loadExampleCSV = () => {
+    setCsvText(EXAMPLE_CSV);
+    toast({
+      title: "Example Loaded",
+      description: "Sample portfolio strategy loaded into the simulator",
+    });
+  };
 
   const tabs = [
     { id: 'overall', label: 'Overall Performance' },
@@ -408,9 +434,17 @@ export const Performance: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="csv" className="block text-sm font-medium mb-2 text-foreground">
-                  Strategy CSV Data
-                </label>
+                <div className="flex justify-between items-center mb-2">
+                  <label htmlFor="csv" className="block text-sm font-medium text-foreground">
+                    Strategy CSV Data
+                  </label>
+                  <button
+                    onClick={loadExampleCSV}
+                    className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
+                  >
+                    Load Example
+                  </button>
+                </div>
                 <textarea
                   id="csv"
                   value={csvText}
