@@ -10,22 +10,22 @@ import { SimulatorResults } from '@/components/backtest/SimulatorResults';
 import { useToast } from '@/hooks/use-toast';
 
 const EXAMPLE_CSV = `Start Date,Assets,Weights
-6/1/2017,"AAPL, MSFT, GOOGL, AMZN, JPM, JNJ, V, PG","15%, 15%, 12%, 10%, 12%, 10%, 13%, 13%"
-9/30/2017,"MSFT, GOOGL, AMZN, V, MA, UNH, HD, NVDA","14%, 13%, 11%, 12%, 10%, 13%, 12%, 15%"
-12/31/2017,"AAPL, MSFT, AMZN, JPM, BAC, JNJ, PFE, WMT","16%, 14%, 12%, 11%, 10%, 13%, 12%, 12%"
-3/31/2018,"MSFT, AMZN, GOOGL, JPM, V, DIS, NFLX, NVDA","15%, 13%, 12%, 11%, 12%, 10%, 14%, 13%"
-6/30/2018,"AAPL, MSFT, AMZN, V, MA, UNH, JNJ","18%, 16%, 14%, 13%, 12%, 14%, 13%"
-9/30/2018,"MSFT, GOOGL, JPM, BAC, V, MA, PG, KO","15%, 13%, 12%, 11%, 13%, 12%, 12%, 12%"
-12/31/2018,"AAPL, MSFT, AMZN, GOOGL, V, JNJ, PFE, HD, WMT","14%, 13%, 11%, 10%, 12%, 11%, 10%, 10%, 9%"
-3/31/2019,"MSFT, AMZN, GOOGL, JPM, V, MA, UNH, DIS","16%, 14%, 13%, 11%, 12%, 11%, 12%, 11%"
-6/30/2019,"AAPL, MSFT, AMZN, V, MA, NVDA, CRM, ADBE","17%, 15%, 13%, 12%, 11%, 11%, 11%, 10%"
-9/30/2019,"MSFT, AAPL, AMZN, GOOGL, JPM, V, UNH, JNJ, HD","13%, 14%, 12%, 11%, 10%, 11%, 11%, 10%, 8%"
-12/31/2019,"AAPL, MSFT, AMZN, GOOGL, V, MA, NVDA, CRM, ADBE","15%, 14%, 12%, 11%, 11%, 10%, 10%, 9%, 8%"
-3/31/2020,"MSFT, AMZN, GOOGL, JNJ, PG, WMT, KO, PFE","17%, 16%, 14%, 13%, 12%, 11%, 10%, 7%"
-6/30/2020,"AAPL, MSFT, AMZN, NVDA, ADBE, CRM, TSLA, SQ","16%, 15%, 14%, 13%, 12%, 11%, 10%, 9%"
-9/30/2020,"AAPL, MSFT, AMZN, GOOGL, NVDA, TSLA, V, MA, ADBE","14%, 13%, 12%, 11%, 12%, 10%, 10%, 9%, 9%"
-12/31/2020,"AAPL, MSFT, GOOGL, AMZN, TSLA, NVDA, CRM, SQ, SHOP","15%, 14%, 12%, 11%, 11%, 10%, 9%, 9%, 9%"
-3/31/2021,"MSFT, AAPL, GOOGL, AMZN, NVDA, TSLA, V, MA, CRM","15%, 14%, 13%, 12%, 11%, 10%, 9%, 8%, 8%"`;
+1/1/2020,"AAPL, MSFT, GOOGL, AMZN, JPM, JNJ, V, PG","15%, 15%, 12%, 10%, 12%, 10%, 13%, 13%"
+2/1/2020,"MSFT, GOOGL, AMZN, V, MA, UNH, HD, NVDA","14%, 13%, 11%, 12%, 10%, 13%, 12%, 15%"
+3/1/2020,"MSFT, AMZN, GOOGL, JNJ, PG, WMT, KO, PFE","17%, 16%, 14%, 13%, 12%, 11%, 10%, 7%"
+4/1/2020,"AAPL, MSFT, AMZN, JPM, BAC, JNJ, PFE, WMT","16%, 14%, 12%, 11%, 10%, 13%, 12%, 12%"
+5/1/2020,"MSFT, AMZN, GOOGL, JPM, V, DIS, NFLX, NVDA","15%, 13%, 12%, 11%, 12%, 10%, 14%, 13%"
+6/1/2020,"AAPL, MSFT, AMZN, NVDA, ADBE, CRM, TSLA, SQ","16%, 15%, 14%, 13%, 12%, 11%, 10%, 9%"
+7/1/2020,"AAPL, MSFT, AMZN, V, MA, UNH, JNJ","18%, 16%, 14%, 13%, 12%, 14%, 13%"
+8/1/2020,"MSFT, GOOGL, JPM, BAC, V, MA, PG, KO","15%, 13%, 12%, 11%, 13%, 12%, 12%, 12%"
+9/1/2020,"AAPL, MSFT, AMZN, GOOGL, NVDA, TSLA, V, MA, ADBE","14%, 13%, 12%, 11%, 12%, 10%, 10%, 9%, 9%"
+10/1/2020,"AAPL, MSFT, AMZN, GOOGL, V, JNJ, PFE, HD, WMT","14%, 13%, 11%, 10%, 12%, 11%, 10%, 10%, 9%"
+11/1/2020,"MSFT, AMZN, GOOGL, JPM, V, MA, UNH, DIS","16%, 14%, 13%, 11%, 12%, 11%, 12%, 11%"
+12/1/2020,"AAPL, MSFT, GOOGL, AMZN, TSLA, NVDA, CRM, SQ, SHOP","15%, 14%, 12%, 11%, 11%, 10%, 9%, 9%, 9%"
+1/1/2021,"AAPL, MSFT, AMZN, V, MA, NVDA, CRM, ADBE","17%, 15%, 13%, 12%, 11%, 11%, 11%, 10%"
+2/1/2021,"MSFT, AAPL, AMZN, GOOGL, JPM, V, UNH, JNJ, HD","13%, 14%, 12%, 11%, 10%, 11%, 11%, 10%, 8%"
+3/1/2021,"MSFT, AAPL, GOOGL, AMZN, NVDA, TSLA, V, MA, CRM","15%, 14%, 13%, 12%, 11%, 10%, 9%, 8%, 8%"
+4/1/2021,"AAPL, MSFT, AMZN, GOOGL, V, MA, NVDA, CRM, ADBE","15%, 14%, 12%, 11%, 11%, 10%, 10%, 9%, 8%"`;
 
 export const Performance: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overall');
