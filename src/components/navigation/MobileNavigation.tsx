@@ -57,7 +57,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
       )}
 
       {/* Mobile Navigation Menu */}
-      <div className={`fixed top-16 left-0 right-0 bottom-0 z-[55] bg-background/98 backdrop-blur-md transform transition-transform duration-300 ease-in-out md:hidden ${
+      <div className={`fixed top-16 right-0 bottom-0 w-full z-[55] bg-background/98 backdrop-blur-md transform transition-transform duration-300 ease-in-out md:hidden ${
         isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         <div className="flex flex-col h-full overflow-y-auto">
