@@ -315,6 +315,60 @@ export const Performance: React.FC = () => {
           </div>
         </section>
 
+        {/* Portfolio Simulator - New */}
+        <section className="mb-16">
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Portfolio Simulator</h2>
+          <p className="text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
+            Test your own portfolio strategy by uploading a CSV with quarterly rebalancing dates, tickers, and weights. 
+            See how your strategy would have performed over time with detailed analytics.
+          </p>
+          
+          <div className="bg-card rounded-lg p-8 border border-border mb-6">
+            <h3 className="text-xl font-semibold mb-6 text-foreground">Configuration</h3>
+            
+            <div className="grid gap-6 mb-6">
+              <div>
+                <label htmlFor="capital" className="block text-sm font-medium mb-2 text-foreground">
+                  Initial Capital ($)
+                </label>
+                <input
+                  id="capital"
+                  type="number"
+                  defaultValue="10000"
+                  min="100"
+                  step="100"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                />
+              </div>
+
+              <div>
+                <label htmlFor="csv" className="block text-sm font-medium mb-2 text-foreground">
+                  Strategy CSV Data
+                </label>
+                <textarea
+                  id="csv"
+                  className="flex min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                  placeholder="Start Date,Assets,Weights&#10;12/31/2019,&quot;AMGN, KR, BAC&quot;,&quot;33.33%, 33.33%, 33.34%&quot;"
+                />
+                <p className="text-xs text-muted-foreground mt-2">
+                  Format: One row per rebalancing period with Start Date, comma-separated Assets, and corresponding Weights
+                </p>
+              </div>
+            </div>
+
+            <button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md font-medium transition-colors">
+              Run Backtest Simulation
+            </button>
+          </div>
+
+          <div className="bg-card rounded-lg p-8 border border-border">
+            <h3 className="text-xl font-semibold mb-4 text-foreground">Results</h3>
+            <div className="text-center py-12 text-muted-foreground">
+              Configure your strategy and run the simulation to see results here
+            </div>
+          </div>
+        </section>
+
         {/* Disclaimer - New */}
         <div className="bg-card rounded-lg p-8 border border-border text-center">
           <h3 className="text-xl font-semibold mb-4 text-foreground">Important Disclaimers</h3>
