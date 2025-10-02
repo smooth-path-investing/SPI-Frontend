@@ -3,9 +3,19 @@ import React, { useState } from 'react';
 import { StockGraphPlaceholder } from '../components/ui/stock-graph-placeholder';
 import { PERFORMANCE_METRICS } from '../constants';
 import { TrendingUp, TrendingDown, BarChart3, Shield, Award, Target, Calendar, DollarSign } from 'lucide-react';
+import { parseStrategyCSV } from '@/utils/csvParser';
+import { generateMockPrices } from '@/utils/mockPrices';
+import { runBacktest, BacktestResult } from '@/utils/backtestEngine';
+import { SimulatorResults } from '@/components/backtest/SimulatorResults';
+import { useToast } from '@/hooks/use-toast';
 
 export const Performance: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overall');
+  const [initialCapital, setInitialCapital] = useState(10000);
+  const [csvText, setCsvText] = useState('');
+  const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
+  const [isRunning, setIsRunning] = useState(false);
+  const { toast } = useToast();
 
   const tabs = [
     { id: 'overall', label: 'Overall Performance' },
@@ -13,6 +23,61 @@ export const Performance: React.FC = () => {
     { id: 'risk', label: 'Risk Metrics' },
     { id: 'attribution', label: 'Performance Attribution' }
   ];
+
+  const handleRunBacktest = () => {
+    if (!csvText.trim()) {
+      toast({
+        title: "Error",
+        description: "Please enter strategy CSV data",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsRunning(true);
+    
+    try {
+      // Parse CSV
+      const strategy = parseStrategyCSV(csvText);
+      
+      if (strategy.length === 0) {
+        toast({
+          title: "Error",
+          description: "No valid strategy rows found in CSV",
+          variant: "destructive"
+        });
+        setIsRunning(false);
+        return;
+      }
+
+      // Collect all unique tickers
+      const allTickers = new Set<string>();
+      strategy.forEach(row => row.assets.forEach(ticker => allTickers.add(ticker)));
+
+      // Generate mock prices
+      const startDate = strategy[0].date;
+      const endDate = strategy[strategy.length - 1].date;
+      const prices = generateMockPrices(Array.from(allTickers), startDate, endDate);
+
+      // Run backtest
+      const result = runBacktest(strategy, prices, initialCapital);
+      setBacktestResult(result);
+
+      toast({
+        title: "Backtest Complete",
+        description: `Simulated ${strategy.length} rebalancing periods`,
+      });
+    } catch (error) {
+      console.error('Backtest error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to run backtest. Please check your CSV format.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsRunning(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
@@ -334,7 +399,8 @@ export const Performance: React.FC = () => {
                 <input
                   id="capital"
                   type="number"
-                  defaultValue="10000"
+                  value={initialCapital}
+                  onChange={(e) => setInitialCapital(Number(e.target.value))}
                   min="100"
                   step="100"
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
@@ -347,6 +413,8 @@ export const Performance: React.FC = () => {
                 </label>
                 <textarea
                   id="csv"
+                  value={csvText}
+                  onChange={(e) => setCsvText(e.target.value)}
                   className="flex min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                   placeholder="Start Date,Assets,Weights&#10;12/31/2019,&quot;AMGN, KR, BAC&quot;,&quot;33.33%, 33.33%, 33.34%&quot;"
                 />
@@ -356,17 +424,30 @@ export const Performance: React.FC = () => {
               </div>
             </div>
 
-            <button className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md font-medium transition-colors">
-              Run Backtest Simulation
+            <button 
+              onClick={handleRunBacktest}
+              disabled={isRunning}
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isRunning ? 'Running Simulation...' : 'Run Backtest Simulation'}
             </button>
           </div>
 
-          <div className="bg-card rounded-lg p-8 border border-border">
-            <h3 className="text-xl font-semibold mb-4 text-foreground">Results</h3>
-            <div className="text-center py-12 text-muted-foreground">
-              Configure your strategy and run the simulation to see results here
+          {backtestResult && (
+            <div className="bg-card rounded-lg p-8 border border-border">
+              <h3 className="text-xl font-semibold mb-6 text-foreground">Results</h3>
+              <SimulatorResults results={backtestResult} initialCapital={initialCapital} />
             </div>
-          </div>
+          )}
+
+          {!backtestResult && (
+            <div className="bg-card rounded-lg p-8 border border-border">
+              <h3 className="text-xl font-semibold mb-4 text-foreground">Results</h3>
+              <div className="text-center py-12 text-muted-foreground">
+                Configure your strategy and run the simulation to see results here
+              </div>
+            </div>
+          )}
         </section>
 
         {/* Disclaimer - New */}
