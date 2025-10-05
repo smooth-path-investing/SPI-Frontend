@@ -7,29 +7,54 @@ import { textContent } from '@/constants/textContent';
 export const HeroSection: React.FC = () => {
   return (
     <section className="relative pt-32 pb-24 px-4 sm:px-6 lg:px-8 overflow-hidden min-h-screen flex items-center">
-      {/* Elegant gold and white gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(42,88%,65%)]/8 via-background via-40% to-[hsl(38,85%,58%)]/5" />
+      {/* Rich layered background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(42,88%,65%)]/12 via-background via-30% to-[hsl(38,85%,58%)]/8" />
+      <div className="absolute inset-0 bg-gradient-to-tr from-[hsl(48,82%,70%)]/6 via-transparent to-[hsl(42,88%,65%)]/10" />
       
-      {/* Radial gold glow - inspired by circular logo */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] rounded-full opacity-60 blur-2xl" 
+      {/* Large radial gold glow - center focal point */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1400px] h-[1400px] rounded-full opacity-70 blur-3xl" 
            style={{
-             background: 'radial-gradient(circle, hsl(42 88% 65% / 0.1) 0%, hsl(38 85% 58% / 0.05) 50%, transparent 100%)'
+             background: 'radial-gradient(circle, hsl(42 88% 65% / 0.15) 0%, hsl(38 85% 58% / 0.08) 40%, hsl(48 82% 70% / 0.04) 70%, transparent 100%)'
            }} />
       
-      {/* Subtle gold accent orbs */}
-      <div className="fixed -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-[hsl(42,88%,65%)]/15 to-[hsl(48,82%,70%)]/10 blur-3xl rounded-full animate-[pulse_8s_ease-in-out_infinite]" />
-      <div className="fixed -bottom-32 -right-32 w-[500px] h-[500px] bg-gradient-to-tl from-[hsl(38,85%,58%)]/12 to-[hsl(42,88%,65%)]/8 blur-3xl rounded-full animate-[pulse_10s_ease-in-out_infinite] [animation-delay:2s]" />
-      
-      {/* White accent highlights for depth */}
-      <div className="fixed top-20 right-1/4 w-72 h-72 bg-white/3 blur-2xl rounded-full animate-[pulse_12s_ease-in-out_infinite] [animation-delay:1s]" />
-      <div className="fixed bottom-20 left-1/4 w-80 h-80 bg-white/2 blur-3xl rounded-full animate-[pulse_14s_ease-in-out_infinite] [animation-delay:3s]" />
-      
-      {/* Elegant geometric overlay pattern */}
-      <div className="absolute inset-0 opacity-[0.015]" 
+      {/* Secondary radial layers */}
+      <div className="absolute top-1/3 left-1/3 w-[800px] h-[800px] rounded-full opacity-50 blur-2xl"
            style={{
-             backgroundImage: `radial-gradient(circle at center, hsl(42 88% 65%) 1px, transparent 1px)`,
-             backgroundSize: '50px 50px'
+             background: 'radial-gradient(circle, hsl(42 88% 65% / 0.12) 0%, transparent 70%)'
            }} />
+      <div className="absolute bottom-1/3 right-1/3 w-[900px] h-[900px] rounded-full opacity-50 blur-2xl"
+           style={{
+             background: 'radial-gradient(circle, hsl(38 85% 58% / 0.1) 0%, transparent 70%)'
+           }} />
+      
+      {/* Animated gold accent orbs */}
+      <div className="fixed -top-32 -left-32 w-[480px] h-[480px] bg-gradient-to-br from-[hsl(42,88%,65%)]/20 via-[hsl(48,82%,70%)]/12 to-transparent blur-3xl rounded-full animate-[pulse_8s_ease-in-out_infinite,float_20s_ease-in-out_infinite]" />
+      <div className="fixed -bottom-32 -right-32 w-[550px] h-[550px] bg-gradient-to-tl from-[hsl(38,85%,58%)]/18 via-[hsl(42,88%,65%)]/10 to-transparent blur-3xl rounded-full animate-[pulse_10s_ease-in-out_infinite,float-reverse_25s_ease-in-out_infinite] [animation-delay:2s]" />
+      <div className="fixed top-1/4 -right-20 w-[400px] h-[400px] bg-gradient-to-bl from-[hsl(48,82%,70%)]/15 to-transparent blur-3xl rounded-full animate-[pulse_9s_ease-in-out_infinite,float-diagonal_18s_ease-in-out_infinite] [animation-delay:1s]" />
+      <div className="fixed bottom-1/4 -left-20 w-[420px] h-[420px] bg-gradient-to-tr from-[hsl(42,88%,65%)]/16 to-transparent blur-3xl rounded-full animate-[pulse_11s_ease-in-out_infinite,float-circular_22s_ease-in-out_infinite] [animation-delay:3s]" />
+      
+      {/* White/silver accent highlights for premium feel */}
+      <div className="fixed top-20 right-1/4 w-80 h-80 bg-gradient-radial from-white/5 to-transparent blur-2xl rounded-full animate-[pulse_12s_ease-in-out_infinite] [animation-delay:1s]" />
+      <div className="fixed bottom-20 left-1/4 w-96 h-96 bg-gradient-radial from-white/4 to-transparent blur-3xl rounded-full animate-[pulse_14s_ease-in-out_infinite] [animation-delay:3s]" />
+      <div className="fixed top-1/2 left-10 w-64 h-64 bg-white/3 blur-2xl rounded-full animate-[pulse_13s_ease-in-out_infinite,float-vertical_15s_ease-in-out_infinite] [animation-delay:2s]" />
+      <div className="fixed top-1/3 right-10 w-72 h-72 bg-white/3 blur-2xl rounded-full animate-[pulse_15s_ease-in-out_infinite,float-horizontal_20s_ease-in-out_infinite] [animation-delay:4s]" />
+      
+      {/* Refined geometric overlay patterns */}
+      <div className="absolute inset-0 opacity-[0.02]" 
+           style={{
+             backgroundImage: `radial-gradient(circle at center, hsl(42 88% 65%) 1.5px, transparent 1.5px)`,
+             backgroundSize: '60px 60px'
+           }} />
+      <div className="absolute inset-0 opacity-[0.015]"
+           style={{
+             backgroundImage: `radial-gradient(circle at 25% 25%, hsl(48 82% 70%) 1px, transparent 1px)`,
+             backgroundSize: '80px 80px'
+           }} />
+      
+      {/* Subtle shimmer lines */}
+      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-[hsl(42,88%,65%)]/20 to-transparent" />
+      <div className="absolute top-0 right-1/3 w-[1px] h-full bg-gradient-to-b from-transparent via-[hsl(38,85%,58%)]/15 to-transparent" />
+      <div className="absolute top-0 left-2/3 w-[1px] h-full bg-gradient-to-b from-transparent via-[hsl(48,82%,70%)]/18 to-transparent" />
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
