@@ -9,16 +9,17 @@ export const textContent = {
   "navigation-login": "Login",
 
   // Home - Hero Section
-  "home-hero-title": "Smarter Stock Picks",
-  "home-hero-subtitle": "Make institutional stock investment available to retail investors",
+  "home-hero-title": "Independent Stock Picks",
+  "home-hero-subtitle": "",
 
   // Home - Mission Section
   "home-mission-title": "Our Mission",
   "home-mission-subtitle": "Transforming institutional-grade investment strategies for every investor",
-  "home-mission-point-1": "Create a money-making engine from the growth of companies and economies.",
-  "home-mission-point-2": "Integrate common sense, math, risk budgets, market expertise and reflections.",
-  "home-mission-point-3-prefix": "Offer A-to-Z stock investing, from signals to portfolios in your pocket, ",
-  "home-mission-point-4": "Order, segregate, integrate, condition, exclude, and concentrate",
+  "home-mission-point-1": "Make institutional stock investment available to retail investors.",
+  "home-mission-point-2": "Create a money-making engine from the growth of companies and economies.",
+  "home-mission-point-3": "Integrate common sense, math, risk budgets, market expertise and reflections.",
+  "home-mission-point-4-prefix": "Offer A-to-Z stock investing, from signals to portfolios in your pocket, ",
+  "home-mission-point-5": "Order, segregate, integrate, condition, exclude, and concentrate",
 
   // Home - Stats Section
   "home-stats-button-explore": "Explore Our Picks",
