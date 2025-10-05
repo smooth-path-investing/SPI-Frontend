@@ -41,7 +41,7 @@ export const WhyChooseUsSection: React.FC = () => {
           
           <div className="space-y-6 sm:space-y-8">
             <div className="flex items-start space-x-3 sm:space-x-4">
-              <Award className="w-6 h-6 sm:w-8 sm:h-8 text-yellow-400 mt-1 flex-shrink-0" />
+              <Award className="w-6 h-6 sm:w-8 sm:h-8 mt-1 flex-shrink-0" style={{ color: 'hsl(42, 88%, 65%)' }} />
               <div>
                 <h3 className="text-lg sm:text-xl font-semibold mb-1 sm:mb-2">Proven Track Record</h3>
                 <p className="text-muted-foreground text-sm sm:text-base lg:text-lg">Consistent outperformance over multiple market cycles with transparent reporting</p>
