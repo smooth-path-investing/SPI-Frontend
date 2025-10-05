@@ -7,6 +7,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { NAVIGATION_ITEMS } from '../../constants';
 import { DesktopNavigation } from '../navigation/DesktopNavigation';
 import { MobileNavigation } from '../navigation/MobileNavigation';
+import { textContent } from '@/constants/textContent';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
@@ -73,10 +74,10 @@ export const Navigation: React.FC = () => {
             <Link to="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
               <img 
                 src="/lovable-uploads/90c91ea3-0281-4a04-9490-78e894e448df.png" 
-                alt="Smooth Path Investing Logo" 
+                alt={textContent["navigation-logo-alt"]} 
                 className="w-8 h-8 object-contain"
               />
-              <span className="text-foreground font-bold text-xl">Smooth Path Investing</span>
+              <span className="text-foreground font-bold text-xl">{textContent["navigation-brand-name"]}</span>
             </Link>
             
             <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-8">
@@ -110,7 +111,7 @@ export const Navigation: React.FC = () => {
                     size="sm"
                     onClick={() => setIsAuthModalOpen(true)}
                   >
-                    Login
+                    {textContent["navigation-login"]}
                   </Button>
                 )}
               </div>

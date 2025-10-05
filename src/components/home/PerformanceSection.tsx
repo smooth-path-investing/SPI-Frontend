@@ -1,16 +1,16 @@
 import React from 'react';
 import { PerformanceChart } from '../charts/PerformanceChart';
 import { PERFORMANCE_METRICS } from '../../constants';
+import { textContent } from '@/constants/textContent';
 
 export const PerformanceSection: React.FC = () => {
   return (
     <section className="relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 bg-card/30 z-10">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Proven Performance</h2>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">{textContent["home-performance-title"]}</h2>
           <p className="text-base sm:text-lg lg:text-2xl text-muted-foreground max-w-3xl mx-auto px-2">
-            Our track record speaks for itself. Consistent outperformance 
-            through systematic, data-driven investment strategies.
+            {textContent["home-performance-subtitle"]}
           </p>
         </div>
 

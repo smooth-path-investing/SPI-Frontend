@@ -3,6 +3,7 @@ import { KeywordModal } from '@/components/ui/keyword-modal';
 import { MissionPoint } from './MissionPoint';
 import { KEYWORD_DATA, KeywordInfo } from '@/constants/keywords';
 import { getMissionPoints } from '@/constants/mission';
+import { textContent } from '@/constants/textContent';
 
 export const MissionSection: React.FC = () => {
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordInfo | null>(null);
@@ -30,10 +31,10 @@ export const MissionSection: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-16">
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
-              Our Mission
+              {textContent["home-mission-title"]}
             </h2>
             <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              Transforming institutional-grade investment strategies for every investor
+              {textContent["home-mission-subtitle"]}
             </p>
           </div>
           

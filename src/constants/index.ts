@@ -1,10 +1,11 @@
 import { IStock, IPerformanceMetric, IApproachSection, INavItem, ITeamMember } from '../types';
+import { textContent } from './textContent';
 
 export const NAVIGATION_ITEMS: INavItem[] = [
-  { label: 'Our Approach', href: '/approach' },
-  { label: 'Backtests', href: '/performance' },
-  { label: 'Recommended Stocks', href: '/stocks' },
-  { label: 'About Us', href: '/about' }
+  { label: textContent["navigation-approach"], href: '/approach' },
+  { label: textContent["navigation-backtests"], href: '/performance' },
+  { label: textContent["navigation-stocks"], href: '/stocks' },
+  { label: textContent["navigation-about"], href: '/about' }
 ];
 
 export const SAMPLE_STOCKS: IStock[] = [

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Shield, Users } from 'lucide-react';
+import { textContent } from '@/constants/textContent';
 
 export const HeroSection: React.FC = () => {
   return (
@@ -50,10 +51,10 @@ export const HeroSection: React.FC = () => {
       <div className="max-w-7xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-6 sm:mb-8 text-foreground leading-tight">
-            Smarter Stock Picks
+            {textContent["home-hero-title"]}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-2 [line-height:1.4]">
-            Make institutional stock investment available to retail investors
+            {textContent["home-hero-subtitle"]}
           </p>
         </div>
       </div>
