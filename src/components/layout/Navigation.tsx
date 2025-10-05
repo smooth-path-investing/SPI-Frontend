@@ -70,8 +70,8 @@ export const Navigation: React.FC = () => {
     <>
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <Link to="/" className="flex items-center space-x-2" onClick={closeMobileMenu}>
+          <div className="flex items-center justify-between h-16 gap-4">
+            <Link to="/" className="flex items-center space-x-2 flex-shrink-0" onClick={closeMobileMenu}>
               <img 
                 src="/lovable-uploads/90c91ea3-0281-4a04-9490-78e894e448df.png" 
                 alt={textContent["navigation-logo-alt"]} 
@@ -80,12 +80,12 @@ export const Navigation: React.FC = () => {
               <span className="text-foreground font-bold text-xl">{textContent["navigation-brand-name"]}</span>
             </Link>
             
-            <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex space-x-8">
+            <div className="hidden md:flex space-x-6 flex-1 justify-center">
               {navigationItems.map((item) => (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
                     location.pathname === item.href
                       ? 'text-foreground bg-accent'
                       : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
@@ -96,7 +96,7 @@ export const Navigation: React.FC = () => {
               ))}
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-4 flex-shrink-0">
               <div className="hidden md:block">
                 {isAuthenticated ? (
                   <ProfileDropdown
