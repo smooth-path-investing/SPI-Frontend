@@ -28,21 +28,21 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle className="text-xl font-bold text-primary">
+      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
+        <DialogHeader className="space-y-4 pb-6">
+          <DialogTitle className="text-3xl sm:text-4xl font-bold text-primary leading-tight">
             {keyword.title}
           </DialogTitle>
-          <DialogDescription className="text-base text-foreground mt-2">
+          <DialogDescription className="text-lg sm:text-xl text-foreground leading-relaxed pt-2">
             {keyword.description}
           </DialogDescription>
         </DialogHeader>
-        <div className="mt-4">
-          <ul className="space-y-2">
+        <div className="mt-8 pb-4">
+          <ul className="space-y-6">
             {keyword.details.map((detail, index) => (
-              <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-                <span className="text-primary mt-1">•</span>
-                <span>{detail}</span>
+              <li key={index} className="flex items-start gap-4 text-base sm:text-lg text-muted-foreground leading-relaxed group">
+                <span className="text-primary mt-1.5 flex-shrink-0 w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform duration-200"></span>
+                <span className="flex-1">{detail}</span>
               </li>
             ))}
           </ul>
