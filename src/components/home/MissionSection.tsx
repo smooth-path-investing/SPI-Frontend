@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 import { KeywordModal } from '@/components/ui/keyword-modal';
 import { MissionPoint } from './MissionPoint';
 import { KEYWORD_DATA, KeywordInfo } from '@/constants/keywords';
@@ -39,7 +41,7 @@ export const MissionSection: React.FC = () => {
           </div>
           
           {/* Mission Points Grid */}
-          <div className="grid gap-5 md:gap-6">
+          <div className="grid gap-5 md:gap-6 mb-12">
             {missionPoints.map((point, index) => (
               <MissionPoint
                 key={index}
@@ -48,6 +50,21 @@ export const MissionSection: React.FC = () => {
                 onKeywordClick={handleKeywordClick}
               />
             ))}
+          </div>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in">
+            <Link to="/stocks" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full sm:w-auto text-xl px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary/25 font-semibold rounded-lg">
+                {textContent["home-stats-button-explore"]}
+              </Button>
+            </Link>
+            <span className="text-base text-muted-foreground font-medium hidden sm:block">{textContent["home-stats-or"]}</span>
+            <Link to="/approach" className="w-full sm:w-auto">
+              <Button variant="outline" size="lg" className="w-full sm:w-auto text-xl px-16 py-7 border-2 border-border text-foreground hover:bg-accent transition-all duration-300 hover:shadow-lg font-semibold rounded-lg">
+                {textContent["home-stats-button-method"]}
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

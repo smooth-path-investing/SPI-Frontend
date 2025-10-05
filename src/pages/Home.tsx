@@ -12,11 +12,11 @@ export const Home: React.FC = () => {
     <div className="min-h-screen bg-background text-foreground">
       <HeroSection />
       <MissionSection />
-      <StatsSection />
       <MethodologySection />
       <PerformanceSection />
       <WhyChooseUsSection />
       <TrustSection />
+      <StatsSection />
     </div>
   );
 };
