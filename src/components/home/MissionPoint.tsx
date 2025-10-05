@@ -37,13 +37,13 @@ export const MissionPoint: React.FC<MissionPointProps> = ({
 
   return (
     <Card className="group relative overflow-hidden border-border/50 bg-card/30 backdrop-blur-sm hover:bg-card/50 transition-all duration-500 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5">
-      <div className="p-8 sm:p-10">
-        <div className="flex items-start gap-6">
+      <div className="p-5 sm:p-6">
+        <div className="flex items-start gap-4">
           {/* Number Badge */}
           <div className="flex-shrink-0">
             <div className="relative">
-              <div className="w-12 h-12 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300">
-                <span className="text-lg font-bold text-primary">
+              <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300">
+                <span className="text-base font-bold text-primary">
                   {index + 1}
                 </span>
               </div>
@@ -53,7 +53,7 @@ export const MissionPoint: React.FC<MissionPointProps> = ({
           
           {/* Content */}
           <div className="flex-1 min-w-0">
-            <div className="text-xl sm:text-2xl font-medium leading-relaxed text-foreground group-hover:text-foreground transition-colors duration-300">
+            <div className="text-base sm:text-lg font-medium leading-relaxed text-foreground group-hover:text-foreground transition-colors duration-300">
               {typeof point === 'string' ? renderTextWithKeywords(point) : point}
             </div>
           </div>

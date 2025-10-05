@@ -26,20 +26,20 @@ export const MissionSection: React.FC = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
-      <section className="relative py-24 px-4 sm:px-6 lg:px-8">
+      <section className="relative py-16 sm:py-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16">
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground tracking-tight">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
               {textContent["home-mission-title"]}
             </h2>
-            <p className="mt-6 text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               {textContent["home-mission-subtitle"]}
             </p>
           </div>
           
           {/* Mission Points Grid */}
-          <div className="grid gap-8 md:gap-10">
+          <div className="grid gap-5 md:gap-6">
             {missionPoints.map((point, index) => (
               <MissionPoint
                 key={index}
