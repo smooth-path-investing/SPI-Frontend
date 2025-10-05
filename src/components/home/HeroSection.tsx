@@ -17,11 +17,12 @@ export const HeroSection: React.FC = () => {
       
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 text-foreground leading-tight">
-            {textContent["home-hero-title"]}
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-6 sm:mb-8 text-foreground leading-tight">
+            <div className="mb-2">Independent</div>
+            <div>Stock Picks</div>
           </h1>
           {textContent["home-hero-subtitle"] && (
-            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
               {textContent["home-hero-subtitle"]}
             </p>
           )}
