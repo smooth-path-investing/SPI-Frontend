@@ -15,13 +15,13 @@ export const HeroSection: React.FC = () => {
       <div className="fixed -bottom-20 -right-20 w-96 h-96 bg-secondary/8 blur-3xl rounded-full animate-[pulse_10s_ease-in-out_infinite] [animation-delay:2s]" />
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/5 blur-3xl rounded-full animate-[pulse_12s_ease-in-out_infinite] [animation-delay:4s]" />
       
-      <div className="max-w-7xl mx-auto text-center relative z-10">
+      <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-6 sm:mb-8 text-foreground leading-tight">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-6 sm:mb-8 text-foreground leading-tight">
             {textContent["home-hero-title"]}
           </h1>
           {textContent["home-hero-subtitle"] && (
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8 sm:mb-12 max-w-4xl mx-auto leading-relaxed px-2 [line-height:1.4]">
+            <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-8 sm:mb-12 leading-relaxed">
               {textContent["home-hero-subtitle"]}
             </p>
           )}
