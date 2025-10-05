@@ -1,10 +1,10 @@
-
 import React from 'react';
 import { Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { PRICING_PLANS } from '../data/pricing';
+import { textContent } from '@/constants/textContent';
 
 export const Pricing: React.FC = () => {
 
@@ -14,10 +14,10 @@ export const Pricing: React.FC = () => {
         {/* Header Section */}
         <div className="text-center mb-8 sm:mb-12 lg:mb-16">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6 text-foreground">
-            Choose Your Plan
+            {textContent["pricing-page-title"]}
           </h1>
           <p className="text-base sm:text-lg lg:text-xl text-muted-foreground max-w-2xl lg:max-w-3xl mx-auto px-2">
-            Get access to AI-powered stock recommendations and professional-grade investment tools
+            {textContent["pricing-page-subtitle"]}
           </p>
         </div>
 
@@ -27,7 +27,7 @@ export const Pricing: React.FC = () => {
             <Card key={index} className={`relative ${plan.popular ? 'ring-2 ring-primary shadow-lg' : 'shadow-sm'} ${index === 1 ? 'lg:scale-105 lg:z-10' : ''}`}>
               {plan.popular && (
                 <Badge className="absolute -top-2 left-1/2 transform -translate-x-1/2 bg-primary text-primary-foreground text-xs px-3 py-1">
-                  Most Popular
+                  {textContent["pricing-plan-popular"]}
                 </Badge>
               )}
               
@@ -43,7 +43,7 @@ export const Pricing: React.FC = () => {
               <CardContent className="space-y-4 sm:space-y-6 px-4 sm:px-6">
                 {/* Features */}
                 <div>
-                  <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Included:</h4>
+                  <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">{textContent["pricing-plan-included"]}</h4>
                   <ul className="space-y-1.5 sm:space-y-2">
                     {plan.features.map((feature, featureIndex) => (
                       <li key={featureIndex} className="flex items-start">
@@ -57,7 +57,7 @@ export const Pricing: React.FC = () => {
                 {/* Limitations */}
                 {plan.limitations.length > 0 && (
                   <div>
-                    <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">Not included:</h4>
+                    <h4 className="font-semibold mb-2 sm:mb-3 text-sm sm:text-base">{textContent["pricing-plan-not-included"]}</h4>
                     <ul className="space-y-1.5 sm:space-y-2">
                       {plan.limitations.map((limitation, limitIndex) => (
                         <li key={limitIndex} className="flex items-start">
@@ -86,12 +86,12 @@ export const Pricing: React.FC = () => {
 
         {/* Enterprise Section */}
         <div className="bg-muted rounded-lg p-4 sm:p-6 lg:p-8 text-center mx-2 sm:mx-0">
-          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 lg:mb-4">Need a Custom Solution?</h2>
+          <h2 className="text-lg sm:text-xl lg:text-2xl font-bold mb-2 sm:mb-3 lg:mb-4">{textContent["pricing-enterprise-title"]}</h2>
           <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6 px-2 leading-relaxed">
-            Enterprise plans available with custom integrations, dedicated infrastructure, and personalized support.
+            {textContent["pricing-enterprise-description"]}
           </p>
           <Button variant="outline" size="lg" className="text-sm sm:text-base">
-            Contact Enterprise Sales
+            {textContent["pricing-enterprise-button"]}
           </Button>
         </div>
       </div>

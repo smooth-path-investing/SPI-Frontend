@@ -8,6 +8,7 @@ import { generateMockPrices } from '@/utils/mockPrices';
 import { runBacktest, BacktestResult } from '@/utils/backtestEngine';
 import { SimulatorResults } from '@/components/backtest/SimulatorResults';
 import { useToast } from '@/hooks/use-toast';
+import { textContent } from '@/constants/textContent';
 
 const EXAMPLE_CSV = `Start Date,Assets,Weights
 1/1/2020,"AAPL, MSFT, GOOGL, AMZN, JPM, JNJ, V, PG","15%, 15%, 12%, 10%, 12%, 10%, 13%, 13%"
@@ -38,23 +39,23 @@ export const Performance: React.FC = () => {
   const loadExampleCSV = () => {
     setCsvText(EXAMPLE_CSV);
     toast({
-      title: "Example Loaded",
-      description: "Sample portfolio strategy loaded into the simulator",
+      title: textContent["performance-simulator-load-toast-title"],
+      description: textContent["performance-simulator-load-toast-description"],
     });
   };
 
   const tabs = [
-    { id: 'overall', label: 'Overall Performance' },
-    { id: 'sector', label: 'Sector Performance' },
-    { id: 'risk', label: 'Risk Metrics' },
-    { id: 'attribution', label: 'Performance Attribution' }
+    { id: 'overall', label: textContent["performance-tab-overall"] },
+    { id: 'sector', label: textContent["performance-tab-sector"] },
+    { id: 'risk', label: textContent["performance-tab-risk"] },
+    { id: 'attribution', label: textContent["performance-tab-attribution"] }
   ];
 
   const handleRunBacktest = () => {
     if (!csvText.trim()) {
       toast({
-        title: "Error",
-        description: "Please enter strategy CSV data",
+        title: textContent["performance-simulator-error-empty-title"],
+        description: textContent["performance-simulator-error-empty-description"],
         variant: "destructive"
       });
       return;
@@ -68,8 +69,8 @@ export const Performance: React.FC = () => {
       
       if (strategy.length === 0) {
         toast({
-          title: "Error",
-          description: "No valid strategy rows found in CSV",
+          title: textContent["performance-simulator-error-empty-title"],
+          description: textContent["performance-simulator-error-no-rows-description"],
           variant: "destructive"
         });
         setIsRunning(false);
@@ -90,13 +91,13 @@ export const Performance: React.FC = () => {
       setBacktestResult(result);
 
       toast({
-        title: "Backtest Complete",
+        title: textContent["performance-simulator-complete-title"],
         description: `Simulated ${strategy.length} rebalancing periods`,
       });
     } catch (error) {
       console.error('Backtest error:', error);
       toast({
-        title: "Error",
+        title: textContent["performance-simulator-error-empty-title"],
         description: "Failed to run backtest. Please check your CSV format.",
         variant: "destructive"
       });
@@ -110,10 +111,10 @@ export const Performance: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 text-foreground">
-            Historical Performance
+            {textContent["performance-page-title"]}
           </h1>
           <p className="text-xl text-muted-foreground">
-            Transparency through data - see how our strategies have performed over time with complete accountability
+            {textContent["performance-page-subtitle"]}
           </p>
         </div>
 
@@ -132,48 +133,48 @@ export const Performance: React.FC = () => {
 
         {/* Additional Key Metrics - New */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Key Performance Indicators</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">{textContent["performance-kpi-title"]}</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div className="bg-card p-6 rounded-lg border border-border text-center">
               <TrendingUp className="w-8 h-8 text-green-400 mx-auto mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">Information Ratio</h3>
-              <div className="text-2xl font-bold text-foreground">1.34</div>
-              <p className="text-sm text-muted-foreground">vs Benchmark 0.82</p>
+              <h3 className="font-semibold text-foreground mb-2">{textContent["performance-information-ratio-title"]}</h3>
+              <div className="text-2xl font-bold text-foreground">{textContent["performance-information-ratio-value"]}</div>
+              <p className="text-sm text-muted-foreground">{textContent["performance-information-ratio-vs"]}</p>
             </div>
             <div className="bg-card p-6 rounded-lg border border-border text-center">
               <Shield className="w-8 h-8 text-foreground mx-auto mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">Maximum Drawdown</h3>
-              <div className="text-2xl font-bold text-foreground">-8.2%</div>
-              <p className="text-sm text-muted-foreground">vs S&P 500 -19.6%</p>
+              <h3 className="font-semibold text-foreground mb-2">{textContent["performance-max-drawdown-title"]}</h3>
+              <div className="text-2xl font-bold text-foreground">{textContent["performance-max-drawdown-value"]}</div>
+              <p className="text-sm text-muted-foreground">{textContent["performance-max-drawdown-vs"]}</p>
             </div>
             <div className="bg-card p-6 rounded-lg border border-border text-center">
               <Target className="w-8 h-8 text-foreground mx-auto mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">Hit Rate</h3>
-              <div className="text-2xl font-bold text-foreground">68.4%</div>
-              <p className="text-sm text-muted-foreground">Winning positions</p>
+              <h3 className="font-semibold text-foreground mb-2">{textContent["performance-hit-rate-title"]}</h3>
+              <div className="text-2xl font-bold text-foreground">{textContent["performance-hit-rate-value"]}</div>
+              <p className="text-sm text-muted-foreground">{textContent["performance-hit-rate-description"]}</p>
             </div>
             <div className="bg-card p-6 rounded-lg border border-border text-center">
               <Calendar className="w-8 h-8 text-foreground mx-auto mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">Positive Months</h3>
-              <div className="text-2xl font-bold text-foreground">78%</div>
-              <p className="text-sm text-muted-foreground">Over 5 years</p>
+              <h3 className="font-semibold text-foreground mb-2">{textContent["performance-positive-months-title"]}</h3>
+              <div className="text-2xl font-bold text-foreground">{textContent["performance-positive-months-value"]}</div>
+              <p className="text-sm text-muted-foreground">{textContent["performance-positive-months-description"]}</p>
             </div>
           </div>
         </section>
 
         {/* Performance Breakdown - New */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Annual Performance Breakdown</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">{textContent["performance-annual-breakdown-title"]}</h2>
           <div className="bg-card rounded-lg p-8 border border-border">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 font-semibold text-foreground">Year</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">Smooth Path</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">S&P 500</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">Outperformance</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">Volatility</th>
+                    <th className="text-left py-3 px-4 font-semibold text-foreground">{textContent["performance-table-year"]}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-smooth-path"]}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-sp500"]}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-outperformance"]}</th>
+                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-volatility"]}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -244,10 +245,10 @@ export const Performance: React.FC = () => {
               {tabs.find(tab => tab.id === activeTab)?.label}
             </h2>
             <p className="text-muted-foreground">
-              {activeTab === 'overall' && 'Cumulative returns compared to major benchmarks including transaction costs'}
-              {activeTab === 'sector' && 'Performance breakdown by industry sectors and market cap categories'}
-              {activeTab === 'risk' && 'Risk-adjusted metrics, volatility analysis, and drawdown characteristics'}
-              {activeTab === 'attribution' && 'Factor decomposition showing sources of outperformance'}
+              {activeTab === 'overall' && textContent["performance-tab-overall-desc"]}
+              {activeTab === 'sector' && textContent["performance-tab-sector-desc"]}
+              {activeTab === 'risk' && textContent["performance-tab-risk-desc"]}
+              {activeTab === 'attribution' && textContent["performance-tab-attribution-desc"]}
             </p>
           </div>
           <StockGraphPlaceholder height="h-96" />
@@ -255,47 +256,47 @@ export const Performance: React.FC = () => {
 
         {/* Risk Analysis Section - New */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Risk Analysis</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">{textContent["performance-risk-analysis-title"]}</h2>
           <div className="grid lg:grid-cols-2 gap-8">
             <div className="bg-card p-8 rounded-lg border border-border">
-              <h3 className="text-xl font-semibold mb-6 text-foreground">Downside Protection</h3>
+              <h3 className="text-xl font-semibold mb-6 text-foreground">{textContent["performance-downside-title"]}</h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Bear Market Performance (2022)</span>
-                  <span className="text-green-400 font-semibold">-8.1% vs -18.1%</span>
+                  <span className="text-muted-foreground">{textContent["performance-downside-bear-market"]}</span>
+                  <span className="text-green-400 font-semibold">{textContent["performance-downside-bear-value"]}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Downside Deviation</span>
-                  <span className="text-foreground font-semibold">8.7%</span>
+                  <span className="text-muted-foreground">{textContent["performance-downside-deviation"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-downside-deviation-value"]}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Sortino Ratio</span>
-                  <span className="text-foreground font-semibold">2.14</span>
+                  <span className="text-muted-foreground">{textContent["performance-downside-sortino"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-downside-sortino-value"]}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Calmar Ratio</span>
-                  <span className="text-foreground font-semibold">2.86</span>
+                  <span className="text-muted-foreground">{textContent["performance-downside-calmar"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-downside-calmar-value"]}</span>
                 </div>
               </div>
             </div>
             <div className="bg-card p-8 rounded-lg border border-border">
-              <h3 className="text-xl font-semibold mb-6 text-foreground">Portfolio Characteristics</h3>
+              <h3 className="text-xl font-semibold mb-6 text-foreground">{textContent["performance-portfolio-characteristics-title"]}</h3>
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Beta vs S&P 500</span>
-                  <span className="text-foreground font-semibold">0.87</span>
+                  <span className="text-muted-foreground">{textContent["performance-portfolio-beta"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-portfolio-beta-value"]}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Correlation with Market</span>
-                  <span className="text-foreground font-semibold">0.81</span>
+                  <span className="text-muted-foreground">{textContent["performance-portfolio-correlation"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-portfolio-correlation-value"]}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Tracking Error</span>
-                  <span className="text-foreground font-semibold">7.3%</span>
+                  <span className="text-muted-foreground">{textContent["performance-portfolio-tracking-error"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-portfolio-tracking-error-value"]}</span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-muted-foreground">Average Position Size</span>
-                  <span className="text-foreground font-semibold">3.2%</span>
+                  <span className="text-muted-foreground">{textContent["performance-portfolio-position-size"]}</span>
+                  <span className="text-foreground font-semibold">{textContent["performance-portfolio-position-size-value"]}</span>
                 </div>
               </div>
             </div>
@@ -408,10 +409,9 @@ export const Performance: React.FC = () => {
 
         {/* Portfolio Simulator - New */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Portfolio Simulator</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">{textContent["performance-simulator-title"]}</h2>
           <p className="text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
-            Test your own portfolio strategy by uploading a CSV with quarterly rebalancing dates, tickers, and weights. 
-            See how your strategy would have performed over time with detailed analytics.
+            {textContent["performance-simulator-description"]}
           </p>
           
           <div className="bg-card rounded-lg p-8 border border-border mb-6">
@@ -420,7 +420,7 @@ export const Performance: React.FC = () => {
             <div className="grid gap-6 mb-6">
               <div>
                 <label htmlFor="capital" className="block text-sm font-medium mb-2 text-foreground">
-                  Initial Capital ($)
+                  {textContent["performance-simulator-capital-label"]}
                 </label>
                 <input
                   id="capital"
@@ -436,13 +436,13 @@ export const Performance: React.FC = () => {
               <div>
                 <div className="flex justify-between items-center mb-2">
                   <label htmlFor="csv" className="block text-sm font-medium text-foreground">
-                    Strategy CSV Data
+                    {textContent["performance-simulator-strategy-label"]}
                   </label>
                   <button
                     onClick={loadExampleCSV}
                     className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
                   >
-                    Load Example
+                    {textContent["performance-simulator-example-button"]}
                   </button>
                 </div>
                 <textarea
@@ -453,7 +453,7 @@ export const Performance: React.FC = () => {
                   placeholder="Start Date,Assets,Weights&#10;12/31/2019,&quot;AMGN, KR, BAC&quot;,&quot;33.33%, 33.33%, 33.34%&quot;"
                 />
                 <p className="text-xs text-muted-foreground mt-2">
-                  Format: One row per rebalancing period with Start Date, comma-separated Assets, and corresponding Weights
+                  {textContent["performance-simulator-strategy-helper"]}
                 </p>
               </div>
             </div>
@@ -463,7 +463,7 @@ export const Performance: React.FC = () => {
               disabled={isRunning}
               className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isRunning ? 'Running Simulation...' : 'Run Backtest Simulation'}
+              {isRunning ? 'Running Simulation...' : textContent["performance-simulator-run-button"]}
             </button>
           </div>
 

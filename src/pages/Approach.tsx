@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { APPROACH_SECTIONS } from '../constants';
 import { BarChart3, Brain, TrendingUp, Database, Cpu, LineChart, Shield, Clock, FileText, ExternalLink, ChevronDown, ChevronRight } from 'lucide-react';
 import turtleFoxImg from '@/assets/turtle-fox-illustration.png';
+import { textContent } from '@/constants/textContent';
 
 const getIcon = (iconName: string) => {
   switch (iconName) {
@@ -126,11 +127,10 @@ export const Approach: React.FC = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-bold mb-6 text-foreground">
-            Our Investment Approach
+            {textContent["approach-page-title"]}
           </h1>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Discover how we combine cutting-edge technology with proven investment principles 
-            to identify winning stocks with institutional-grade precision
+            {textContent["approach-page-subtitle"]}
           </p>
         </div>
 
@@ -146,7 +146,7 @@ export const Approach: React.FC = () => {
             }}
           >
             <div className="relative z-10">
-              <h2 className="text-3xl font-bold text-center mb-8 text-white">Our Approach</h2>
+              <h2 className="text-3xl font-bold text-center mb-8 text-white">{textContent["approach-section-title"]}</h2>
               <div className="text-center text-white/80 text-lg">
                 <p>...</p>
               </div>
@@ -156,50 +156,50 @@ export const Approach: React.FC = () => {
 
         {/* Research Documents Links */}
         <section className="mb-20">
-          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">Research Documents</h2>
+          <h2 className="text-3xl font-bold text-center mb-12 text-foreground">{textContent["approach-research-title"]}</h2>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="bg-card p-6 rounded-lg border border-border">
               <div className="flex items-center mb-4">
                 <FileText className="w-8 h-8 text-primary mr-3" />
-                <h3 className="text-xl font-semibold text-foreground">SPI Stock Stories</h3>
+                <h3 className="text-xl font-semibold text-foreground">{textContent["approach-research-stories-title"]}</h3>
               </div>
               <p className="text-muted-foreground mb-4">
-                Real-world case studies and practical applications of our SPI methodology
+                {textContent["approach-research-stories-description"]}
               </p>
               <Button variant="outline" className="w-full" disabled>
                 <ExternalLink className="w-4 h-4 mr-2" />
-                View Document
-                <span className="text-xs ml-2">(Coming Soon)</span>
+                {textContent["approach-research-button-text"]}
+                <span className="text-xs ml-2">{textContent["approach-research-coming-soon"]}</span>
               </Button>
             </div>
             
             <div className="bg-card p-6 rounded-lg border border-border">
               <div className="flex items-center mb-4">
                 <FileText className="w-8 h-8 text-primary mr-3" />
-                <h3 className="text-xl font-semibold text-foreground">Research Paper #1</h3>
+                <h3 className="text-xl font-semibold text-foreground">{textContent["approach-research-paper1-title"]}</h3>
               </div>
               <p className="text-muted-foreground mb-4">
-                Academic research supporting our quantitative methodology
+                {textContent["approach-research-paper1-description"]}
               </p>
               <Button variant="outline" className="w-full" disabled>
                 <ExternalLink className="w-4 h-4 mr-2" />
-                View Paper
-                <span className="text-xs ml-2">(Coming Soon)</span>
+                {textContent["approach-research-button-paper"]}
+                <span className="text-xs ml-2">{textContent["approach-research-coming-soon"]}</span>
               </Button>
             </div>
             
             <div className="bg-card p-6 rounded-lg border border-border">
               <div className="flex items-center mb-4">
                 <FileText className="w-8 h-8 text-primary mr-3" />
-                <h3 className="text-xl font-semibold text-foreground">Research Paper #2</h3>
+                <h3 className="text-xl font-semibold text-foreground">{textContent["approach-research-paper2-title"]}</h3>
               </div>
               <p className="text-muted-foreground mb-4">
-                Technical analysis and validation of our AI-driven signals
+                {textContent["approach-research-paper2-description"]}
               </p>
               <Button variant="outline" className="w-full" disabled>
                 <ExternalLink className="w-4 h-4 mr-2" />
-                View Paper
-                <span className="text-xs ml-2">(Coming Soon)</span>
+                {textContent["approach-research-button-paper"]}
+                <span className="text-xs ml-2">{textContent["approach-research-coming-soon"]}</span>
               </Button>
             </div>
           </div>
@@ -209,7 +209,7 @@ export const Approach: React.FC = () => {
         <section className="mb-20">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center mb-12 text-foreground">
-              Practical Implications of SPI Implementations
+              {textContent["approach-implications-title"]}
             </h2>
             <div className="max-w-6xl mx-auto space-y-4">
               {stories.map((story, index) => (

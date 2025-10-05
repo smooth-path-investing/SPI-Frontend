@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Lock } from 'lucide-react';
+import { textContent } from '@/constants/textContent';
 
 interface PremiumStocksHiddenProps {
   onShowPremiumStocks: () => void;
@@ -16,16 +17,15 @@ export const PremiumStocksHidden: React.FC<PremiumStocksHiddenProps> = ({ onShow
             <Card className="text-center">
               <CardContent className="p-12">
                 <Lock className="w-16 h-16 text-muted-foreground mx-auto mb-6" />
-                <h2 className="text-2xl font-bold mb-4">Premium Stocks Hidden</h2>
+                <h2 className="text-2xl font-bold mb-4">{textContent["premium-hidden-title"]}</h2>
                 <p className="text-muted-foreground mb-6">
-                  Premium stock features are currently hidden for testing purposes. 
-                  Click on your profile in the navigation to toggle them back on.
+                  {textContent["premium-hidden-description"]}
                 </p>
                 <Button 
                   onClick={onShowPremiumStocks}
                   className="bg-primary text-primary-foreground hover:bg-primary/90"
                 >
-                  Show Premium Stocks
+                  {textContent["premium-hidden-button"]}
                 </Button>
               </CardContent>
             </Card>

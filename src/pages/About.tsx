@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { TeamMemberModal } from '../components/ui/team-member-modal';
 import { TEAM_MEMBERS } from '../constants';
 import { ITeamMember } from '../types';
+import { textContent } from '@/constants/textContent';
 
 export const About: React.FC = () => {
   const [selectedMember, setSelectedMember] = useState<ITeamMember | null>(null);
@@ -23,10 +24,10 @@ export const About: React.FC = () => {
         {/* Header */}
         <div className="text-center mb-20">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 text-foreground tracking-tight">
-            Meet the Team
+            {textContent["about-page-title"]}
           </h1>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Our team combines deep expertise in quantitative finance, mathematics, and risk management from top-tier institutions around the world.
+            {textContent["about-page-subtitle"]}
           </p>
         </div>
 
@@ -62,7 +63,7 @@ export const About: React.FC = () => {
               {/* Hover Indicator */}
               <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="flex items-center gap-1 text-xs text-primary">
-                  <span>View Profile</span>
+                  <span>{textContent["about-page-profile-view"]}</span>
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -78,8 +79,7 @@ export const About: React.FC = () => {
         {/* Bottom Section */}
         <div className="mt-20 text-center">
           <p className="text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Each team member brings unique perspectives from top-tier institutions, ensuring our 
-            research methodology reflects the best practices from academia and industry.
+            {textContent["about-page-footer"]}
           </p>
         </div>
       </div>
