@@ -51,11 +51,6 @@ export const HeroSection: React.FC = () => {
              backgroundSize: '80px 80px'
            }} />
       
-      {/* Subtle shimmer lines */}
-      <div className="absolute top-0 left-1/4 w-[1px] h-full bg-gradient-to-b from-transparent via-[hsl(42,88%,65%)]/20 to-transparent" />
-      <div className="absolute top-0 right-1/3 w-[1px] h-full bg-gradient-to-b from-transparent via-[hsl(38,85%,58%)]/15 to-transparent" />
-      <div className="absolute top-0 left-2/3 w-[1px] h-full bg-gradient-to-b from-transparent via-[hsl(48,82%,70%)]/18 to-transparent" />
-      
       <div className="max-w-4xl mx-auto text-center relative z-10">
         <div className="animate-fade-in">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-bold mb-6 sm:mb-8 text-foreground leading-tight">
