@@ -22,14 +22,14 @@ export const PerformanceSection: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Total Return */}
           <div className="bg-card rounded-lg p-6 border border-border">
-            <h3 className="text-sm text-muted-foreground mb-4">Total Return (Annualized)</h3>
+            <h3 className="text-sm text-muted-foreground mb-4">{textContent["home-performance-metric-total-return"]}</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path</span>
+                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>{textContent["home-performance-label-smooth-path"]}</span>
                 <span className="text-2xl font-bold" style={{ color: '#FFD700' }}>28.95%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-muted-foreground">S&P 500</span>
+                <span className="text-sm font-medium text-muted-foreground">{textContent["home-performance-label-sp500"]}</span>
                 <span className="text-2xl font-bold text-muted-foreground">16.10%</span>
               </div>
             </div>
@@ -37,14 +37,14 @@ export const PerformanceSection: React.FC = () => {
 
           {/* Max Drawdown */}
           <div className="bg-card rounded-lg p-6 border border-border">
-            <h3 className="text-sm text-muted-foreground mb-4">Maximum Drawdown</h3>
+            <h3 className="text-sm text-muted-foreground mb-4">{textContent["home-performance-metric-max-drawdown"]}</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path</span>
+                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>{textContent["home-performance-label-smooth-path"]}</span>
                 <span className="text-2xl font-bold" style={{ color: '#FFD700' }}>-14.52%</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-muted-foreground">S&P 500</span>
+                <span className="text-sm font-medium text-muted-foreground">{textContent["home-performance-label-sp500"]}</span>
                 <span className="text-2xl font-bold text-muted-foreground">-19.56%</span>
               </div>
             </div>
@@ -52,14 +52,14 @@ export const PerformanceSection: React.FC = () => {
 
           {/* Sharpe Ratio */}
           <div className="bg-card rounded-lg p-6 border border-border">
-            <h3 className="text-sm text-muted-foreground mb-4">Sharpe Ratio</h3>
+            <h3 className="text-sm text-muted-foreground mb-4">{textContent["home-performance-metric-sharpe-ratio"]}</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path</span>
+                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>{textContent["home-performance-label-smooth-path"]}</span>
                 <span className="text-2xl font-bold" style={{ color: '#FFD700' }}>1.30</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-muted-foreground">S&P 500</span>
+                <span className="text-sm font-medium text-muted-foreground">{textContent["home-performance-label-sp500"]}</span>
                 <span className="text-2xl font-bold text-muted-foreground">0.90</span>
               </div>
             </div>
@@ -67,14 +67,14 @@ export const PerformanceSection: React.FC = () => {
 
           {/* Gain/Loss Ratio */}
           <div className="bg-card rounded-lg p-6 border border-border">
-            <h3 className="text-sm text-muted-foreground mb-4">Gain/Loss Ratio</h3>
+            <h3 className="text-sm text-muted-foreground mb-4">{textContent["home-performance-metric-gain-loss"]}</h3>
             <div className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path</span>
+                <span className="text-sm font-medium" style={{ color: '#FFD700' }}>{textContent["home-performance-label-smooth-path"]}</span>
                 <span className="text-2xl font-bold" style={{ color: '#FFD700' }}>1.25</span>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm font-medium text-muted-foreground">S&P 500</span>
+                <span className="text-sm font-medium text-muted-foreground">{textContent["home-performance-label-sp500"]}</span>
                 <span className="text-2xl font-bold text-muted-foreground">0.68</span>
               </div>
             </div>

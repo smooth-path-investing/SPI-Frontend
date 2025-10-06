@@ -1,5 +1,6 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
+import { textContent } from '@/constants/textContent';
 
 // Performance data from June 2017 to March 2021
 const performanceData = [
@@ -77,14 +78,14 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           <p className="text-foreground font-semibold mb-3 text-center">{label}</p>
           <div className="space-y-2">
             <div className="pb-2 border-b border-border">
-              <p className="text-xs text-muted-foreground mb-1">Smooth Path Investing</p>
+              <p className="text-xs text-muted-foreground mb-1">{textContent["home-performance-chart-legend-smooth-path"]}</p>
               <p className="font-bold text-lg" style={{ color: '#FFD700' }}>
                 {smoothPathReturnNum >= 0 ? '+' : ''}{smoothPathReturn}%
               </p>
               <p className="text-xs text-muted-foreground">${smoothPathDollar}</p>
             </div>
             <div>
-              <p className="text-xs text-muted-foreground mb-1">S&P 500</p>
+              <p className="text-xs text-muted-foreground mb-1">{textContent["home-performance-chart-legend-sp500"]}</p>
               <p className="text-muted-foreground font-bold text-lg">
                 {sp500ReturnNum >= 0 ? '+' : ''}{sp500Return}%
               </p>
@@ -100,17 +101,17 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   return (
     <div className={`bg-card rounded-lg border border-border p-4 ${height} ${className}`}>
       <div className="mb-4">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Portfolio Performance vs S&P 500</h3>
+        <h3 className="text-lg font-semibold text-foreground mb-2">{textContent["home-performance-chart-title"]}</h3>
         <div className="flex items-center justify-between">
-          <p className="text-sm text-muted-foreground">Cumulative returns since June 2017 (Base: $10,000)</p>
+          <p className="text-sm text-muted-foreground">{textContent["home-performance-chart-subtitle"]}</p>
           <div className="flex space-x-6">
             <div className="flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
-              <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path Investing</span>
+              <span className="text-sm font-medium" style={{ color: '#FFD700' }}>{textContent["home-performance-chart-legend-smooth-path"]}</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-3 h-0.5 bg-muted-foreground"></div>
-              <span className="text-sm text-muted-foreground">S&P 500</span>
+              <span className="text-sm text-muted-foreground">{textContent["home-performance-chart-legend-sp500"]}</span>
             </div>
           </div>
         </div>

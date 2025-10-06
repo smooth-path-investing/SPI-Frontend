@@ -34,8 +34,14 @@ export const textContent = {
   "home-stats-max-drawdown": "-8.2%",
   "home-stats-max-drawdown-label": "Max Drawdown",
   "home-stats-trust-backtested": "Backtested since 2015",
+  "home-stats-trust-backtested-tooltip": "All strategies have been validated using historical data from 2015 onwards, ensuring robust performance across different market conditions",
   "home-stats-trust-portfolios": "10,000+ simulated portfolios",
+  "home-stats-trust-portfolios-tooltip": "Extensive testing across thousands of portfolio configurations to validate strategy effectiveness and optimize risk-adjusted returns",
   "home-stats-trust-disclaimer": "*Past performance does not guarantee future results",
+  "home-trust-transparency-tooltip": "Complete disclosure of our investment methodology, performance metrics, and strategy implementation without hidden details",
+  "home-trust-upselling-tooltip": "We focus on delivering value through quality research rather than aggressive marketing or pressure to upgrade",
+  "home-trust-mobile-tooltip": "Optimized experience across all devices - desktop, tablet, and mobile - with fast loading times and intuitive navigation",
+  "home-trust-design-tooltip": "Clean, distraction-free interface focused on the information that matters most for investment decisions",
 
   // Home - Methodology Section
   "home-methodology-title": "Our Methodology",
@@ -51,6 +57,16 @@ export const textContent = {
   // Home - Performance Section
   "home-performance-title": "Proven Performance",
   "home-performance-subtitle": "Our track record speaks for itself. Consistent outperformance through systematic, data-driven investment strategies.",
+  "home-performance-chart-title": "Portfolio Performance vs S&P 500",
+  "home-performance-chart-subtitle": "Cumulative returns since June 2017 (Base: $10,000)",
+  "home-performance-chart-legend-smooth-path": "Smooth Path Investing",
+  "home-performance-chart-legend-sp500": "S&P 500",
+  "home-performance-metric-total-return": "Total Return (Annualized)",
+  "home-performance-metric-max-drawdown": "Maximum Drawdown",
+  "home-performance-metric-sharpe-ratio": "Sharpe Ratio",
+  "home-performance-metric-gain-loss": "Gain/Loss Ratio",
+  "home-performance-label-smooth-path": "Smooth Path",
+  "home-performance-label-sp500": "S&P 500",
 
   // Home - Trust Section
   "home-trust-title": "Built on Trust & Transparency",
