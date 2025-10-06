@@ -6,13 +6,13 @@ import { PortfolioCard } from '../components/stocks/PortfolioCard';
 import { AuthModal } from '../components/ui/auth-modal';
 import { Button } from '../components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Settings } from 'lucide-react';
 
 export const Stocks: React.FC = () => {
   const { isAuthenticated, login, signup, hasPurchasedPortfolio, togglePortfolioPurchase } = useAuth();
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showDevTools, setShowDevTools] = useState(false);
 
   const handlePortfolioClick = (portfolioId: string) => {
     navigate(`/portfolio/${portfolioId}`);
@@ -32,42 +32,51 @@ export const Stocks: React.FC = () => {
             </p>
           </div>
 
-          {/* Dev Tools Toggle (only visible when authenticated) */}
+          {/* Dev Tools Panel - Testing Portfolio Purchases */}
           {isAuthenticated && (
-            <div className="mb-8 flex justify-end">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowDevTools(!showDevTools)}
-              >
-                <Settings className="w-4 h-4 mr-2" />
-                Developer Tools
-              </Button>
-            </div>
-          )}
-
-          {/* Dev Tools Panel */}
-          {showDevTools && isAuthenticated && (
-            <Card className="mb-8 border-primary">
+            <Card className="mb-8 border-primary bg-primary/5">
               <CardContent className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Portfolio Purchase Demo Controls</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Toggle portfolio purchases for testing (demo mode only)
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {PORTFOLIOS.map(portfolio => (
-                    <Button
-                      key={portfolio.id}
-                      variant={hasPurchasedPortfolio(portfolio.id) ? "default" : "outline"}
-                      onClick={() => togglePortfolioPurchase(portfolio.id)}
-                      className="justify-between"
-                    >
-                      <span>{portfolio.name}</span>
-                      <span className="text-xs">
-                        {hasPurchasedPortfolio(portfolio.id) ? '✓ Purchased' : 'Not Purchased'}
-                      </span>
-                    </Button>
-                  ))}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold flex items-center gap-2">
+                      <Settings className="w-5 h-5" />
+                      Testing Mode: Simulate Portfolio Purchases
+                    </h3>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Click to toggle purchase status for each portfolio (Demo mode only)
+                    </p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {PORTFOLIOS.map(portfolio => {
+                    const isPurchased = hasPurchasedPortfolio(portfolio.id);
+                    return (
+                      <Card 
+                        key={portfolio.id}
+                        className={isPurchased ? "border-primary bg-primary/10" : "border-muted"}
+                      >
+                        <CardContent className="p-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <div>
+                              <h4 className="font-semibold">{portfolio.name}</h4>
+                              <p className="text-xs text-muted-foreground">${portfolio.price}</p>
+                            </div>
+                            <Badge variant={isPurchased ? "default" : "outline"}>
+                              {isPurchased ? '✓ Owned' : 'Locked'}
+                            </Badge>
+                          </div>
+                          <Button
+                            variant={isPurchased ? "outline" : "default"}
+                            size="sm"
+                            onClick={() => togglePortfolioPurchase(portfolio.id)}
+                            className="w-full"
+                          >
+                            {isPurchased ? 'Remove Access' : 'Grant Access'}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
