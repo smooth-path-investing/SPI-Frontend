@@ -62,8 +62,9 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
 }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
-      const smoothPathValue = payload[0].value;
-      const sp500Value = payload[1].value;
+      // payload[0] is sp500 (first Area), payload[1] is smoothPath (second Area)
+      const sp500Value = payload[0].value;
+      const smoothPathValue = payload[1].value;
       const smoothPathReturnNum = (smoothPathValue - 100) / 100 * 100;
       const sp500ReturnNum = (sp500Value - 100) / 100 * 100;
       const smoothPathReturn = smoothPathReturnNum.toFixed(2);
