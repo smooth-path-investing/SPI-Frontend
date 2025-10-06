@@ -4,7 +4,6 @@ import { MissionSection } from '../components/home/MissionSection';
 import { StatsSection } from '../components/home/StatsSection';
 import { MethodologySection } from '../components/home/MethodologySection';
 import { PerformanceSection } from '../components/home/PerformanceSection';
-import { WhyChooseUsSection } from '../components/home/WhyChooseUsSection';
 import { TrustSection } from '../components/home/TrustSection';
 
 export const Home: React.FC = () => {
@@ -14,7 +13,6 @@ export const Home: React.FC = () => {
       <MissionSection />
       <MethodologySection />
       <PerformanceSection />
-      <WhyChooseUsSection />
       <TrustSection />
       <StatsSection />
     </div>
