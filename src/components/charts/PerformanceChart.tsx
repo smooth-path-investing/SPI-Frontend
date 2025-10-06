@@ -62,16 +62,33 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
 }) => {
   const CustomTooltip = ({ active, payload, label }: any) => {
     if (active && payload && payload.length) {
+      const smoothPathValue = payload[0].value;
+      const sp500Value = payload[1].value;
+      const smoothPathReturnNum = (smoothPathValue - 100) / 100 * 100;
+      const sp500ReturnNum = (sp500Value - 100) / 100 * 100;
+      const smoothPathReturn = smoothPathReturnNum.toFixed(2);
+      const sp500Return = sp500ReturnNum.toFixed(2);
+      const smoothPathDollar = (smoothPathValue * 100).toFixed(0);
+      const sp500Dollar = (sp500Value * 100).toFixed(0);
+      
       return (
-        <div className="bg-card border border-border rounded-lg p-3 shadow-lg">
-          <p className="text-foreground font-semibold mb-2">{label}</p>
-          <div className="space-y-1">
-            <p className="text-primary">
-              Smooth Path: <span className="font-bold">{payload[0].value}%</span>
-            </p>
-            <p className="text-muted-foreground">
-              S&P 500: <span className="font-bold">{payload[1].value}%</span>
-            </p>
+        <div className="bg-card border border-border rounded-lg p-4 shadow-lg">
+          <p className="text-foreground font-semibold mb-3 text-center">{label}</p>
+          <div className="space-y-2">
+            <div className="pb-2 border-b border-border">
+              <p className="text-xs text-muted-foreground mb-1">Smooth Path Investing</p>
+              <p className="font-bold text-lg" style={{ color: '#FFD700' }}>
+                {smoothPathReturnNum >= 0 ? '+' : ''}{smoothPathReturn}%
+              </p>
+              <p className="text-xs text-muted-foreground">${smoothPathDollar}</p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground mb-1">S&P 500</p>
+              <p className="text-muted-foreground font-bold text-lg">
+                {sp500ReturnNum >= 0 ? '+' : ''}{sp500Return}%
+              </p>
+              <p className="text-xs text-muted-foreground">${sp500Dollar}</p>
+            </div>
           </div>
         </div>
       );
