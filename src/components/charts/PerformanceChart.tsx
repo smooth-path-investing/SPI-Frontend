@@ -83,7 +83,19 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
     <div className={`bg-card rounded-lg border border-border p-4 ${height} ${className}`}>
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-foreground mb-2">Portfolio Performance vs S&P 500</h3>
-        <p className="text-sm text-muted-foreground">Cumulative returns since June 2017 (Base: $10,000)</p>
+        <div className="flex items-center justify-between">
+          <p className="text-sm text-muted-foreground">Cumulative returns since June 2017 (Base: $10,000)</p>
+          <div className="flex space-x-6">
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
+              <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path Investing</span>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="w-3 h-0.5 bg-muted-foreground"></div>
+              <span className="text-sm text-muted-foreground">S&P 500</span>
+            </div>
+          </div>
+        </div>
       </div>
       
       <ResponsiveContainer width="100%" height="85%">
@@ -139,17 +151,6 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           />
         </AreaChart>
       </ResponsiveContainer>
-      
-      <div className="flex justify-center space-x-6 mt-2">
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
-          <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path Investing</span>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="w-3 h-0.5 bg-muted-foreground"></div>
-          <span className="text-sm text-muted-foreground">S&P 500</span>
-        </div>
-      </div>
     </div>
   );
 };
