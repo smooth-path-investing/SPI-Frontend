@@ -1,135 +1,98 @@
-import React, { useState, useEffect } from 'react';
-import { StockModal } from '../components/ui/stock-modal';
-import { SAMPLE_STOCKS } from '../constants';
-import { IStock } from '../types';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { PortfolioOverview } from '../components/stocks/PortfolioOverview';
-import { FilteringSorting } from '../components/stocks/FilteringSorting';
-import { FeaturedPicks } from '../components/stocks/FeaturedPicks';
-import { StockRecommendations } from '../components/stocks/StockRecommendations';
-import { AccessDenied } from '../components/stocks/AccessDenied';
-import { PremiumStocksHidden } from '../components/stocks/PremiumStocksHidden';
+import { PORTFOLIOS } from '../constants/portfolios';
+import { PortfolioCard } from '../components/stocks/PortfolioCard';
+import { AuthModal } from '../components/ui/auth-modal';
+import { Button } from '../components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Settings } from 'lucide-react';
 
 export const Stocks: React.FC = () => {
-  const { user, isAuthenticated, canAccessPremiumStocks } = useAuth();
-  const [selectedStock, setSelectedStock] = useState<IStock | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [filterBy, setFilterBy] = useState('all');
-  const [sortBy, setSortBy] = useState('conviction');
-  const [showPremiumStocks, setShowPremiumStocks] = useState(true);
+  const { isAuthenticated, login, signup, hasPurchasedPortfolio, togglePortfolioPurchase } = useAuth();
+  const navigate = useNavigate();
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showDevTools, setShowDevTools] = useState(false);
 
-  // Read premium stocks visibility from localStorage and set up listener
-  useEffect(() => {
-    const stored = localStorage.getItem('showPremiumStocks');
-    if (stored !== null) {
-      const value = stored === 'true';
-      console.log('Stocks: Initialized showPremiumStocks from localStorage:', value);
-      setShowPremiumStocks(value);
-    }
-
-    // Custom event listener for changes from the profile dropdown
-    const handleToggleChange = (event?: any) => {
-      console.log('Stocks: Received toggle event:', event);
-      const updated = localStorage.getItem('showPremiumStocks');
-      if (updated !== null) {
-        const value = updated === 'true';
-        console.log('Stocks: Updating showPremiumStocks to:', value);
-        setShowPremiumStocks(value);
-      }
-    };
-
-    // Listen for custom events (from profile dropdown)
-    window.addEventListener('premiumStocksToggled', handleToggleChange);
-
-    // Also listen for storage events (for other tabs)
-    window.addEventListener('storage', handleToggleChange);
-
-    return () => {
-      window.removeEventListener('premiumStocksToggled', handleToggleChange);
-      window.removeEventListener('storage', handleToggleChange);
-    };
-  }, []);
-
-  // Add debug logging for showPremiumStocks changes
-  useEffect(() => {
-    console.log('Stocks: showPremiumStocks state changed to:', showPremiumStocks);
-  }, [showPremiumStocks]);
-
-  const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
-  // Fixed logic: Allow access if user is authenticated AND (is premium OR debug toggle is enabled)
-  const canAccessStocks = isAuthenticated && (isPremiumUser || showPremiumStocks);
-
-  console.log('Stocks: Current state - isAuthenticated:', isAuthenticated, 'isPremiumUser:', isPremiumUser, 'showPremiumStocks:', showPremiumStocks, 'canAccessStocks:', canAccessStocks);
-
-  const handleStockClick = (stock: IStock) => {
-    if (!canAccessStocks) {
-      return;
-    }
-    setSelectedStock(stock);
-    setIsModalOpen(true);
+  const handlePortfolioClick = (portfolioId: string) => {
+    navigate(`/portfolio/${portfolioId}`);
   };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedStock(null);
-  };
-
-  const handleShowPremiumStocks = () => {
-    console.log('Stocks: Manual toggle button clicked');
-    localStorage.setItem('showPremiumStocks', 'true');
-    setShowPremiumStocks(true);
-    // Dispatch custom event to notify other components
-    const event = new CustomEvent('premiumStocksToggled', { detail: { show: true } });
-    window.dispatchEvent(event);
-  };
-
-  // Show override message if premium stocks are hidden but user has access
-  if (isAuthenticated && isPremiumUser && !showPremiumStocks) {
-    return <PremiumStocksHidden onShowPremiumStocks={handleShowPremiumStocks} />;
-  }
-
-  if (!canAccessStocks) {
-    return <AccessDenied isAuthenticated={isAuthenticated} />;
-  }
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold mb-6 text-foreground">
-            Recommended Stocks
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Our AI-powered analysis has identified these high-potential opportunities based on 
-            rigorous quantitative research and backtested strategies
-          </p>
+    <>
+      <div className="min-h-screen bg-background text-foreground pt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center mb-16">
+            <h1 className="text-5xl font-bold mb-6 text-foreground">
+              Investment Portfolios
+            </h1>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              Choose from our professionally managed portfolios, each designed with unique strategies 
+              and risk profiles to match your investment goals
+            </p>
+          </div>
+
+          {/* Dev Tools Toggle (only visible when authenticated) */}
+          {isAuthenticated && (
+            <div className="mb-8 flex justify-end">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowDevTools(!showDevTools)}
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Developer Tools
+              </Button>
+            </div>
+          )}
+
+          {/* Dev Tools Panel */}
+          {showDevTools && isAuthenticated && (
+            <Card className="mb-8 border-primary">
+              <CardContent className="p-6">
+                <h3 className="text-lg font-semibold mb-4">Portfolio Purchase Demo Controls</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Toggle portfolio purchases for testing (demo mode only)
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {PORTFOLIOS.map(portfolio => (
+                    <Button
+                      key={portfolio.id}
+                      variant={hasPurchasedPortfolio(portfolio.id) ? "default" : "outline"}
+                      onClick={() => togglePortfolioPurchase(portfolio.id)}
+                      className="justify-between"
+                    >
+                      <span>{portfolio.name}</span>
+                      <span className="text-xs">
+                        {hasPurchasedPortfolio(portfolio.id) ? '✓ Purchased' : 'Not Purchased'}
+                      </span>
+                    </Button>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Portfolio Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {PORTFOLIOS.map(portfolio => (
+              <PortfolioCard
+                key={portfolio.id}
+                portfolio={portfolio}
+                isPurchased={isAuthenticated && hasPurchasedPortfolio(portfolio.id)}
+                onViewPortfolio={() => handlePortfolioClick(portfolio.id)}
+              />
+            ))}
+          </div>
         </div>
-
-        <PortfolioOverview />
-        
-        <FilteringSorting
-          filterBy={filterBy}
-          sortBy={sortBy}
-          onFilterChange={setFilterBy}
-          onSortChange={setSortBy}
-        />
-
-        <FeaturedPicks 
-          stocks={SAMPLE_STOCKS}
-          onStockClick={handleStockClick}
-        />
-
-        <StockRecommendations 
-          stocks={SAMPLE_STOCKS}
-          onStockClick={handleStockClick}
-        />
-
-        <StockModal
-          stock={selectedStock}
-          isOpen={isModalOpen}
-          onClose={closeModal}
-        />
       </div>
-    </div>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onLogin={login}
+        onSignup={signup}
+      />
+    </>
   );
 };

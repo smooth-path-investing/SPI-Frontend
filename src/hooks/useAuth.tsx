@@ -16,12 +16,19 @@ interface AuthContextType {
   logout: () => void;
   isAuthenticated: boolean;
   canAccessPremiumStocks: () => boolean;
+  purchasedPortfolios: string[];
+  hasPurchasedPortfolio: (portfolioId: string) => boolean;
+  togglePortfolioPurchase: (portfolioId: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [purchasedPortfolios, setPurchasedPortfolios] = useState<string[]>(() => {
+    const stored = localStorage.getItem('purchasedPortfolios');
+    return stored ? JSON.parse(stored) : [];
+  });
 
   const login = (email: string, password: string) => {
     // Mock login - in real app, this would call your auth API
@@ -68,8 +75,32 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return isPremiumUser || showPremiumStocks;
   };
 
+  const hasPurchasedPortfolio = (portfolioId: string) => {
+    return purchasedPortfolios.includes(portfolioId);
+  };
+
+  const togglePortfolioPurchase = (portfolioId: string) => {
+    setPurchasedPortfolios(prev => {
+      const newPurchased = prev.includes(portfolioId)
+        ? prev.filter(id => id !== portfolioId)
+        : [...prev, portfolioId];
+      localStorage.setItem('purchasedPortfolios', JSON.stringify(newPurchased));
+      return newPurchased;
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, isAuthenticated, canAccessPremiumStocks }}>
+    <AuthContext.Provider value={{ 
+      user, 
+      login, 
+      signup, 
+      logout, 
+      isAuthenticated, 
+      canAccessPremiumStocks,
+      purchasedPortfolios,
+      hasPurchasedPortfolio,
+      togglePortfolioPurchase
+    }}>
       {children}
     </AuthContext.Provider>
   );

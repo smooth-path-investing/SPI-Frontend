@@ -11,6 +11,7 @@ import { About } from "./pages/About";
 import { Approach } from "./pages/Approach";
 import { Performance } from "./pages/Performance";
 import { Stocks } from "./pages/Stocks";
+import { PortfolioDetail } from "./pages/PortfolioDetail";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
                 <Route path="/approach" element={<Approach />} />
                 <Route path="/performance" element={<Performance />} />
                 <Route path="/stocks" element={<Stocks />} />
+                <Route path="/portfolio/:portfolioId" element={<PortfolioDetail />} />
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </main>
