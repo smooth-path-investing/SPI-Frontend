@@ -1,4 +1,4 @@
-// Performance data extracted from backtesting results
+// Performance data extracted from backtesting results (Jun 2017 - Mar 2021)
 export const monthlyPerformanceData = [
   { date: 'Jun 2017', portfolio: 10161.33, benchmark: 10066.99 },
   { date: 'Jul 2017', portfolio: 10553.11, benchmark: 10275.84 },
@@ -14,7 +14,7 @@ export const monthlyPerformanceData = [
   { date: 'May 2018', portfolio: 11633.04, benchmark: 11443.46 },
   { date: 'Jun 2018', portfolio: 12036.75, benchmark: 11510.49 },
   { date: 'Jul 2018', portfolio: 12162.29, benchmark: 11941.74 },
-  { date: 'Aug 2018', portfolio: 12035.75, benchmark: 12327.88 },
+  { date: 'Aug 2018', portfolio: 13035.75, benchmark: 12327.88 },
   { date: 'Sep 2018', portfolio: 12865.34, benchmark: 12394.01 },
   { date: 'Oct 2018', portfolio: 12304.33, benchmark: 11548.49 },
   { date: 'Nov 2018', portfolio: 12317.49, benchmark: 11770.35 },

@@ -71,59 +71,70 @@ export const Performance: React.FC = () => {
           </div>
         </section>
 
-        {/* Performance Breakdown - New */}
+        {/* Historical Performance - Detailed Annual Breakdown */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">{textContent["performance-annual-breakdown-title"]}</h2>
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Historical Performance (Jun 2017 - Mar 2021)</h2>
           <div className="bg-card rounded-lg p-8 border border-border">
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 font-semibold text-foreground">{textContent["performance-table-year"]}</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-smooth-path"]}</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-sp500"]}</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-outperformance"]}</th>
-                    <th className="text-right py-3 px-4 font-semibold text-foreground">{textContent["performance-table-volatility"]}</th>
+                    <th className="text-left py-3 px-4 font-semibold text-foreground">Year</th>
+                    <th className="text-right py-3 px-4 font-semibold" style={{ color: '#FFD700' }}>Portfolio Return</th>
+                    <th className="text-right py-3 px-4 font-semibold" style={{ color: '#FFD700' }}>Portfolio Balance</th>
+                    <th className="text-right py-3 px-4 font-semibold text-muted-foreground">S&P 500 Return</th>
+                    <th className="text-right py-3 px-4 font-semibold text-muted-foreground">S&P 500 Balance</th>
+                    <th className="text-right py-3 px-4 font-semibold text-green-400">Outperformance</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2021 (Q1)</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+18.44%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+6.33%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+12.11%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">21.97%</td>
-                  </tr>
-                  <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2020</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+47.81%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+18.40%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+29.41%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
-                  </tr>
-                  <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2019</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+35.87%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+31.25%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+4.62%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
-                  </tr>
-                  <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2018</td>
-                    <td className="py-3 px-4 text-right text-red-400 font-semibold">-4.17%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">-4.47%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+0.30%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
+                  <tr>
+                    <td className="py-3 px-4 border-b border-border text-foreground">2017*</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+16.28%</td>
+                    <td className="py-3 px-4 border-b border-border" style={{ color: '#FFD700' }}>$11,627.80</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400">+12.29%</td>
+                    <td className="py-3 px-4 border-b border-border text-muted-foreground">$11,228.77</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+3.99%</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 text-muted-foreground">2017 (Jun-Dec)</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+16.28%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+12.29%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+3.99%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
+                    <td className="py-3 px-4 border-b border-border text-foreground">2018</td>
+                    <td className="py-3 px-4 border-b border-border text-red-400 font-semibold">-4.17%</td>
+                    <td className="py-3 px-4 border-b border-border" style={{ color: '#FFD700' }}>$11,142.44</td>
+                    <td className="py-3 px-4 border-b border-border text-red-400">-4.47%</td>
+                    <td className="py-3 px-4 border-b border-border text-muted-foreground">$10,726.86</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+0.30%</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 border-b border-border text-foreground">2019</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+35.87%</td>
+                    <td className="py-3 px-4 border-b border-border" style={{ color: '#FFD700' }}>$15,139.71</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400">+31.25%</td>
+                    <td className="py-3 px-4 border-b border-border text-muted-foreground">$14,078.89</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+4.62%</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 border-b border-border text-foreground">2020</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+47.81%</td>
+                    <td className="py-3 px-4 border-b border-border" style={{ color: '#FFD700' }}>$22,377.72</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400">+18.40%</td>
+                    <td className="py-3 px-4 border-b border-border text-muted-foreground">$16,669.26</td>
+                    <td className="py-3 px-4 border-b border-border text-green-400 font-semibold">+29.41%</td>
+                  </tr>
+                  <tr>
+                    <td className="py-3 px-4 text-foreground">2021**</td>
+                    <td className="py-3 px-4 text-green-400 font-semibold">+18.44%</td>
+                    <td className="py-3 px-4" style={{ color: '#FFD700' }}>$26,504.91</td>
+                    <td className="py-3 px-4 text-green-400">+6.33%</td>
+                    <td className="py-3 px-4 text-muted-foreground">$17,724.49</td>
+                    <td className="py-3 px-4 text-green-400 font-semibold">+12.11%</td>
                   </tr>
                 </tbody>
               </table>
+            </div>
+            <div className="mt-6 text-sm text-muted-foreground space-y-1">
+              <p>* Annual return for 2017 is from 06/01/2017 to 12/31/2017</p>
+              <p>** Annual return for 2021 is from 01/01/2021 to 03/31/2021 (Q1 only)</p>
+              <p className="mt-3">Initial balance: $10,000 | Final balance: $26,504.91 | Total return: +165.05%</p>
             </div>
           </div>
         </section>
