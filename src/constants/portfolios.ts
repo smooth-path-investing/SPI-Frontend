@@ -19,7 +19,7 @@ export const PORTFOLIOS: Portfolio[] = [
     price: 99,
     expectedReturn: '18-25%',
     riskLevel: 'Medium',
-    holdings: 20,
+    holdings: 10,
     rebalanceFrequency: 'Monthly'
   },
   {
@@ -30,7 +30,7 @@ export const PORTFOLIOS: Portfolio[] = [
     price: 129,
     expectedReturn: '20-30%',
     riskLevel: 'High',
-    holdings: 15,
+    holdings: 10,
     rebalanceFrequency: 'Bi-weekly'
   },
   {
@@ -41,7 +41,7 @@ export const PORTFOLIOS: Portfolio[] = [
     price: 89,
     expectedReturn: '22-28%',
     riskLevel: 'Medium',
-    holdings: 18,
+    holdings: 10,
     rebalanceFrequency: 'Weekly'
   },
   {
@@ -52,7 +52,7 @@ export const PORTFOLIOS: Portfolio[] = [
     price: 119,
     expectedReturn: '15-22%',
     riskLevel: 'High',
-    holdings: 12,
+    holdings: 10,
     rebalanceFrequency: 'Weekly'
   }
 ];
