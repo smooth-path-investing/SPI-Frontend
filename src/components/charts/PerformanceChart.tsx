@@ -107,6 +107,9 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
             axisLine={{ stroke: 'hsl(var(--border))' }}
             tickLine={{ stroke: 'hsl(var(--border))' }}
             interval="preserveStartEnd"
+            angle={-45}
+            textAnchor="end"
+            height={80}
           />
           
           <YAxis 
