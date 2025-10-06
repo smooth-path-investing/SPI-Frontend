@@ -12,7 +12,7 @@ export const StatsSection: React.FC = () => {
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background/50 to-background">
       <div className="max-w-7xl mx-auto">
-        <TooltipProvider>
+        <TooltipProvider delayDuration={300} skipDelayDuration={100}>
           <div className="flex flex-col items-center justify-center gap-4 text-sm text-muted-foreground animate-fade-in">
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
               <Tooltip>
@@ -22,7 +22,7 @@ export const StatsSection: React.FC = () => {
                     <span>{textContent["home-stats-trust-backtested"]}</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent side="top" className="max-w-xs z-50">
                   <p>{textContent["home-stats-trust-backtested-tooltip"]}</p>
                 </TooltipContent>
               </Tooltip>
@@ -34,7 +34,7 @@ export const StatsSection: React.FC = () => {
                     <span>{textContent["home-stats-trust-portfolios"]}</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent side="top" className="max-w-xs z-50">
                   <p>{textContent["home-stats-trust-portfolios-tooltip"]}</p>
                 </TooltipContent>
               </Tooltip>
@@ -46,7 +46,7 @@ export const StatsSection: React.FC = () => {
                     <span>{textContent["home-trust-transparency-title"]}</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent side="top" className="max-w-xs z-50">
                   <p>{textContent["home-trust-transparency-tooltip"]}</p>
                 </TooltipContent>
               </Tooltip>
@@ -58,7 +58,7 @@ export const StatsSection: React.FC = () => {
                     <span>{textContent["home-trust-upselling-title"]}</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent side="top" className="max-w-xs z-50">
                   <p>{textContent["home-trust-upselling-tooltip"]}</p>
                 </TooltipContent>
               </Tooltip>
@@ -70,7 +70,7 @@ export const StatsSection: React.FC = () => {
                     <span>{textContent["home-trust-mobile-title"]}</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent side="top" className="max-w-xs z-50">
                   <p>{textContent["home-trust-mobile-tooltip"]}</p>
                 </TooltipContent>
               </Tooltip>
@@ -82,7 +82,7 @@ export const StatsSection: React.FC = () => {
                     <span>{textContent["home-trust-design-title"]}</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
+                <TooltipContent side="top" className="max-w-xs z-50">
                   <p>{textContent["home-trust-design-tooltip"]}</p>
                 </TooltipContent>
               </Tooltip>
