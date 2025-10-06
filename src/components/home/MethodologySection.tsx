@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { BarChart3, Brain, TrendingUp } from 'lucide-react';
+import { Cpu, Brain, TrendingUp } from 'lucide-react';
 import { textContent } from '@/constants/textContent';
 
 export const MethodologySection: React.FC = () => {
@@ -18,7 +18,7 @@ export const MethodologySection: React.FC = () => {
         <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
           <div className="bg-card p-6 sm:p-8 lg:p-12 rounded-lg border border-border hover:bg-accent/50 transition-all duration-300 transform hover:scale-105">
             <div className="flex justify-center mb-4 sm:mb-6">
-              <BarChart3 className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
+              <Cpu className="w-10 h-10 sm:w-12 sm:h-12 text-foreground" />
             </div>
             <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-3 sm:mb-6 text-center">{textContent["home-methodology-factor-title"]}</h3>
             <p className="text-muted-foreground text-sm sm:text-base lg:text-lg leading-relaxed">{textContent["home-methodology-factor-description"]}</p>

@@ -40,11 +40,11 @@ export const textContent = {
   // Home - Methodology Section
   "home-methodology-title": "Our Methodology",
   "home-methodology-subtitle": "Combining traditional financial analysis with cutting-edge AI to identify the best investment opportunities in today's markets.",
-  "home-methodology-factor-title": "Factor Models",
+  "home-methodology-factor-title": "SigGA",
   "home-methodology-factor-description": "Multi-factor quantitative analysis of fundamentals, technicals, and sentiment to identify undervalued opportunities",
-  "home-methodology-ai-title": "AI Signals",
+  "home-methodology-ai-title": "Predictions",
   "home-methodology-ai-description": "Machine learning algorithms processing vast market datasets to predict price movements and trends",
-  "home-methodology-backtested-title": "Backtested Rules",
+  "home-methodology-backtested-title": "Behavioural Finance",
   "home-methodology-backtested-description": "Rigorously tested investment rules with 10+ years of validation and proven risk-adjusted returns",
   "home-methodology-button": "Learn More About Our Approach",
 
