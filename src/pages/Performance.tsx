@@ -2,47 +2,11 @@
 import React, { useState } from 'react';
 import { StockGraphPlaceholder } from '../components/ui/stock-graph-placeholder';
 import { PERFORMANCE_METRICS } from '../constants';
-import { TrendingUp, TrendingDown, BarChart3, Shield, Award, Target, Calendar, DollarSign } from 'lucide-react';
-import { parseStrategyCSV } from '@/utils/csvParser';
-import { generateMockPrices } from '@/utils/mockPrices';
-import { runBacktest, BacktestResult } from '@/utils/backtestEngine';
-import { SimulatorResults } from '@/components/backtest/SimulatorResults';
-import { useToast } from '@/hooks/use-toast';
+import { TrendingUp, TrendingDown, BarChart3, Shield, Award, Target, Calendar, DollarSign, Download, FileText } from 'lucide-react';
 import { textContent } from '@/constants/textContent';
-
-const EXAMPLE_CSV = `Start Date,Assets,Weights
-1/1/2020,"AAPL, MSFT, GOOGL, AMZN, JPM, JNJ, V, PG","15%, 15%, 12%, 10%, 12%, 10%, 13%, 13%"
-2/1/2020,"MSFT, GOOGL, AMZN, V, MA, UNH, HD, NVDA","14%, 13%, 11%, 12%, 10%, 13%, 12%, 15%"
-3/1/2020,"MSFT, AMZN, GOOGL, JNJ, PG, WMT, KO, PFE","17%, 16%, 14%, 13%, 12%, 11%, 10%, 7%"
-4/1/2020,"AAPL, MSFT, AMZN, JPM, BAC, JNJ, PFE, WMT","16%, 14%, 12%, 11%, 10%, 13%, 12%, 12%"
-5/1/2020,"MSFT, AMZN, GOOGL, JPM, V, DIS, NFLX, NVDA","15%, 13%, 12%, 11%, 12%, 10%, 14%, 13%"
-6/1/2020,"AAPL, MSFT, AMZN, NVDA, ADBE, CRM, TSLA, SQ","16%, 15%, 14%, 13%, 12%, 11%, 10%, 9%"
-7/1/2020,"AAPL, MSFT, AMZN, V, MA, UNH, JNJ","18%, 16%, 14%, 13%, 12%, 14%, 13%"
-8/1/2020,"MSFT, GOOGL, JPM, BAC, V, MA, PG, KO","15%, 13%, 12%, 11%, 13%, 12%, 12%, 12%"
-9/1/2020,"AAPL, MSFT, AMZN, GOOGL, NVDA, TSLA, V, MA, ADBE","14%, 13%, 12%, 11%, 12%, 10%, 10%, 9%, 9%"
-10/1/2020,"AAPL, MSFT, AMZN, GOOGL, V, JNJ, PFE, HD, WMT","14%, 13%, 11%, 10%, 12%, 11%, 10%, 10%, 9%"
-11/1/2020,"MSFT, AMZN, GOOGL, JPM, V, MA, UNH, DIS","16%, 14%, 13%, 11%, 12%, 11%, 12%, 11%"
-12/1/2020,"AAPL, MSFT, GOOGL, AMZN, TSLA, NVDA, CRM, SQ, SHOP","15%, 14%, 12%, 11%, 11%, 10%, 9%, 9%, 9%"
-1/1/2021,"AAPL, MSFT, AMZN, V, MA, NVDA, CRM, ADBE","17%, 15%, 13%, 12%, 11%, 11%, 11%, 10%"
-2/1/2021,"MSFT, AAPL, AMZN, GOOGL, JPM, V, UNH, JNJ, HD","13%, 14%, 12%, 11%, 10%, 11%, 11%, 10%, 8%"
-3/1/2021,"MSFT, AAPL, GOOGL, AMZN, NVDA, TSLA, V, MA, CRM","15%, 14%, 13%, 12%, 11%, 10%, 9%, 8%, 8%"
-4/1/2021,"AAPL, MSFT, AMZN, GOOGL, V, MA, NVDA, CRM, ADBE","15%, 14%, 12%, 11%, 11%, 10%, 10%, 9%, 8%"`;
 
 export const Performance: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overall');
-  const [initialCapital, setInitialCapital] = useState(10000);
-  const [csvText, setCsvText] = useState('');
-  const [backtestResult, setBacktestResult] = useState<BacktestResult | null>(null);
-  const [isRunning, setIsRunning] = useState(false);
-  const { toast } = useToast();
-
-  const loadExampleCSV = () => {
-    setCsvText(EXAMPLE_CSV);
-    toast({
-      title: textContent["performance-simulator-load-toast-title"],
-      description: textContent["performance-simulator-load-toast-description"],
-    });
-  };
 
   const tabs = [
     { id: 'overall', label: textContent["performance-tab-overall"] },
@@ -50,61 +14,6 @@ export const Performance: React.FC = () => {
     { id: 'risk', label: textContent["performance-tab-risk"] },
     { id: 'attribution', label: textContent["performance-tab-attribution"] }
   ];
-
-  const handleRunBacktest = () => {
-    if (!csvText.trim()) {
-      toast({
-        title: textContent["performance-simulator-error-empty-title"],
-        description: textContent["performance-simulator-error-empty-description"],
-        variant: "destructive"
-      });
-      return;
-    }
-
-    setIsRunning(true);
-    
-    try {
-      // Parse CSV
-      const strategy = parseStrategyCSV(csvText);
-      
-      if (strategy.length === 0) {
-        toast({
-          title: textContent["performance-simulator-error-empty-title"],
-          description: textContent["performance-simulator-error-no-rows-description"],
-          variant: "destructive"
-        });
-        setIsRunning(false);
-        return;
-      }
-
-      // Collect all unique tickers
-      const allTickers = new Set<string>();
-      strategy.forEach(row => row.assets.forEach(ticker => allTickers.add(ticker)));
-
-      // Generate mock prices
-      const startDate = strategy[0].date;
-      const endDate = strategy[strategy.length - 1].date;
-      const prices = generateMockPrices(Array.from(allTickers), startDate, endDate);
-
-      // Run backtest
-      const result = runBacktest(strategy, prices, initialCapital);
-      setBacktestResult(result);
-
-      toast({
-        title: textContent["performance-simulator-complete-title"],
-        description: `Simulated ${strategy.length} rebalancing periods`,
-      });
-    } catch (error) {
-      console.error('Backtest error:', error);
-      toast({
-        title: textContent["performance-simulator-error-empty-title"],
-        description: "Failed to run backtest. Please check your CSV format.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsRunning(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
@@ -179,39 +88,39 @@ export const Performance: React.FC = () => {
                 </thead>
                 <tbody>
                   <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2023</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+28.7%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+24.2%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+4.5%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">14.2%</td>
-                  </tr>
-                  <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2022</td>
-                    <td className="py-3 px-4 text-right text-red-400 font-semibold">-8.1%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">-18.1%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+10.0%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">16.8%</td>
-                  </tr>
-                  <tr className="border-b border-border/50">
-                    <td className="py-3 px-4 text-muted-foreground">2021</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+31.2%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+26.9%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+4.3%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">18.5%</td>
+                    <td className="py-3 px-4 text-muted-foreground">2021 (Q1)</td>
+                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+18.44%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">+6.33%</td>
+                    <td className="py-3 px-4 text-right text-green-400">+12.11%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">21.97%</td>
                   </tr>
                   <tr className="border-b border-border/50">
                     <td className="py-3 px-4 text-muted-foreground">2020</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+22.8%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+16.3%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+6.5%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">21.2%</td>
+                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+47.81%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">+18.40%</td>
+                    <td className="py-3 px-4 text-right text-green-400">+29.41%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
+                  </tr>
+                  <tr className="border-b border-border/50">
+                    <td className="py-3 px-4 text-muted-foreground">2019</td>
+                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+35.87%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">+31.25%</td>
+                    <td className="py-3 px-4 text-right text-green-400">+4.62%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
+                  </tr>
+                  <tr className="border-b border-border/50">
+                    <td className="py-3 px-4 text-muted-foreground">2018</td>
+                    <td className="py-3 px-4 text-right text-red-400 font-semibold">-4.17%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">-4.47%</td>
+                    <td className="py-3 px-4 text-right text-green-400">+0.30%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 text-muted-foreground">2019</td>
-                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+35.4%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">+28.9%</td>
-                    <td className="py-3 px-4 text-right text-green-400">+6.5%</td>
-                    <td className="py-3 px-4 text-right text-muted-foreground">15.7%</td>
+                    <td className="py-3 px-4 text-muted-foreground">2017 (Jun-Dec)</td>
+                    <td className="py-3 px-4 text-right text-green-400 font-semibold">+16.28%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">+12.29%</td>
+                    <td className="py-3 px-4 text-right text-green-400">+3.99%</td>
+                    <td className="py-3 px-4 text-right text-muted-foreground">-</td>
                   </tr>
                 </tbody>
               </table>
@@ -573,81 +482,93 @@ export const Performance: React.FC = () => {
           </div>
         </section>
 
-        {/* Portfolio Simulator - New */}
+        {/* Detailed Backtest Report */}
         <section className="mb-16">
-          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">{textContent["performance-simulator-title"]}</h2>
-          <p className="text-center text-muted-foreground mb-8 max-w-3xl mx-auto">
-            {textContent["performance-simulator-description"]}
-          </p>
-          
-          <div className="bg-card rounded-lg p-8 border border-border mb-6">
-            <h3 className="text-xl font-semibold mb-6 text-foreground">Configuration</h3>
-            
-            <div className="grid gap-6 mb-6">
-              <div>
-                <label htmlFor="capital" className="block text-sm font-medium mb-2 text-foreground">
-                  {textContent["performance-simulator-capital-label"]}
-                </label>
-                <input
-                  id="capital"
-                  type="number"
-                  value={initialCapital}
-                  onChange={(e) => setInitialCapital(Number(e.target.value))}
-                  min="100"
-                  step="100"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                />
+          <h2 className="text-3xl font-bold text-center mb-8 text-foreground">Comprehensive Backtest Report</h2>
+          <div className="bg-card rounded-lg p-8 border border-border">
+            <div className="flex flex-col md:flex-row items-center gap-6 mb-8">
+              <div className="flex-shrink-0">
+                <FileText className="w-16 h-16 text-primary" />
               </div>
-
-              <div>
-                <div className="flex justify-between items-center mb-2">
-                  <label htmlFor="csv" className="block text-sm font-medium text-foreground">
-                    {textContent["performance-simulator-strategy-label"]}
-                  </label>
-                  <button
-                    onClick={loadExampleCSV}
-                    className="text-xs text-primary hover:text-primary/80 font-medium transition-colors"
-                  >
-                    {textContent["performance-simulator-example-button"]}
-                  </button>
-                </div>
-                <textarea
-                  id="csv"
-                  value={csvText}
-                  onChange={(e) => setCsvText(e.target.value)}
-                  className="flex min-h-[200px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-                  placeholder="Start Date,Assets,Weights&#10;12/31/2019,&quot;AMGN, KR, BAC&quot;,&quot;33.33%, 33.33%, 33.34%&quot;"
-                />
-                <p className="text-xs text-muted-foreground mt-2">
-                  {textContent["performance-simulator-strategy-helper"]}
+              <div className="flex-1 text-center md:text-left">
+                <h3 className="text-2xl font-semibold mb-2 text-foreground">Full Portfolio Performance Analysis</h3>
+                <p className="text-muted-foreground mb-4">
+                  Access our comprehensive 18-page backtest report covering June 2017 to March 2021. 
+                  Includes detailed performance metrics, monthly returns breakdown, drawdown analysis, 
+                  and complete allocation history powered by Portfolio Visualizer.
                 </p>
+                <div className="grid md:grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <div className="text-muted-foreground">Test Period</div>
+                    <div className="font-semibold text-foreground">Jun 2017 - Mar 2021</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground">Initial Capital</div>
+                    <div className="font-semibold text-foreground">$10,000</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground">Final Balance</div>
+                    <div className="font-semibold text-green-400">$26,505</div>
+                  </div>
+                  <div>
+                    <div className="text-muted-foreground">Total Return</div>
+                    <div className="font-semibold text-green-400">+165.05%</div>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <button 
-              onClick={handleRunBacktest}
-              disabled={isRunning}
-              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isRunning ? 'Running Simulation...' : textContent["performance-simulator-run-button"]}
-            </button>
+            
+            <div className="border-t border-border pt-6">
+              <h4 className="text-lg font-semibold mb-4 text-foreground">Report Includes:</h4>
+              <div className="grid md:grid-cols-2 gap-4 mb-6">
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Complete performance metrics vs. S&P 500 benchmark</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Risk-adjusted returns and volatility analysis</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Monthly returns breakdown by year</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Detailed drawdown analysis with recovery times</span>
+                  </li>
+                </ul>
+                <ul className="space-y-2 text-muted-foreground">
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Up vs. down market performance comparison</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Historical stress period analysis (COVID-19)</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Complete quarterly rebalancing allocation history</span>
+                  </li>
+                  <li className="flex items-start">
+                    <div className="w-2 h-2 bg-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                    <span>Statistical significance and validation metrics</span>
+                  </li>
+                </ul>
+              </div>
+              
+              <a 
+                href="/rept_sigga_long_gs_agg.pdf" 
+                download
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-md font-medium transition-colors"
+              >
+                <Download className="w-5 h-5" />
+                Download Full Backtest Report (PDF)
+              </a>
+            </div>
           </div>
-
-          {backtestResult && (
-            <div className="bg-card rounded-lg p-8 border border-border">
-              <h3 className="text-xl font-semibold mb-6 text-foreground">Results</h3>
-              <SimulatorResults results={backtestResult} initialCapital={initialCapital} />
-            </div>
-          )}
-
-          {!backtestResult && (
-            <div className="bg-card rounded-lg p-8 border border-border">
-              <h3 className="text-xl font-semibold mb-4 text-foreground">Results</h3>
-              <div className="text-center py-12 text-muted-foreground">
-                Configure your strategy and run the simulation to see results here
-              </div>
-            </div>
-          )}
         </section>
 
         {/* Disclaimer - New */}
