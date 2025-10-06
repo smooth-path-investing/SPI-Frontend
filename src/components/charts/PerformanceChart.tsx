@@ -1,28 +1,54 @@
 import React from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 
-// Sample performance data showing growth over time
+// Performance data from June 2017 to March 2021
 const performanceData = [
-  { date: '2020-01', smoothPath: 100, sp500: 100, month: 'Jan 2020' },
-  { date: '2020-03', smoothPath: 95, sp500: 88, month: 'Mar 2020' },
-  { date: '2020-06', smoothPath: 112, sp500: 102, month: 'Jun 2020' },
-  { date: '2020-09', smoothPath: 125, sp500: 108, month: 'Sep 2020' },
-  { date: '2020-12', smoothPath: 142, sp500: 118, month: 'Dec 2020' },
-  { date: '2021-03', smoothPath: 158, sp500: 125, month: 'Mar 2021' },
-  { date: '2021-06', smoothPath: 175, sp500: 135, month: 'Jun 2021' },
-  { date: '2021-09', smoothPath: 168, sp500: 132, month: 'Sep 2021' },
-  { date: '2021-12', smoothPath: 195, sp500: 145, month: 'Dec 2021' },
-  { date: '2022-03', smoothPath: 185, sp500: 138, month: 'Mar 2022' },
-  { date: '2022-06', smoothPath: 172, sp500: 125, month: 'Jun 2022' },
-  { date: '2022-09', smoothPath: 165, sp500: 118, month: 'Sep 2022' },
-  { date: '2022-12', smoothPath: 178, sp500: 122, month: 'Dec 2022' },
-  { date: '2023-03', smoothPath: 198, sp500: 135, month: 'Mar 2023' },
-  { date: '2023-06', smoothPath: 225, sp500: 148, month: 'Jun 2023' },
-  { date: '2023-09', smoothPath: 218, sp500: 142, month: 'Sep 2023' },
-  { date: '2023-12', smoothPath: 245, sp500: 158, month: 'Dec 2023' },
-  { date: '2024-03', smoothPath: 268, sp500: 170, month: 'Mar 2024' },
-  { date: '2024-06', smoothPath: 285, sp500: 178, month: 'Jun 2024' },
-  { date: '2024-09', smoothPath: 294, sp500: 185, month: 'Sep 2024' },
+  { date: '2017-06', smoothPath: 101.61, sp500: 100.67, month: 'Jun 2017' },
+  { date: '2017-07', smoothPath: 105.53, sp500: 102.76, month: 'Jul 2017' },
+  { date: '2017-08', smoothPath: 106.34, sp500: 103.04, month: 'Aug 2017' },
+  { date: '2017-09', smoothPath: 110.43, sp500: 105.14, month: 'Sep 2017' },
+  { date: '2017-10', smoothPath: 107.81, sp500: 107.59, month: 'Oct 2017' },
+  { date: '2017-11', smoothPath: 112.22, sp500: 110.95, month: 'Nov 2017' },
+  { date: '2017-12', smoothPath: 116.28, sp500: 112.29, month: 'Dec 2017' },
+  { date: '2018-01', smoothPath: 123.62, sp500: 118.68, month: 'Jan 2018' },
+  { date: '2018-02', smoothPath: 119.83, sp500: 114.16, month: 'Feb 2018' },
+  { date: '2018-03', smoothPath: 116.86, sp500: 111.35, month: 'Mar 2018' },
+  { date: '2018-04', smoothPath: 119.55, sp500: 111.74, month: 'Apr 2018' },
+  { date: '2018-05', smoothPath: 116.33, sp500: 114.43, month: 'May 2018' },
+  { date: '2018-06', smoothPath: 120.37, sp500: 115.10, month: 'Jun 2018' },
+  { date: '2018-07', smoothPath: 121.62, sp500: 119.42, month: 'Jul 2018' },
+  { date: '2018-08', smoothPath: 130.36, sp500: 123.28, month: 'Aug 2018' },
+  { date: '2018-09', smoothPath: 128.65, sp500: 123.94, month: 'Sep 2018' },
+  { date: '2018-10', smoothPath: 123.04, sp500: 115.48, month: 'Oct 2018' },
+  { date: '2018-11', smoothPath: 123.17, sp500: 117.70, month: 'Nov 2018' },
+  { date: '2018-12', smoothPath: 111.42, sp500: 107.27, month: 'Dec 2018' },
+  { date: '2019-01', smoothPath: 118.03, sp500: 115.77, month: 'Jan 2019' },
+  { date: '2019-02', smoothPath: 124.89, sp500: 119.51, month: 'Feb 2019' },
+  { date: '2019-03', smoothPath: 128.67, sp500: 121.80, month: 'Mar 2019' },
+  { date: '2019-04', smoothPath: 130.27, sp500: 126.67, month: 'Apr 2019' },
+  { date: '2019-05', smoothPath: 120.36, sp500: 118.69, month: 'May 2019' },
+  { date: '2019-06', smoothPath: 126.83, sp500: 126.93, month: 'Jun 2019' },
+  { date: '2019-07', smoothPath: 135.71, sp500: 128.86, month: 'Jul 2019' },
+  { date: '2019-08', smoothPath: 133.73, sp500: 126.73, month: 'Aug 2019' },
+  { date: '2019-09', smoothPath: 136.65, sp500: 129.20, month: 'Sep 2019' },
+  { date: '2019-10', smoothPath: 136.91, sp500: 131.99, month: 'Oct 2019' },
+  { date: '2019-11', smoothPath: 145.03, sp500: 136.79, month: 'Nov 2019' },
+  { date: '2019-12', smoothPath: 151.40, sp500: 140.79, month: 'Dec 2019' },
+  { date: '2020-01', smoothPath: 145.62, sp500: 140.79, month: 'Jan 2020' },
+  { date: '2020-02', smoothPath: 136.85, sp500: 128.89, month: 'Feb 2020' },
+  { date: '2020-03', smoothPath: 130.32, sp500: 113.24, month: 'Mar 2020' },
+  { date: '2020-04', smoothPath: 144.50, sp500: 127.60, month: 'Apr 2020' },
+  { date: '2020-05', smoothPath: 175.52, sp500: 133.75, month: 'May 2020' },
+  { date: '2020-06', smoothPath: 185.22, sp500: 136.28, month: 'Jun 2020' },
+  { date: '2020-07', smoothPath: 191.22, sp500: 144.26, month: 'Jul 2020' },
+  { date: '2020-08', smoothPath: 204.07, sp500: 154.36, month: 'Aug 2020' },
+  { date: '2020-09', smoothPath: 194.54, sp500: 148.57, month: 'Sep 2020' },
+  { date: '2020-10', smoothPath: 188.77, sp500: 144.84, month: 'Oct 2020' },
+  { date: '2020-11', smoothPath: 219.35, sp500: 160.62, month: 'Nov 2020' },
+  { date: '2020-12', smoothPath: 223.78, sp500: 166.69, month: 'Dec 2020' },
+  { date: '2021-01', smoothPath: 227.80, sp500: 164.97, month: 'Jan 2021' },
+  { date: '2021-02', smoothPath: 243.89, sp500: 169.53, month: 'Feb 2021' },
+  { date: '2021-03', smoothPath: 265.05, sp500: 177.24, month: 'Mar 2021' },
 ];
 
 interface PerformanceChartProps {
@@ -57,15 +83,15 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
     <div className={`bg-card rounded-lg border border-border p-4 ${height} ${className}`}>
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-foreground mb-2">Portfolio Performance vs S&P 500</h3>
-        <p className="text-sm text-muted-foreground">Cumulative returns since January 2020 (Base: 100)</p>
+        <p className="text-sm text-muted-foreground">Cumulative returns since June 2017 (Base: $10,000)</p>
       </div>
       
       <ResponsiveContainer width="100%" height="85%">
         <AreaChart data={performanceData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="smoothPathGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.3}/>
-              <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+              <stop offset="5%" stopColor="#FFD700" stopOpacity={0.3}/>
+              <stop offset="95%" stopColor="#FFD700" stopOpacity={0}/>
             </linearGradient>
             <linearGradient id="sp500Gradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.2}/>
@@ -104,7 +130,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           <Area
             type="monotone"
             dataKey="smoothPath"
-            stroke="hsl(var(--primary))"
+            stroke="#FFD700"
             strokeWidth={3}
             fill="url(#smoothPathGradient)"
           />
@@ -113,8 +139,8 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
       
       <div className="flex justify-center space-x-6 mt-2">
         <div className="flex items-center space-x-2">
-          <div className="w-3 h-3 bg-primary rounded-full"></div>
-          <span className="text-sm text-foreground font-medium">Smooth Path Investing</span>
+          <div className="w-3 h-3 rounded-full" style={{ backgroundColor: '#FFD700' }}></div>
+          <span className="text-sm font-medium" style={{ color: '#FFD700' }}>Smooth Path Investing</span>
         </div>
         <div className="flex items-center space-x-2">
           <div className="w-3 h-0.5 bg-muted-foreground"></div>
