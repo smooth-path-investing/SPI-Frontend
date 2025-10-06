@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
-import { StockGraphPlaceholder } from '../components/ui/stock-graph-placeholder';
 import { PERFORMANCE_METRICS } from '../constants';
 import { TrendingUp, TrendingDown, BarChart3, Shield, Award, Target, Calendar, DollarSign, Download, FileText } from 'lucide-react';
 import { textContent } from '@/constants/textContent';
+import { PerformanceCharts } from '@/components/performance/PerformanceCharts';
 
 export const Performance: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overall');
@@ -147,9 +147,9 @@ export const Performance: React.FC = () => {
           </div>
         </div>
 
-        {/* Chart Area - Enhanced */}
-        <div className="bg-card rounded-lg p-8 border border-border mb-16">
-          <div className="mb-6">
+        {/* Chart Area - Real Data */}
+        <div className="mb-16">
+          <div className="mb-6 text-center">
             <h2 className="text-2xl font-bold mb-2">
               {tabs.find(tab => tab.id === activeTab)?.label}
             </h2>
@@ -160,7 +160,7 @@ export const Performance: React.FC = () => {
               {activeTab === 'attribution' && textContent["performance-tab-attribution-desc"]}
             </p>
           </div>
-          <StockGraphPlaceholder height="h-96" />
+          <PerformanceCharts activeTab={activeTab} />
         </div>
 
         {/* Full Metrics Table */}
