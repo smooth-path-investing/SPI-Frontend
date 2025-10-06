@@ -66,33 +66,33 @@ export const DevModePanel: React.FC = () => {
       }}
       onMouseDown={handleMouseDown}
     >
-      <div className="bg-red-600 text-white shadow-2xl rounded-lg border-4 border-red-700 min-w-[280px]">
+    <div className="bg-red-600 text-white shadow-2xl rounded-md border-2 border-red-700 min-w-[200px]">
         {/* Header */}
-        <div className="drag-handle flex items-center justify-between p-3 bg-red-700 rounded-t-md">
-          <div className="flex items-center gap-2">
-            <Settings className="w-5 h-5" />
-            <span className="font-bold text-sm">DEV MODE</span>
+        <div className="drag-handle flex items-center justify-between p-2 bg-red-700 rounded-t-sm">
+          <div className="flex items-center gap-1.5">
+            <Settings className="w-3.5 h-3.5" />
+            <span className="font-bold text-xs">DEV</span>
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="hover:bg-red-600 p-1 rounded transition-colors"
+            className="hover:bg-red-600 p-0.5 rounded transition-colors"
           >
-            {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+            {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
           </button>
         </div>
 
         {/* Content */}
         {isOpen && (
-          <div className="p-4 space-y-4 bg-red-600 rounded-b-md max-h-[70vh] overflow-y-auto">
+          <div className="p-2.5 space-y-3 bg-red-600 rounded-b-sm max-h-[60vh] overflow-y-auto text-xs">
             {/* Auth Status */}
-            <div className="space-y-2">
-              <div className="text-xs font-semibold uppercase tracking-wide">Auth Status</div>
+            <div className="space-y-1.5">
+              <div className="text-[10px] font-semibold uppercase tracking-wide">Auth Status</div>
               {isAuthenticated ? (
-                <div className="space-y-2">
-                  <div className="text-sm">
-                    <div className="font-medium">{user?.name}</div>
-                    <div className="text-red-200 text-xs">{user?.email}</div>
-                    <Badge className="mt-1 bg-red-800 hover:bg-red-800 text-white border-red-900">
+                <div className="space-y-1.5">
+                  <div>
+                    <div className="font-medium text-xs">{user?.name}</div>
+                    <div className="text-red-200 text-[10px]">{user?.email}</div>
+                    <Badge className="mt-1 text-[10px] px-1.5 py-0 h-4 bg-red-800 hover:bg-red-800 text-white border-red-900">
                       {user?.plan}
                     </Badge>
                   </div>
@@ -100,24 +100,24 @@ export const DevModePanel: React.FC = () => {
                     size="sm"
                     variant="outline"
                     onClick={logout}
-                    className="w-full bg-red-500 hover:bg-red-400 text-white border-red-700"
+                    className="w-full h-6 text-[10px] bg-red-500 hover:bg-red-400 text-white border-red-700"
                   >
                     Logout
                   </Button>
                 </div>
               ) : (
-                <div className="text-sm text-red-200">Not logged in</div>
+                <div className="text-[10px] text-red-200">Not logged in</div>
               )}
             </div>
 
             {/* Plan Switcher */}
-            <div className="space-y-2">
-              <div className="text-xs font-semibold uppercase tracking-wide">Switch Plan</div>
-              <div className="grid grid-cols-3 gap-2">
+            <div className="space-y-1.5">
+              <div className="text-[10px] font-semibold uppercase tracking-wide">Switch Plan</div>
+              <div className="grid grid-cols-3 gap-1.5">
                 <Button
                   size="sm"
                   onClick={() => handlePlanSwitch('free')}
-                  className="bg-red-500 hover:bg-red-400 text-white border border-red-700"
+                  className="h-6 text-[10px] bg-red-500 hover:bg-red-400 text-white border border-red-700"
                   disabled={user?.plan === 'free'}
                 >
                   Free
@@ -125,7 +125,7 @@ export const DevModePanel: React.FC = () => {
                 <Button
                   size="sm"
                   onClick={() => handlePlanSwitch('pro')}
-                  className="bg-red-500 hover:bg-red-400 text-white border border-red-700"
+                  className="h-6 text-[10px] bg-red-500 hover:bg-red-400 text-white border border-red-700"
                   disabled={user?.plan === 'pro'}
                 >
                   Pro
@@ -133,7 +133,7 @@ export const DevModePanel: React.FC = () => {
                 <Button
                   size="sm"
                   onClick={() => handlePlanSwitch('elite')}
-                  className="bg-red-500 hover:bg-red-400 text-white border border-red-700"
+                  className="h-6 text-[10px] bg-red-500 hover:bg-red-400 text-white border border-red-700"
                   disabled={user?.plan === 'elite'}
                 >
                   Elite
@@ -143,34 +143,34 @@ export const DevModePanel: React.FC = () => {
 
             {/* Portfolio Access */}
             {isAuthenticated && (
-              <div className="space-y-2">
-                <div className="text-xs font-semibold uppercase tracking-wide">Portfolio Access</div>
-                <div className="space-y-2 max-h-64 overflow-y-auto">
+              <div className="space-y-1.5">
+                <div className="text-[10px] font-semibold uppercase tracking-wide">Portfolio Access</div>
+                <div className="space-y-1.5 max-h-48 overflow-y-auto">
                   {PORTFOLIOS.map(portfolio => {
                     const isPurchased = hasPurchasedPortfolio(portfolio.id);
                     return (
                       <div
                         key={portfolio.id}
-                        className="flex items-center justify-between p-2 bg-red-700 rounded border border-red-800"
+                        className="flex items-center justify-between p-1.5 bg-red-700 rounded border border-red-800"
                       >
-                        <div className="flex-1 min-w-0 mr-2">
-                          <div className="text-sm font-medium truncate">{portfolio.name}</div>
-                          <div className="text-xs text-red-200">${portfolio.price}</div>
+                        <div className="flex-1 min-w-0 mr-1.5">
+                          <div className="text-[10px] font-medium truncate">{portfolio.name}</div>
+                          <div className="text-[9px] text-red-200">${portfolio.price}</div>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-1">
                           <Badge 
                             variant={isPurchased ? "default" : "outline"}
-                            className={isPurchased 
+                            className={`text-[10px] px-1 py-0 h-4 ${isPurchased 
                               ? "bg-green-600 hover:bg-green-600 text-white" 
                               : "bg-red-800 text-white border-red-900"
-                            }
+                            }`}
                           >
                             {isPurchased ? '✓' : '○'}
                           </Badge>
                           <Button
                             size="sm"
                             onClick={() => togglePortfolioPurchase(portfolio.id)}
-                            className="h-7 px-2 text-xs bg-red-500 hover:bg-red-400 text-white border border-red-700"
+                            className="h-5 px-1.5 text-[9px] bg-red-500 hover:bg-red-400 text-white border border-red-700"
                           >
                             {isPurchased ? 'Revoke' : 'Grant'}
                           </Button>
@@ -183,9 +183,9 @@ export const DevModePanel: React.FC = () => {
             )}
 
             {/* Info */}
-            <div className="text-xs text-red-200 pt-2 border-t border-red-700">
-              <div className="font-semibold mb-1">Dev Mode Only</div>
-              <div>Drag this panel anywhere. This won't appear in production.</div>
+            <div className="text-[9px] text-red-200 pt-1.5 border-t border-red-700">
+              <div className="font-semibold mb-0.5">Dev Mode Only</div>
+              <div>Drag anywhere. Won't show in prod.</div>
             </div>
           </div>
         )}
