@@ -11,7 +11,7 @@ import { textContent } from '@/constants/textContent';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
-  const { user, login, signup, logout, isAuthenticated, hasPurchasedPortfolio, togglePortfolioPurchase } = useAuth();
+  const { user, login, signup, logout, isAuthenticated } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -79,8 +79,6 @@ export const Navigation: React.FC = () => {
                   <ProfileDropdown
                     user={user!}
                     onLogout={logout}
-                    hasPurchasedPortfolio={hasPurchasedPortfolio}
-                    togglePortfolioPurchase={togglePortfolioPurchase}
                   />
                 ) : (
                   <Button
@@ -99,12 +97,10 @@ export const Navigation: React.FC = () => {
                 user={user}
                 isMobileMenuOpen={isMobileMenuOpen}
                 onToggleMobileMenu={toggleMobileMenu}
-                onCloseMobileMenu={closeMobileMenu}
-                onAuthClick={() => setIsAuthModalOpen(true)}
-                onLogout={logout}
-                hasPurchasedPortfolio={hasPurchasedPortfolio}
-                togglePortfolioPurchase={togglePortfolioPurchase}
-              />
+              onCloseMobileMenu={closeMobileMenu}
+              onAuthClick={() => setIsAuthModalOpen(true)}
+              onLogout={logout}
+            />
             </div>
           </div>
         </div>

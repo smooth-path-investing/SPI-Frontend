@@ -7,7 +7,7 @@ import { PORTFOLIOS } from '@/constants/portfolios';
 
 export const DevModePanel: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [position, setPosition] = useState({ x: 20, y: 100 });
+  const [position, setPosition] = useState({ x: 20, y: 20 });
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number; startY: number } | null>(null);
   const { user, hasPurchasedPortfolio, togglePortfolioPurchase, login, logout, isAuthenticated } = useAuth();
@@ -66,24 +66,24 @@ export const DevModePanel: React.FC = () => {
       }}
       onMouseDown={handleMouseDown}
     >
-    <div className="bg-red-600 text-white shadow-2xl rounded-md border-2 border-red-700 min-w-[200px]">
+    <div className="bg-red-600 text-white shadow-2xl rounded border border-red-700 min-w-[140px]">
         {/* Header */}
-        <div className="drag-handle flex items-center justify-between p-2 bg-red-700 rounded-t-sm">
-          <div className="flex items-center gap-1.5">
-            <Settings className="w-3.5 h-3.5" />
-            <span className="font-bold text-xs">DEV</span>
+        <div className="drag-handle flex items-center justify-between px-1.5 py-1 bg-red-700 rounded-t-sm">
+          <div className="flex items-center gap-1">
+            <Settings className="w-2.5 h-2.5" />
+            <span className="font-bold text-[10px]">DEV</span>
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="hover:bg-red-600 p-0.5 rounded transition-colors"
           >
-            {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+            {isOpen ? <ChevronUp className="w-2.5 h-2.5" /> : <ChevronDown className="w-2.5 h-2.5" />}
           </button>
         </div>
 
         {/* Content */}
         {isOpen && (
-          <div className="p-2.5 space-y-3 bg-red-600 rounded-b-sm max-h-[60vh] overflow-y-auto text-xs">
+          <div className="p-2 space-y-2 bg-red-600 rounded-b-sm max-h-[50vh] overflow-y-auto text-[10px]">
             {/* Auth Status */}
             <div className="space-y-1.5">
               <div className="text-[10px] font-semibold uppercase tracking-wide">Auth Status</div>

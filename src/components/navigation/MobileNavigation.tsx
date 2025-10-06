@@ -2,10 +2,8 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Menu, X, Settings } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { User } from '../../types';
-import { PORTFOLIOS } from '@/constants/portfolios';
 
 interface MobileNavigationProps {
   navigationItems: { href: string; label: string }[];
@@ -16,8 +14,6 @@ interface MobileNavigationProps {
   onCloseMobileMenu: () => void;
   onAuthClick: () => void;
   onLogout: () => void;
-  hasPurchasedPortfolio: (portfolioId: string) => boolean;
-  togglePortfolioPurchase: (portfolioId: string) => void;
 }
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({
@@ -28,9 +24,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   onToggleMobileMenu,
   onCloseMobileMenu,
   onAuthClick,
-  onLogout,
-  hasPurchasedPortfolio,
-  togglePortfolioPurchase
+  onLogout
 }) => {
   const location = useLocation();
 
@@ -99,46 +93,10 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                           </p>
                         </div>
                       </div>
-                      <div className="space-y-3 px-4">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Settings className="w-4 h-4" />
-                          <span className="text-sm font-semibold">Testing Mode</span>
-                        </div>
-                        <p className="text-xs text-muted-foreground mb-2">
-                          Simulate portfolio purchases
-                        </p>
-                        {PORTFOLIOS.map(portfolio => {
-                          const isPurchased = hasPurchasedPortfolio(portfolio.id);
-                          return (
-                            <div 
-                              key={portfolio.id}
-                              className="flex items-center justify-between p-2 border border-border rounded-md"
-                            >
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate">{portfolio.name}</p>
-                                <p className="text-xs text-muted-foreground">${portfolio.price}</p>
-                              </div>
-                              <div className="flex items-center gap-2">
-                                <Badge variant={isPurchased ? "default" : "outline"} className="text-xs">
-                                  {isPurchased ? '✓' : '○'}
-                                </Badge>
-                                <Button
-                                  size="sm"
-                                  variant="ghost"
-                                  onClick={() => togglePortfolioPurchase(portfolio.id)}
-                                  className="h-7 px-2 text-xs"
-                                >
-                                  {isPurchased ? 'Remove' : 'Grant'}
-                                </Button>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
                       <Button
                         variant="outline"
                         size="sm"
-                        className="w-full"
+                        className="w-full mt-4"
                         onClick={() => {
                           onLogout();
                           onCloseMobileMenu();

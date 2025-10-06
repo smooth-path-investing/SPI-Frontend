@@ -10,8 +10,6 @@ interface DesktopNavigationProps {
   user: User | null;
   onAuthClick: () => void;
   onLogout: () => void;
-  hasPurchasedPortfolio: (portfolioId: string) => boolean;
-  togglePortfolioPurchase: (portfolioId: string) => void;
 }
 
 export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
@@ -19,9 +17,7 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
   isAuthenticated,
   user,
   onAuthClick,
-  onLogout,
-  hasPurchasedPortfolio,
-  togglePortfolioPurchase
+  onLogout
 }) => {
   const location = useLocation();
 
@@ -49,8 +45,6 @@ export const DesktopNavigation: React.FC<DesktopNavigationProps> = ({
           <ProfileDropdown
             user={user!}
             onLogout={onLogout}
-            hasPurchasedPortfolio={hasPurchasedPortfolio}
-            togglePortfolioPurchase={togglePortfolioPurchase}
           />
         ) : (
           <Button
