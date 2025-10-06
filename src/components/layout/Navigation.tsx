@@ -11,34 +11,11 @@ import { textContent } from '@/constants/textContent';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
-  const { user, login, signup, logout, isAuthenticated } = useAuth();
+  const { user, login, signup, logout, isAuthenticated, hasPurchasedPortfolio, togglePortfolioPurchase } = useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [showPremiumStocks, setShowPremiumStocks] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navigationItems = NAVIGATION_ITEMS;
-
-  // Store the premium stocks visibility in localStorage for persistence
-  const handleTogglePremiumStocks = (show: boolean) => {
-    console.log('Navigation: Toggling premium stocks to:', show);
-    setShowPremiumStocks(show);
-    localStorage.setItem('showPremiumStocks', show.toString());
-    
-    // Dispatch custom event to notify the Stocks page
-    const event = new CustomEvent('premiumStocksToggled', { detail: { show } });
-    window.dispatchEvent(event);
-    console.log('Navigation: Dispatched premiumStocksToggled event');
-  };
-
-  // Initialize from localStorage on mount
-  useEffect(() => {
-    const stored = localStorage.getItem('showPremiumStocks');
-    if (stored !== null) {
-      const value = stored === 'true';
-      console.log('Navigation: Initialized showPremiumStocks from localStorage:', value);
-      setShowPremiumStocks(value);
-    }
-  }, []);
 
   // Close mobile menu when route changes
   useEffect(() => {
@@ -102,8 +79,8 @@ export const Navigation: React.FC = () => {
                   <ProfileDropdown
                     user={user!}
                     onLogout={logout}
-                    showPremiumStocks={showPremiumStocks}
-                    onTogglePremiumStocks={handleTogglePremiumStocks}
+                    hasPurchasedPortfolio={hasPurchasedPortfolio}
+                    togglePortfolioPurchase={togglePortfolioPurchase}
                   />
                 ) : (
                   <Button
@@ -125,8 +102,8 @@ export const Navigation: React.FC = () => {
                 onCloseMobileMenu={closeMobileMenu}
                 onAuthClick={() => setIsAuthModalOpen(true)}
                 onLogout={logout}
-                showPremiumStocks={showPremiumStocks}
-                onTogglePremiumStocks={handleTogglePremiumStocks}
+                hasPurchasedPortfolio={hasPurchasedPortfolio}
+                togglePortfolioPurchase={togglePortfolioPurchase}
               />
             </div>
           </div>

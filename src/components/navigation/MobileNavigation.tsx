@@ -2,8 +2,10 @@ import React from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Menu, X, Settings } from 'lucide-react';
 import { User } from '../../types';
+import { PORTFOLIOS } from '@/constants/portfolios';
 
 interface MobileNavigationProps {
   navigationItems: { href: string; label: string }[];
@@ -14,8 +16,8 @@ interface MobileNavigationProps {
   onCloseMobileMenu: () => void;
   onAuthClick: () => void;
   onLogout: () => void;
-  showPremiumStocks: boolean;
-  onTogglePremiumStocks: (show: boolean) => void;
+  hasPurchasedPortfolio: (portfolioId: string) => boolean;
+  togglePortfolioPurchase: (portfolioId: string) => void;
 }
 
 export const MobileNavigation: React.FC<MobileNavigationProps> = ({
@@ -27,8 +29,8 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   onCloseMobileMenu,
   onAuthClick,
   onLogout,
-  showPremiumStocks,
-  onTogglePremiumStocks
+  hasPurchasedPortfolio,
+  togglePortfolioPurchase
 }) => {
   const location = useLocation();
 
@@ -97,16 +99,41 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                           </p>
                         </div>
                       </div>
-                      <div className="px-4">
-                        <label className="flex items-center space-x-2 text-sm">
-                          <input
-                            type="checkbox"
-                            checked={showPremiumStocks}
-                            onChange={(e) => onTogglePremiumStocks(e.target.checked)}
-                            className="rounded border-border"
-                          />
-                          <span className="text-muted-foreground">Show Premium Stocks</span>
-                        </label>
+                      <div className="space-y-3 px-4">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Settings className="w-4 h-4" />
+                          <span className="text-sm font-semibold">Testing Mode</span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mb-2">
+                          Simulate portfolio purchases
+                        </p>
+                        {PORTFOLIOS.map(portfolio => {
+                          const isPurchased = hasPurchasedPortfolio(portfolio.id);
+                          return (
+                            <div 
+                              key={portfolio.id}
+                              className="flex items-center justify-between p-2 border border-border rounded-md"
+                            >
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium truncate">{portfolio.name}</p>
+                                <p className="text-xs text-muted-foreground">${portfolio.price}</p>
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <Badge variant={isPurchased ? "default" : "outline"} className="text-xs">
+                                  {isPurchased ? '✓' : '○'}
+                                </Badge>
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  onClick={() => togglePortfolioPurchase(portfolio.id)}
+                                  className="h-7 px-2 text-xs"
+                                >
+                                  {isPurchased ? 'Remove' : 'Grant'}
+                                </Button>
+                              </div>
+                            </div>
+                          );
+                        })}
                       </div>
                       <Button
                         variant="outline"
