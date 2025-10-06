@@ -54,8 +54,6 @@ export const DevModePanel: React.FC = () => {
     }
   };
 
-  if (!import.meta.env.DEV) return null;
-
   return (
     <div
       className="fixed z-[99999] select-none"
