@@ -58,7 +58,7 @@ export const DevModePanel: React.FC = () => {
 
   return (
     <div
-      className="fixed z-[9999] select-none"
+      className="fixed z-[99999] select-none"
       style={{
         left: `${position.x}px`,
         top: `${position.y}px`,
@@ -70,8 +70,8 @@ export const DevModePanel: React.FC = () => {
         {/* Header */}
         <div className="drag-handle flex items-center justify-between px-1.5 py-1 bg-red-700 rounded-t-sm">
           <div className="flex items-center gap-1">
-            <Settings className="w-2.5 h-2.5" />
-            <span className="font-bold text-[10px]">DEV</span>
+            <Settings className="w-3 h-3" />
+            <span className="font-bold text-[11px]">DEV MODE</span>
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
