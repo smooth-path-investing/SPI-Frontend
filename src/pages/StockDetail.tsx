@@ -162,17 +162,35 @@ export const StockDetail: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Trading Signal */}
-            <Card className="border-green-500/50 bg-green-500/5">
+            {/* Recommendation */}
+            <Card>
               <CardHeader>
-                <CardTitle className="text-green-400">Current Signal</CardTitle>
+                <CardTitle>Recommendation</CardTitle>
               </CardHeader>
-              <CardContent>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-400 mb-2">BUY</div>
-                  <p className="text-sm text-muted-foreground">
-                    Based on our multi-factor analysis and current market conditions
-                  </p>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center py-3 border-b border-border">
+                  <span className="text-muted-foreground">Rating</span>
+                  <Badge 
+                    variant={
+                      stock.recommendation.includes('Buy') ? 'default' : 
+                      stock.recommendation.includes('Sell') ? 'destructive' : 
+                      'secondary'
+                    }
+                  >
+                    {stock.recommendation}
+                  </Badge>
+                </div>
+                <div className="py-3">
+                  <div className="flex justify-between mb-2">
+                    <span className="text-muted-foreground">Confidence Level</span>
+                    <span className="font-semibold">{stock.confidence}%</span>
+                  </div>
+                  <div className="w-full bg-muted rounded-full h-2">
+                    <div 
+                      className="bg-primary h-2 rounded-full transition-all"
+                      style={{ width: `${stock.confidence}%` }}
+                    />
+                  </div>
                 </div>
               </CardContent>
             </Card>
