@@ -177,6 +177,18 @@ export const StockDetail: React.FC = () => {
             </Card>
           </div>
         </div>
+
+        {/* AI Chatbot Section */}
+        <Card className="mt-8">
+          <CardHeader>
+            <CardTitle>Ask AI About {stock.ticker}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="min-h-[400px] flex items-center justify-center border-2 border-dashed border-border rounded-lg">
+              <p className="text-muted-foreground">AI Chatbot - Coming Soon</p>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
