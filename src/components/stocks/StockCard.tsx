@@ -12,6 +12,12 @@ interface StockCardProps {
 
 export const StockCard: React.FC<StockCardProps> = ({ stock, onViewDetails }) => {
   const isPositive = stock.changePercent >= 0;
+  
+  const getRecommendationColor = (rec: string) => {
+    if (rec.includes('Buy')) return 'bg-green-500/20 text-green-400 border-green-500/50';
+    if (rec.includes('Sell')) return 'bg-red-500/20 text-red-400 border-red-500/50';
+    return 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50';
+  };
 
   return (
     <Card className="hover:bg-accent/50 transition-all duration-300 cursor-pointer" onClick={onViewDetails}>
@@ -21,9 +27,14 @@ export const StockCard: React.FC<StockCardProps> = ({ stock, onViewDetails }) =>
             <CardTitle className="text-xl mb-1">{stock.ticker}</CardTitle>
             <p className="text-sm text-muted-foreground">{stock.name}</p>
           </div>
-          <Badge variant="outline" className="text-xs">
-            {stock.sector}
-          </Badge>
+          <div className="flex flex-col items-end gap-1">
+            <Badge variant="outline" className="text-xs">
+              {stock.sector}
+            </Badge>
+            <Badge className={`text-xs font-semibold ${getRecommendationColor(stock.recommendation)}`}>
+              {stock.recommendation}
+            </Badge>
+          </div>
         </div>
       </CardHeader>
       
@@ -36,6 +47,20 @@ export const StockCard: React.FC<StockCardProps> = ({ stock, onViewDetails }) =>
               {isPositive ? <ArrowUpRight className="w-4 h-4" /> : <ArrowDownRight className="w-4 h-4" />}
               <span>{isPositive ? '+' : ''}{stock.change.toFixed(2)} ({isPositive ? '+' : ''}{stock.changePercent.toFixed(2)}%)</span>
             </div>
+          </div>
+        </div>
+
+        {/* Confidence Level */}
+        <div className="bg-accent/30 rounded-lg p-3">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-xs text-muted-foreground">Confidence Level</span>
+            <span className="text-sm font-bold">{stock.confidence}%</span>
+          </div>
+          <div className="w-full bg-muted rounded-full h-2">
+            <div 
+              className={`h-2 rounded-full ${stock.confidence >= 80 ? 'bg-green-500' : stock.confidence >= 60 ? 'bg-yellow-500' : 'bg-red-500'}`}
+              style={{ width: `${stock.confidence}%` }}
+            />
           </div>
         </div>
 
