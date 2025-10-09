@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { ArrowLeft, ArrowUpRight, ArrowDownRight, MessageSquare, X } from 'lucide-react';
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
 import { getStocksForPortfolio } from '@/constants/stockData';
 
 export const StockDetail: React.FC = () => {
   const { portfolioId, ticker } = useParams<{ portfolioId: string; ticker: string }>();
   const navigate = useNavigate();
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   const stocks = portfolioId ? getStocksForPortfolio(portfolioId) : [];
   const stock = stocks.find(s => s.ticker === ticker);
@@ -34,8 +35,8 @@ export const StockDetail: React.FC = () => {
   const isPositive = stock.changePercent >= 0;
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="min-h-screen bg-background text-foreground pt-24 relative">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 pr-4">
         {/* Back Button */}
         <Button 
           onClick={() => navigate(`/portfolio/${portfolioId}`)}
@@ -177,18 +178,32 @@ export const StockDetail: React.FC = () => {
             </Card>
           </div>
         </div>
+      </div>
 
-        {/* AI Chatbot Section */}
-        <Card className="mt-8">
-          <CardHeader>
-            <CardTitle>Ask AI About {stock.ticker}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="min-h-[400px] flex items-center justify-center border-2 border-dashed border-border rounded-lg">
-              <p className="text-muted-foreground">AI Chatbot - Coming Soon</p>
-            </div>
-          </CardContent>
-        </Card>
+      {/* Chatbot Toggle Button */}
+      <Button
+        onClick={() => setIsChatOpen(!isChatOpen)}
+        className="fixed bottom-8 right-8 z-50 rounded-full w-14 h-14 shadow-lg"
+        size="icon"
+      >
+        {isChatOpen ? <X className="w-6 h-6" /> : <MessageSquare className="w-6 h-6" />}
+      </Button>
+
+      {/* Chatbot Sidebar */}
+      <div
+        className={`fixed top-16 right-0 h-[calc(100vh-4rem)] bg-card border-l border-border shadow-xl transition-transform duration-300 ease-in-out z-40 ${
+          isChatOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+        style={{ width: '400px' }}
+      >
+        <div className="flex flex-col h-full">
+          <div className="p-4 border-b border-border">
+            <h3 className="text-lg font-semibold">Ask AI About {stock.ticker}</h3>
+          </div>
+          <div className="flex-1 p-4 flex items-center justify-center">
+            <p className="text-muted-foreground">AI Chatbot - Coming Soon</p>
+          </div>
+        </div>
       </div>
     </div>
   );
