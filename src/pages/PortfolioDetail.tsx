@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import { PORTFOLIOS } from '@/constants/portfolios';
+import { getStocksForPortfolio } from '@/constants/stockData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Lock, ArrowLeft, TrendingUp, Shield, Calendar, Package } from 'lucide-react';
 import { AuthModal } from '@/components/ui/auth-modal';
+import { StockCard } from '@/components/stocks/StockCard';
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId: string }>();
@@ -121,6 +123,8 @@ export const PortfolioDetail: React.FC = () => {
   }
 
   // Purchased view - show actual portfolio content
+  const stocks = getStocksForPortfolio(portfolio.id);
+
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
@@ -175,17 +179,19 @@ export const PortfolioDetail: React.FC = () => {
           </Card>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Portfolio Holdings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">
-              Detailed portfolio data will be displayed here. This section will be updated with real stock holdings, 
-              allocation percentages, and performance metrics.
-            </p>
-          </CardContent>
-        </Card>
+        {/* Stock Holdings Grid */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-6">Current Holdings</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {stocks.map((stock) => (
+              <StockCard
+                key={stock.ticker}
+                stock={stock}
+                onViewDetails={() => navigate(`/portfolio/${portfolio.id}/stock/${stock.ticker}`)}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </div>
   );
