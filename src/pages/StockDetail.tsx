@@ -5,7 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, ArrowUpRight, ArrowDownRight, MessageSquare, X } from 'lucide-react';
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
+import { MetricRow } from '@/components/stock/MetricRow';
 import { getStocksForPortfolio } from '@/constants/stockData';
+import { textContent } from '@/constants/textContent';
 
 export const StockDetail: React.FC = () => {
   const { portfolioId, ticker } = useParams<{ portfolioId: string; ticker: string }>();
@@ -19,13 +21,13 @@ export const StockDetail: React.FC = () => {
     return (
       <div className="min-h-screen bg-background text-foreground pt-24 px-4">
         <div className="max-w-7xl mx-auto">
-          <p className="text-center text-muted-foreground">Stock not found</p>
+          <p className="text-center text-muted-foreground">{textContent["stock-detail-not-found"]}</p>
           <Button 
             onClick={() => navigate(`/portfolio/${portfolioId}`)}
             className="mt-4 mx-auto block"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            Back to Portfolio
+            {textContent["stock-detail-back"]}
           </Button>
         </div>
       </div>
@@ -44,7 +46,7 @@ export const StockDetail: React.FC = () => {
           className="mb-8"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Portfolio
+          {textContent["stock-detail-back"]}
         </Button>
 
         {/* Stock Header */}
@@ -75,7 +77,7 @@ export const StockDetail: React.FC = () => {
             {/* Chart */}
             <Card>
               <CardHeader>
-                <CardTitle>Price Chart</CardTitle>
+                <CardTitle>{textContent["stock-detail-price-chart"]}</CardTitle>
               </CardHeader>
               <CardContent>
                 <StockGraphPlaceholder height="h-96" ticker={stock.ticker} />
@@ -85,7 +87,7 @@ export const StockDetail: React.FC = () => {
             {/* Company Description */}
             <Card>
               <CardHeader>
-                <CardTitle>About {stock.name}</CardTitle>
+                <CardTitle>{textContent["stock-detail-about"]} {stock.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
@@ -97,11 +99,11 @@ export const StockDetail: React.FC = () => {
             {/* Key Factors */}
             <Card>
               <CardHeader>
-                <CardTitle>Key Predictive Factors</CardTitle>
+                <CardTitle>{textContent["stock-detail-key-factors"]}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Our proprietary algorithm identified these factors as the most significant predictors for this stock:
+                  {textContent["stock-detail-key-factors-desc"]}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {stock.factors.map((factor, index) => (
@@ -119,70 +121,76 @@ export const StockDetail: React.FC = () => {
             {/* Key Metrics Card */}
             <Card>
               <CardHeader>
-                <CardTitle>Key Metrics</CardTitle>
+                <CardTitle>{textContent["stock-detail-key-metrics"]}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground">Market Cap</span>
-                  <span className="font-semibold">{stock.keyMetrics.marketCap}</span>
-                </div>
-                <div className="flex justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground">P/E Ratio</span>
-                  <span className="font-semibold">{stock.keyMetrics.peRatio}</span>
-                </div>
-                <div className="flex justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground">Dividend Yield</span>
-                  <span className="font-semibold">{stock.keyMetrics.dividend}</span>
-                </div>
-                <div className="flex justify-between py-3">
-                  <span className="text-muted-foreground">Beta</span>
-                  <span className="font-semibold">{stock.keyMetrics.beta}</span>
-                </div>
+                <MetricRow
+                  label={textContent["stock-detail-market-cap"]}
+                  value={stock.keyMetrics.marketCap}
+                />
+                <MetricRow
+                  label={textContent["stock-detail-pe-ratio"]}
+                  value={stock.keyMetrics.peRatio}
+                />
+                <MetricRow
+                  label={textContent["stock-detail-dividend-yield"]}
+                  value={stock.keyMetrics.dividend}
+                />
+                <MetricRow
+                  label={textContent["stock-detail-beta"]}
+                  value={stock.keyMetrics.beta}
+                  hasBorder={false}
+                />
               </CardContent>
             </Card>
 
             {/* Model Performance */}
             <Card>
               <CardHeader>
-                <CardTitle>Model Performance</CardTitle>
+                <CardTitle>{textContent["stock-detail-model-performance"]}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground">Prediction Accuracy</span>
-                  <span className="font-semibold text-green-400">87.3%</span>
-                </div>
-                <div className="flex justify-between py-3 border-b border-border">
-                  <span className="text-muted-foreground">R-Squared</span>
-                  <span className="font-semibold">0.762</span>
-                </div>
-                <div className="flex justify-between py-3">
-                  <span className="text-muted-foreground">Confidence Level</span>
-                  <span className="font-semibold text-green-400">High</span>
-                </div>
+                <MetricRow
+                  label={textContent["stock-detail-prediction-accuracy"]}
+                  value="87.3%"
+                  valueClassName="font-semibold text-green-400"
+                />
+                <MetricRow
+                  label={textContent["stock-detail-r-squared"]}
+                  value="0.762"
+                />
+                <MetricRow
+                  label={textContent["stock-detail-confidence-level"]}
+                  value="High"
+                  valueClassName="font-semibold text-green-400"
+                  hasBorder={false}
+                />
               </CardContent>
             </Card>
 
             {/* Recommendation */}
             <Card>
               <CardHeader>
-                <CardTitle>Recommendation</CardTitle>
+                <CardTitle>{textContent["stock-detail-recommendation"]}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex justify-between items-center py-3 border-b border-border">
-                  <span className="text-muted-foreground">Rating</span>
-                  <Badge 
-                    variant={
-                      stock.recommendation.includes('Buy') ? 'default' : 
-                      stock.recommendation.includes('Sell') ? 'destructive' : 
-                      'secondary'
-                    }
-                  >
-                    {stock.recommendation}
-                  </Badge>
-                </div>
+                <MetricRow
+                  label={textContent["stock-detail-rating"]}
+                  value={
+                    <Badge 
+                      variant={
+                        stock.recommendation.includes('Buy') ? 'default' : 
+                        stock.recommendation.includes('Sell') ? 'destructive' : 
+                        'secondary'
+                      }
+                    >
+                      {stock.recommendation}
+                    </Badge>
+                  }
+                />
                 <div className="py-3">
                   <div className="flex justify-between mb-2">
-                    <span className="text-muted-foreground">Confidence Level</span>
+                    <span className="text-muted-foreground">{textContent["stock-detail-confidence-level"]}</span>
                     <span className="font-semibold">{stock.confidence}%</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
@@ -216,10 +224,10 @@ export const StockDetail: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-border">
-            <h3 className="text-lg font-semibold">Ask AI About {stock.ticker}</h3>
+            <h3 className="text-lg font-semibold">{textContent["stock-detail-ask-ai"]} {stock.ticker}</h3>
           </div>
           <div className="flex-1 p-4 flex items-center justify-center">
-            <p className="text-muted-foreground">AI Chatbot - Coming Soon</p>
+            <p className="text-muted-foreground">{textContent["stock-detail-ai-coming-soon"]}</p>
           </div>
         </div>
       </div>

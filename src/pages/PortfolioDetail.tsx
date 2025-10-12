@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
 import { PORTFOLIOS } from '@/constants/portfolios';
 import { getStocksForPortfolio } from '@/constants/stockData';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Lock, ArrowLeft, TrendingUp, Shield, Calendar, Package } from 'lucide-react';
+import { Lock, ArrowLeft } from 'lucide-react';
 import { AuthModal } from '@/components/ui/auth-modal';
 import { StockCard } from '@/components/stocks/StockCard';
+import { PortfolioMetricCard, PortfolioStatCard } from '@/components/portfolio/PortfolioMetricCard';
+import { useAuth } from '@/hooks/useAuth';
+import { textContent } from '@/constants/textContent';
+import { TrendingUp, Shield, Calendar, Package } from 'lucide-react';
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId: string }>();
-  const { isAuthenticated, user, login, signup, hasPurchasedPortfolio } = useAuth();
+  const { isAuthenticated, login, signup, hasPurchasedPortfolio } = useAuth();
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
 
@@ -59,7 +62,7 @@ export const PortfolioDetail: React.FC = () => {
               className="mb-6"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Back to Portfolios
+              {textContent["portfolio-detail-back"]}
             </Button>
 
             <Card className="text-center">
@@ -71,33 +74,36 @@ export const PortfolioDetail: React.FC = () => {
                 </p>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-2xl mx-auto">
-                  <div className="flex flex-col items-center gap-2">
-                    <TrendingUp className="w-6 h-6 text-primary" />
-                    <p className="text-xs text-muted-foreground">Expected Return</p>
-                    <p className="font-semibold">{portfolio.expectedReturn}</p>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <Shield className="w-6 h-6 text-primary" />
-                    <p className="text-xs text-muted-foreground">Risk Level</p>
-                    <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
-                      {portfolio.riskLevel}
-                    </Badge>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <Package className="w-6 h-6 text-primary" />
-                    <p className="text-xs text-muted-foreground">Holdings</p>
-                    <p className="font-semibold">{portfolio.holdings}</p>
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <Calendar className="w-6 h-6 text-primary" />
-                    <p className="text-xs text-muted-foreground">Rebalance</p>
-                    <p className="font-semibold text-sm">{portfolio.rebalanceFrequency}</p>
-                  </div>
+                  <PortfolioMetricCard
+                    icon={TrendingUp}
+                    label={textContent["portfolio-detail-expected-return"]}
+                    value={portfolio.expectedReturn}
+                  />
+                  <PortfolioMetricCard
+                    icon={Shield}
+                    label={textContent["portfolio-detail-risk-level"]}
+                    value={
+                      <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
+                        {portfolio.riskLevel}
+                      </Badge>
+                    }
+                  />
+                  <PortfolioMetricCard
+                    icon={Package}
+                    label={textContent["portfolio-detail-holdings"]}
+                    value={portfolio.holdings}
+                  />
+                  <PortfolioMetricCard
+                    icon={Calendar}
+                    label={textContent["portfolio-detail-rebalance"]}
+                    value={portfolio.rebalanceFrequency}
+                    className="text-sm"
+                  />
                 </div>
 
                 <div className="bg-accent/50 p-6 rounded-lg mb-8 max-w-md mx-auto">
                   <p className="text-3xl font-bold mb-2">${portfolio.price}</p>
-                  <p className="text-sm text-muted-foreground">One-time access fee</p>
+                  <p className="text-sm text-muted-foreground">{textContent["portfolio-detail-one-time-fee"]}</p>
                 </div>
 
                 <Button 
@@ -105,7 +111,7 @@ export const PortfolioDetail: React.FC = () => {
                   size="lg"
                   className="text-lg px-8"
                 >
-                  {isAuthenticated ? 'Purchase Access' : 'Login to Purchase'}
+                  {isAuthenticated ? textContent["portfolio-detail-purchase-access"] : textContent["portfolio-detail-login-purchase"]}
                 </Button>
               </CardContent>
             </Card>
@@ -134,7 +140,7 @@ export const PortfolioDetail: React.FC = () => {
           className="mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          Back to Portfolios
+          {textContent["portfolio-detail-back"]}
         </Button>
 
         <div className="mb-8">
@@ -143,37 +149,25 @@ export const PortfolioDetail: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          <PortfolioStatCard
+            label={textContent["portfolio-detail-expected-return"]}
+            value={portfolio.expectedReturn}
+          />
           <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-muted-foreground">Expected Return</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{portfolio.expectedReturn}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-muted-foreground">Risk Level</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
+              <p className="text-sm text-muted-foreground mb-2">{textContent["portfolio-detail-risk-level"]}</p>
               <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
                 {portfolio.riskLevel}
               </Badge>
             </CardContent>
           </Card>
+          <PortfolioStatCard
+            label={textContent["portfolio-detail-holdings"]}
+            value={String(portfolio.holdings)}
+          />
           <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-muted-foreground">Total Holdings</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">{portfolio.holdings}</p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-sm text-muted-foreground">Rebalance</CardTitle>
-            </CardHeader>
-            <CardContent>
+            <CardContent className="pt-6">
+              <p className="text-sm text-muted-foreground mb-2">{textContent["portfolio-detail-rebalance"]}</p>
               <p className="text-lg font-bold">{portfolio.rebalanceFrequency}</p>
             </CardContent>
           </Card>
@@ -181,7 +175,7 @@ export const PortfolioDetail: React.FC = () => {
 
         {/* Stock Holdings Grid */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">Current Holdings</h2>
+          <h2 className="text-2xl font-bold mb-6">{textContent["portfolio-detail-current-holdings"]}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stocks.map((stock) => (
               <StockCard
