@@ -32,7 +32,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const login = (email: string, password: string) => {
     // Mock login - in real app, this would call your auth API
-    console.log('Mock login:', email, password);
     // For demo purposes, let's vary the plan based on email
     const plan: 'free' | 'pro' | 'elite' = email.includes('pro') ? 'pro' : email.includes('elite') ? 'elite' : 'free';
     setUser({
@@ -46,7 +45,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const signup = (email: string, password: string, name: string) => {
     // Mock signup - in real app, this would call your auth API
-    console.log('Mock signup:', email, password, name);
     // For demo purposes, let's vary the plan based on email
     const plan: 'free' | 'pro' | 'elite' = email.includes('pro') ? 'pro' : email.includes('elite') ? 'elite' : 'free';
     setUser({
