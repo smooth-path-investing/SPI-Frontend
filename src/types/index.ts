@@ -1,4 +1,3 @@
-
 export interface IStock {
   ticker: string;
   name: string;
@@ -51,4 +50,9 @@ export interface ITeamMember {
       url: string;
     }[];
   };
+}
+
+export interface PerformanceChartProps {
+  height?: string;
+  className?: string;
 }
