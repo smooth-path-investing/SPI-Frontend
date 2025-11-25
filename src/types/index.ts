@@ -56,3 +56,10 @@ export interface PerformanceChartProps {
   height?: string;
   className?: string;
 }
+
+export interface AuthModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onLogin: (email: string, password: string) => void;
+  onSignup: (email: string, password: string, firstName: string, lastName: string) => void;
+}
