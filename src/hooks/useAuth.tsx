@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface User {
@@ -12,7 +11,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => void;
-  signup: (email: string, password: string, name: string) => void;
+  signup: (email: string, password: string, firstName: string, lastName: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
   canAccessPremiumStocks: () => boolean;
@@ -33,26 +32,35 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const login = (email: string, password: string) => {
     // Mock login - in real app, this would call your auth API
     // For demo purposes, let's vary the plan based on email
-    const plan: 'free' | 'pro' | 'elite' = email.includes('pro') ? 'pro' : email.includes('elite') ? 'elite' : 'free';
+    const plan: 'free' | 'pro' | 'elite' = email.includes('pro')
+      ? 'pro'
+      : email.includes('elite')
+      ? 'elite'
+      : 'free';
     setUser({
       id: '1',
       name: 'Demo User',
       email: email,
       plan: plan,
-      isPremium: plan === 'pro' || plan === 'elite'
+      isPremium: plan === 'pro' || plan === 'elite',
     });
   };
 
-  const signup = (email: string, password: string, name: string) => {
+  const signup = (email: string, password: string, firstName: string, lastName: string) => {
     // Mock signup - in real app, this would call your auth API
     // For demo purposes, let's vary the plan based on email
-    const plan: 'free' | 'pro' | 'elite' = email.includes('pro') ? 'pro' : email.includes('elite') ? 'elite' : 'free';
+    const plan: 'free' | 'pro' | 'elite' = email.includes('pro')
+      ? 'pro'
+      : email.includes('elite')
+      ? 'elite'
+      : 'free';
+    const fullName = `${firstName} ${lastName}`;
     setUser({
-      id: '1',
-      name: name,
+      id: Date.now().toString(),
+      name: fullName,
       email: email,
       plan: plan,
-      isPremium: plan === 'pro' || plan === 'elite'
+      isPremium: plan === 'pro' || plan === 'elite',
     });
   };
 
@@ -65,10 +73,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // For debugging purposes, allow access if the toggle is enabled
   const canAccessPremiumStocks = () => {
     if (!isAuthenticated) return false;
-    
+
     const showPremiumStocks = localStorage.getItem('showPremiumStocks') === 'true';
     const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
-    
+
     // Allow access if user is premium OR if debug toggle is enabled
     return isPremiumUser || showPremiumStocks;
   };
@@ -78,9 +86,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   const togglePortfolioPurchase = (portfolioId: string) => {
-    setPurchasedPortfolios(prev => {
+    setPurchasedPortfolios((prev) => {
       const newPurchased = prev.includes(portfolioId)
-        ? prev.filter(id => id !== portfolioId)
+        ? prev.filter((id) => id !== portfolioId)
         : [...prev, portfolioId];
       localStorage.setItem('purchasedPortfolios', JSON.stringify(newPurchased));
       return newPurchased;
@@ -88,17 +96,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   };
 
   return (
-    <AuthContext.Provider value={{ 
-      user, 
-      login, 
-      signup, 
-      logout, 
-      isAuthenticated, 
-      canAccessPremiumStocks,
-      purchasedPortfolios,
-      hasPurchasedPortfolio,
-      togglePortfolioPurchase
-    }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        signup,
+        logout,
+        isAuthenticated,
+        canAccessPremiumStocks,
+        purchasedPortfolios,
+        hasPurchasedPortfolio,
+        togglePortfolioPurchase,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
