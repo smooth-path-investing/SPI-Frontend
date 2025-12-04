@@ -23,7 +23,7 @@ export const MissionSection: React.FC = () => {
 
   return (
     <>
-      <KeywordModal 
+      <KeywordModal
         keyword={selectedKeyword}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
@@ -33,13 +33,10 @@ export const MissionSection: React.FC = () => {
           {/* Header */}
           <div className="text-center mb-12">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground tracking-tight">
-              {textContent["home-mission-title"]}
+              Wall Street Horsepower for Main Street
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              {textContent["home-mission-subtitle"]}
-            </p>
           </div>
-          
+
           {/* Mission Points Grid */}
           <div className="grid gap-5 md:gap-6 mb-12">
             {missionPoints.map((point, index) => (
@@ -55,14 +52,21 @@ export const MissionSection: React.FC = () => {
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center animate-fade-in">
             <Link to="/stocks" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full sm:w-auto text-xl px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary/25 font-semibold rounded-lg">
-                {textContent["home-stats-button-explore"]}
+              <Button
+                size="lg"
+                className="w-full sm:w-auto text-xl px-16 py-7 bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-300 transform hover:scale-105 shadow-2xl hover:shadow-primary/25 font-semibold rounded-lg"
+              >
+                View Recommended Stocks
               </Button>
             </Link>
-            <span className="text-base text-muted-foreground font-medium hidden sm:block">{textContent["home-stats-or"]}</span>
+            <span className="text-base text-muted-foreground font-medium hidden sm:block">or</span>
             <Link to="/approach" className="w-full sm:w-auto">
-              <Button variant="outline" size="lg" className="w-full sm:w-auto text-xl px-16 py-7 border-2 border-border text-foreground hover:bg-accent transition-all duration-300 hover:shadow-lg font-semibold rounded-lg">
-                {textContent["home-stats-button-method"]}
+              <Button
+                variant="outline"
+                size="lg"
+                className="w-full sm:w-auto text-xl px-16 py-7 border-2 border-border text-foreground hover:bg-accent transition-all duration-300 hover:shadow-lg font-semibold rounded-lg"
+              >
+                View Historical Stocks
               </Button>
             </Link>
           </div>

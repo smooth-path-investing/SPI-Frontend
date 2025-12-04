@@ -63,3 +63,11 @@ export interface AuthModalProps {
   onLogin: (email: string, password: string) => void;
   onSignup: (email: string, password: string, firstName: string, lastName: string) => void;
 }
+
+export interface DesktopNavigationProps {
+  navigationItems: { href: string; label: string }[];
+  isAuthenticated: boolean;
+  user: User | null;
+  onAuthClick: () => void;
+  onLogout: () => void;
+}
