@@ -23,21 +23,16 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   height = 'h-96',
   className = '',
 }) => {
-  // **Original starting values**
-  const sp500Start = performanceData[0]?.sp500 || 1; // avoid divide by 0
+  const sp500Start = performanceData[0]?.sp500 || 1;
   const spiStart = performanceData[0]?.spi || 1;
 
   const CustomTooltip: React.FC<TooltipProps> = ({ active, payload, label }) => {
     if (!active || !payload || !payload.length) return null;
 
-    let formattedLabel = label;
-    if (label) {
-      const d = new Date(label);
-      const day = d.getDate();
-      const month = d.toLocaleString('default', { month: 'long' });
-      const year = d.getFullYear();
-      formattedLabel = `${month} ${day}, ${year}`; // Added comma for cleaner format
-    }
+    const d = label ? new Date(label) : null;
+    const formattedLabel = d
+      ? `${d.toLocaleString('default', { month: 'short' })} ${d.getDate()}, ${d.getFullYear()}`
+      : '';
 
     const sp500Payload = payload.find((p: any) => p.dataKey === 'sp500');
     const spiPayload = payload.find((p: any) => p.dataKey === 'spi');
@@ -45,31 +40,32 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
     const sp500Value = sp500Payload?.value ?? 0;
     const spiValue = spiPayload?.value ?? 0;
 
-    // calculate cumulative return dynamically
     const sp500Return = ((sp500Value - sp500Start) / sp500Start) * 100;
     const spiReturn = ((spiValue - spiStart) / spiStart) * 100;
 
-    const getColor = (val: number) => (val >= 0 ? '#16a34a' : '#dc2626'); // green/red
+    const getColor = (val: number) => (val >= 0 ? '#16a34a' : '#dc2626');
 
     return (
-      <div className="bg-card border border-border rounded-lg p-4 shadow-lg w-56">
-        <p className="text-center font-semibold mb-3">{formattedLabel}</p>
-        <div className="space-y-2">
-          <div className="pb-2 border-b border-border">
-            <p className="text-xs text-muted-foreground mb-1">Portfolio (SPI)</p>
-            <p className="font-bold text-lg" style={{ color: getColor(spiReturn) }}>
+      <div className="bg-card border border-border rounded-lg p-2 sm:p-4 shadow-lg w-48 sm:w-56">
+        <p className="text-center font-semibold text-sm sm:text-base mb-2">{formattedLabel}</p>
+        <div className="space-y-1 sm:space-y-2">
+          <div className="pb-1 border-b border-border">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-1">Portfolio (SPI)</p>
+            <p className="font-bold text-sm sm:text-lg" style={{ color: getColor(spiReturn) }}>
               {spiReturn >= 0 ? '+' : ''}
               {spiReturn.toFixed(2)}%
             </p>
-            <p className="text-xs text-muted-foreground">Index: {spiValue.toFixed(2)}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">Index: {spiValue.toFixed(2)}</p>
           </div>
           <div>
-            <p className="text-xs text-muted-foreground mb-1">S&P500 Index</p>
-            <p className="font-bold text-lg" style={{ color: getColor(sp500Return) }}>
+            <p className="text-xs sm:text-sm text-muted-foreground mb-1">S&P500 Index</p>
+            <p className="font-bold text-sm sm:text-lg" style={{ color: getColor(sp500Return) }}>
               {sp500Return >= 0 ? '+' : ''}
               {sp500Return.toFixed(2)}%
             </p>
-            <p className="text-xs text-muted-foreground">Index: {sp500Value.toFixed(2)}</p>
+            <p className="text-xs sm:text-sm text-muted-foreground">
+              Index: {sp500Value.toFixed(2)}
+            </p>
           </div>
         </div>
       </div>
@@ -77,16 +73,15 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
   };
 
   return (
-    <div className={`bg-card rounded-lg border border-border p-4 ${height} ${className}`}>
-      <div className="mb-4 text-center">
-        <h3 className="text-lg font-semibold text-foreground mb-2">
+    <div className={`bg-card rounded-lg border border-border p-2 sm:p-4 ${height} ${className}`}>
+      <div className="mb-2 sm:mb-4 text-center">
+        <h3 className="text-sm sm:text-lg font-semibold text-foreground mb-1 sm:mb-2">
           {textContent['home-performance-chart-title']}
         </h3>
       </div>
 
       <ResponsiveContainer width="100%" height="85%">
-        {/* Adjusted the left margin from 70 to 20 */}
-        <AreaChart data={performanceData} margin={{ top: 20, right: 20, left: 20, bottom: 60 }}>
+        <AreaChart data={performanceData} margin={{ top: 10, right: 10, left: 10, bottom: 50 }}>
           <defs>
             <linearGradient id="smoothPathGradient" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor="#FFD700" stopOpacity={0.3} />
@@ -114,7 +109,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
                 return '';
               };
             })()}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
             axisLine={{ stroke: 'hsl(var(--border))' }}
             tickLine={{ stroke: 'hsl(var(--border))' }}
             interval={0}
@@ -123,8 +118,8 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
           />
 
           <YAxis
-            width={80}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 12 }}
+            width={50}
+            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
             axisLine={{ stroke: 'hsl(var(--border))' }}
             tickLine={{ stroke: 'hsl(var(--border))' }}
             domain={['auto', 'auto']}
@@ -134,7 +129,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
               angle={-90}
               position="center"
               dx={-10}
-              style={{ textAnchor: 'middle' }}
+              style={{ textAnchor: 'middle', fontSize: 10 }}
             />
           </YAxis>
 
@@ -153,7 +148,7 @@ export const PerformanceChart: React.FC<PerformanceChartProps> = ({
             type="monotone"
             dataKey="spi"
             stroke="#FFD700"
-            strokeWidth={3}
+            strokeWidth={2}
             fill="url(#smoothPathGradient)"
           />
         </AreaChart>

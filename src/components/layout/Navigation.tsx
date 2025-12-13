@@ -73,7 +73,7 @@ export const Navigation: React.FC = () => {
                   <ProfileDropdown user={user!} onLogout={logout} />
                 ) : (
                   <Button variant="outline" size="sm" onClick={() => setIsAuthModalOpen(true)}>
-                    {textContent['navigation-login']}
+                    Login
                   </Button>
                 )}
               </div>
