@@ -52,7 +52,8 @@ export interface ITeamMember {
   };
 }
 
-export interface PerformanceChartProps {
+export interface OverallPerformanceChartProps {
+  data: PerformanceRow[];
   height?: string;
   className?: string;
 }
@@ -70,4 +71,48 @@ export interface DesktopNavigationProps {
   user: User | null;
   onAuthClick: () => void;
   onLogout: () => void;
+}
+
+// types.ts
+export interface MetricDetail {
+  endingVami: number;
+  maxDrawdown: number;
+  sharpe: number;
+  sortino: number;
+  stdDev: number;
+  downsideDev: number;
+  meanReturn: number;
+  positivePeriods: { count: number; percent: number };
+  negativePeriods: { count: number; percent: number };
+}
+
+export interface FormattedMetricDetail {
+  annualizedReturn: string;
+  gainLossRatio: string;
+}
+
+export interface MetricsData {
+  ivv: MetricDetail;
+  spi: MetricDetail;
+}
+
+export interface PerformanceRow {
+  date: string;
+  day: string;
+  spiCum: number; // Portfolio cumulative %
+  ivvCum: number; // S&P500 cumulative %
+  spiVal: number; // Portfolio total value
+  ivvVal: number; // S&P500 total value
+}
+
+export interface FormattedData {
+  ivv: FormattedMetricDetail;
+  spi: FormattedMetricDetail;
+}
+
+export interface TooltipProps {
+  active?: boolean;
+  payload?: {
+    payload: PerformanceRow;
+  }[];
 }

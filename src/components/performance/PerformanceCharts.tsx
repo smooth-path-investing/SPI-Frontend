@@ -1,12 +1,33 @@
 import React from 'react';
-import { LineChart, Line, AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
-import { 
-  monthlyPerformanceData, 
-  drawdownData, 
-  sectorAllocationData, 
+import {
+  LineChart,
+  Line,
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
+  RadarChart,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  Radar,
+} from 'recharts';
+import {
+  monthlyPerformanceData,
+  drawdownData,
+  sectorAllocationData,
   sectorPerformanceData,
   attributionData,
-  riskMetricsData 
+  riskMetricsData,
 } from '@/data/performanceData';
 
 interface PerformanceChartsProps {
@@ -21,44 +42,42 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
         <ResponsiveContainer width="100%" height={400}>
           <LineChart data={monthlyPerformanceData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis
+              dataKey="date"
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 11 }}
               angle={-45}
               textAnchor="end"
               height={80}
             />
-            <YAxis 
+            <YAxis
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 12 }}
               tickFormatter={(value) => `$${(value / 1000).toFixed(0)}k`}
             />
-            <Tooltip 
-              contentStyle={{ 
+            <Tooltip
+              contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
               formatter={(value: number) => [`$${value.toFixed(2)}`, '']}
               labelStyle={{ color: 'hsl(var(--foreground))' }}
             />
-            <Legend 
-              wrapperStyle={{ color: 'hsl(var(--foreground))' }}
-            />
-            <Line 
-              type="monotone" 
-              dataKey="portfolio" 
-              stroke="#FFD700" 
+            <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
+            <Line
+              type="monotone"
+              dataKey="portfolio"
+              stroke="#FFD700"
               strokeWidth={3}
               dot={false}
               name="Smooth Path Portfolio"
             />
-            <Line 
-              type="monotone" 
-              dataKey="benchmark" 
-              stroke="hsl(var(--muted-foreground))" 
+            <Line
+              type="monotone"
+              dataKey="benchmark"
+              stroke="hsl(var(--muted-foreground))"
               strokeWidth={2}
               dot={false}
               name="S&P 500"
@@ -72,41 +91,41 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
         <ResponsiveContainer width="100%" height={300}>
           <AreaChart data={drawdownData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis
+              dataKey="date"
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 11 }}
               angle={-45}
               textAnchor="end"
               height={80}
             />
-            <YAxis 
+            <YAxis
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 12 }}
               tickFormatter={(value) => `${value}%`}
             />
-            <Tooltip 
-              contentStyle={{ 
+            <Tooltip
+              contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
               formatter={(value: number) => [`${value.toFixed(2)}%`, '']}
               labelStyle={{ color: 'hsl(var(--foreground))' }}
             />
             <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
-            <Area 
-              type="monotone" 
-              dataKey="portfolio" 
-              stroke="#FFD700" 
+            <Area
+              type="monotone"
+              dataKey="portfolio"
+              stroke="#FFD700"
               fill="#FFD70040"
               name="Portfolio Drawdown"
             />
-            <Area 
-              type="monotone" 
-              dataKey="benchmark" 
-              stroke="hsl(var(--muted-foreground))" 
+            <Area
+              type="monotone"
+              dataKey="benchmark"
+              stroke="hsl(var(--muted-foreground))"
               fill="hsl(var(--muted-foreground) / 0.2)"
               name="S&P 500 Drawdown"
             />
@@ -137,12 +156,12 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip 
-                contentStyle={{ 
+              <Tooltip
+                contentStyle={{
                   backgroundColor: 'hsl(var(--card))',
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px',
-                  color: 'hsl(var(--foreground))'
+                  color: 'hsl(var(--foreground))',
                 }}
               />
             </PieChart>
@@ -159,11 +178,11 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
                   <span className="font-semibold text-foreground">{sector.percentage}%</span>
                 </div>
                 <div className="w-full bg-muted rounded-full h-2">
-                  <div 
-                    className="h-2 rounded-full transition-all duration-500" 
-                    style={{ 
+                  <div
+                    className="h-2 rounded-full transition-all duration-500"
+                    style={{
                       width: `${sector.percentage}%`,
-                      backgroundColor: sector.color
+                      backgroundColor: sector.color,
                     }}
                   />
                 </div>
@@ -178,20 +197,14 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={sectorPerformanceData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
-              stroke="hsl(var(--muted-foreground))"
-            />
-            <YAxis 
-              stroke="hsl(var(--muted-foreground))"
-              tickFormatter={(value) => `${value}%`}
-            />
-            <Tooltip 
-              contentStyle={{ 
+            <XAxis dataKey="date" stroke="hsl(var(--muted-foreground))" />
+            <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(value) => `${value}%`} />
+            <Tooltip
+              contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
               formatter={(value: number) => [`${value.toFixed(1)}%`, '']}
             />
@@ -213,29 +226,25 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
     <div className="space-y-8">
       <div className="grid md:grid-cols-2 gap-8">
         <div>
-          <h3 className="text-lg font-semibold mb-4 text-foreground">Risk-Adjusted Returns Comparison</h3>
+          <h3 className="text-lg font-semibold mb-4 text-foreground">
+            Risk-Adjusted Returns Comparison
+          </h3>
           <ResponsiveContainer width="100%" height={350}>
-            <BarChart 
-              data={riskMetricsData}
-              layout="vertical"
-            >
+            <BarChart data={riskMetricsData} layout="vertical">
               <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-              <XAxis 
-                type="number"
-                stroke="hsl(var(--muted-foreground))"
-              />
-              <YAxis 
+              <XAxis type="number" stroke="hsl(var(--muted-foreground))" />
+              <YAxis
                 dataKey="metric"
                 type="category"
                 stroke="hsl(var(--muted-foreground))"
                 width={120}
               />
-              <Tooltip 
-                contentStyle={{ 
+              <Tooltip
+                contentStyle={{
                   backgroundColor: 'hsl(var(--card))',
                   border: '1px solid hsl(var(--border))',
                   borderRadius: '8px',
-                  color: 'hsl(var(--foreground))'
+                  color: 'hsl(var(--foreground))',
                 }}
               />
               <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
@@ -248,32 +257,32 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
         <div>
           <h3 className="text-lg font-semibold mb-4 text-foreground">Risk Profile Analysis</h3>
           <ResponsiveContainer width="100%" height={350}>
-            <RadarChart data={riskMetricsData.map(item => ({
-              ...item,
-              portfolio: Math.abs(item.portfolio),
-              benchmark: Math.abs(item.benchmark)
-            }))}>
+            <RadarChart
+              data={riskMetricsData.map((item) => ({
+                ...item,
+                portfolio: Math.abs(item.portfolio),
+                benchmark: Math.abs(item.benchmark),
+              }))}
+            >
               <PolarGrid stroke="hsl(var(--border))" />
-              <PolarAngleAxis 
-                dataKey="metric" 
+              <PolarAngleAxis
+                dataKey="metric"
                 tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 11 }}
               />
-              <PolarRadiusAxis 
-                tick={{ fill: 'hsl(var(--muted-foreground))' }}
+              <PolarRadiusAxis tick={{ fill: 'hsl(var(--muted-foreground))' }} />
+              <Radar
+                name="Smooth Path"
+                dataKey="portfolio"
+                stroke="#FFD700"
+                fill="#FFD700"
+                fillOpacity={0.5}
               />
-              <Radar 
-                name="Smooth Path" 
-                dataKey="portfolio" 
-                stroke="#FFD700" 
-                fill="#FFD700" 
-                fillOpacity={0.5} 
-              />
-              <Radar 
-                name="S&P 500" 
-                dataKey="benchmark" 
-                stroke="hsl(var(--muted-foreground))" 
-                fill="hsl(var(--muted-foreground))" 
-                fillOpacity={0.3} 
+              <Radar
+                name="S&P 500"
+                dataKey="benchmark"
+                stroke="hsl(var(--muted-foreground))"
+                fill="hsl(var(--muted-foreground))"
+                fillOpacity={0.3}
               />
               <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
             </RadarChart>
@@ -282,44 +291,43 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-foreground">Downside Protection Over Time</h3>
+        <h3 className="text-lg font-semibold mb-4 text-foreground">
+          Downside Protection Over Time
+        </h3>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={drawdownData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis
+              dataKey="date"
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 11 }}
               angle={-45}
               textAnchor="end"
               height={80}
             />
-            <YAxis 
-              stroke="hsl(var(--muted-foreground))"
-              tickFormatter={(value) => `${value}%`}
-            />
-            <Tooltip 
-              contentStyle={{ 
+            <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(value) => `${value}%`} />
+            <Tooltip
+              contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
               formatter={(value: number) => [`${value.toFixed(2)}%`, '']}
             />
             <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
-            <Line 
-              type="monotone" 
-              dataKey="portfolio" 
-              stroke="#10b981" 
+            <Line
+              type="monotone"
+              dataKey="portfolio"
+              stroke="#10b981"
               strokeWidth={3}
               dot={false}
               name="Portfolio Protection"
             />
-            <Line 
-              type="monotone" 
-              dataKey="benchmark" 
-              stroke="#ef4444" 
+            <Line
+              type="monotone"
+              dataKey="benchmark"
+              stroke="#ef4444"
               strokeWidth={2}
               dot={false}
               name="Benchmark Loss"
@@ -337,33 +345,26 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
         <ResponsiveContainer width="100%" height={400}>
           <BarChart data={attributionData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis
+              dataKey="date"
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 11 }}
               angle={-45}
               textAnchor="end"
               height={80}
             />
-            <YAxis 
-              stroke="hsl(var(--muted-foreground))"
-              tickFormatter={(value) => `${value}%`}
-            />
-            <Tooltip 
-              contentStyle={{ 
+            <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(value) => `${value}%`} />
+            <Tooltip
+              contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
               formatter={(value: number) => [`${value.toFixed(2)}%`, '']}
             />
             <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
-            <Bar 
-              dataKey="activeReturn" 
-              fill="#FFD700" 
-              name="Active Return"
-            />
+            <Bar dataKey="activeReturn" fill="#FFD700" name="Active Return" />
           </BarChart>
         </ResponsiveContainer>
       </div>
@@ -373,39 +374,30 @@ export const PerformanceCharts: React.FC<PerformanceChartsProps> = ({ activeTab 
         <ResponsiveContainer width="100%" height={350}>
           <AreaChart data={attributionData}>
             <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
-            <XAxis 
-              dataKey="date" 
+            <XAxis
+              dataKey="date"
               stroke="hsl(var(--muted-foreground))"
               tick={{ fontSize: 11 }}
               angle={-45}
               textAnchor="end"
               height={80}
             />
-            <YAxis 
-              stroke="hsl(var(--muted-foreground))"
-              tickFormatter={(value) => `${value}%`}
-            />
-            <Tooltip 
-              contentStyle={{ 
+            <YAxis stroke="hsl(var(--muted-foreground))" tickFormatter={(value) => `${value}%`} />
+            <Tooltip
+              contentStyle={{
                 backgroundColor: 'hsl(var(--card))',
                 border: '1px solid hsl(var(--border))',
                 borderRadius: '8px',
-                color: 'hsl(var(--foreground))'
+                color: 'hsl(var(--foreground))',
               }}
               formatter={(value: number) => [`${value.toFixed(2)}%`, '']}
             />
             <Legend wrapperStyle={{ color: 'hsl(var(--foreground))' }} />
-            <Area 
-              type="monotone" 
-              dataKey="alpha" 
-              stroke="#10b981" 
-              fill="#10b98140"
-              name="Alpha"
-            />
-            <Area 
-              type="monotone" 
-              dataKey="beta" 
-              stroke="hsl(var(--muted-foreground))" 
+            <Area type="monotone" dataKey="alpha" stroke="#10b981" fill="#10b98140" name="Alpha" />
+            <Area
+              type="monotone"
+              dataKey="beta"
+              stroke="hsl(var(--muted-foreground))"
               fill="hsl(var(--muted-foreground) / 0.2)"
               name="Beta"
             />
