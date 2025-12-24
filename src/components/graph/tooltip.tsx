@@ -21,9 +21,7 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
         <section className="relative">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-1.5 h-4 rounded-full bg-[#FFD700]" />
-            <p className="text-[11px] font-bold uppercase tracking-wide text-zinc-300">
-              Portfolio (SPI)
-            </p>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-zinc-300">SPI</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 items-end">
@@ -50,9 +48,7 @@ const CustomTooltip: React.FC<TooltipProps> = ({ active, payload }) => {
         <section className="relative">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-1.5 h-4 rounded-full bg-zinc-600" />
-            <p className="text-[11px] font-bold uppercase tracking-wide text-zinc-300">
-              S&P 500 (BEN)
-            </p>
+            <p className="text-[11px] font-bold uppercase tracking-wide text-zinc-300">BEN</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4 items-end">

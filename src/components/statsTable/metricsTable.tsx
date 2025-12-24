@@ -1,4 +1,5 @@
 import { derivedMetrics, performanceMetrics } from '@/constants/mertics';
+import { METRICS_TABLE_ROWS } from '@/constants/metricsTable';
 import React from 'react';
 
 const GOLD = '#FFD700';
@@ -13,34 +14,7 @@ interface MetricsTableProps {
 }
 
 const MetricsTable: React.FC<MetricsTableProps> = ({ className }) => {
-  const rows = [
-    {
-      label: 'Return p.a.',
-      ivv: derivedMetrics.ivv.annualizedReturn,
-      spi: derivedMetrics.spi.annualizedReturn,
-      isPercent: true,
-      precision: 0,
-    },
-    {
-      label: 'Sharpe Ratio',
-      ivv: performanceMetrics.ivv.sharpe,
-      spi: performanceMetrics.spi.sharpe,
-      precision: 2,
-    },
-    {
-      label: 'Max Drawdown',
-      ivv: performanceMetrics.ivv.maxDrawdown,
-      spi: performanceMetrics.spi.maxDrawdown,
-      isPercent: true,
-      precision: 0,
-    },
-    {
-      label: 'Gain/Loss Ratio',
-      ivv: derivedMetrics.ivv.gainLossRatio,
-      spi: derivedMetrics.spi.gainLossRatio,
-      precision: 2,
-    },
-  ];
+  const rows = METRICS_TABLE_ROWS;
 
   return (
     <div
