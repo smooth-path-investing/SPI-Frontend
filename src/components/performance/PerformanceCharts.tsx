@@ -28,7 +28,7 @@ import {
   sectorPerformanceData,
   attributionData,
   riskMetricsData,
-} from '@/data/performanceData';
+} from '@/API/performanceData';
 
 interface PerformanceChartsProps {
   activeTab: string;
