@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { KeywordModal } from '@/components/ui/keyword-modal';
 import { MissionPoint } from './MissionPoint';
 import { KEYWORD_DATA, KeywordInfo } from '@/constants/keywords';
 import { getMissionPoints } from '@/constants/mission';
-import { textContent } from '@/constants/textContent';
 
 export const MissionSection: React.FC = () => {
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordInfo | null>(null);

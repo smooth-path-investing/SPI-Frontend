@@ -1,4 +1,4 @@
-import { IStock, IPerformanceMetric, IApproachSection, INavItem, ITeamMember } from '../types';
+import { IStock, IPerformanceMetric, IApproachSection, INavItem } from '../types';
 
 export const NAVIGATION_ITEMS: INavItem[] = [
   { label: 'Smooth Path Investing', href: '/' },

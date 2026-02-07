@@ -1,5 +1,5 @@
 import React from 'react';
-import { Shield, Users, Search, Smartphone, Sparkles, Settings } from 'lucide-react';
+import { Shield, Users, Search, Smartphone, Settings } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 const footerStats = [

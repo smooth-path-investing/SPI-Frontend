@@ -1,4 +1,3 @@
-import { derivedMetrics, performanceMetrics } from '@/constants/mertics';
 import { METRICS_TABLE_ROWS } from '@/constants/metricsTable';
 import React from 'react';
 
