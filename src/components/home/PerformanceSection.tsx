@@ -31,8 +31,8 @@ export const PerformanceSection: React.FC = () => {
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
         {/* Chart Container - Fixed height is key here */}
         <div className="w-full lg:flex-[3.5]">
-          {/* <OverallPerformanceChart data={performanceData} /> */}
-          <OverallPerformanceChart data={graphData} />
+          <OverallPerformanceChart data={performanceData} />
+          {/* <OverallPerformanceChart data={graphData} /> */}
         </div>
 
         {/* Table Container */}
