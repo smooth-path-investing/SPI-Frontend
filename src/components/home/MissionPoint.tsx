@@ -3,65 +3,66 @@ import { Card } from '@/components/ui/card';
 import { KEYWORDS } from '@/constants/keywords';
 
 interface MissionPointProps {
-  point: string | React.ReactNode;
+  point: string;
   index: number;
   onKeywordClick: (keyword: string) => void;
 }
 
-export const MissionPoint: React.FC<MissionPointProps> = ({ 
-  point, 
-  index, 
-  onKeywordClick 
-}) => {
-  const renderTextWithKeywords = (text: string) => {
-    let result = text;
-    
-    KEYWORDS.forEach(keyword => {
-      const regex = new RegExp(`\\b${keyword}\\b`, 'gi');
-      result = result.replace(regex, `<span class="keyword-link">${keyword}</span>`);
+export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeywordClick }) => {
+  const renderTextWithInteractions = (text: string) => {
+    // Escape special characters in keywords (like → and ∈) for the Regex
+    const escapedKeywords = KEYWORDS.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const regex = new RegExp(`(${escapedKeywords.join('|')})`, 'gi');
+    const parts = text.split(regex);
+
+    return parts.map((part, i) => {
+      // Find the original keyword matching the part (case-insensitive)
+      const originalKeyword = KEYWORDS.find((k) => k.toLowerCase() === part.toLowerCase());
+
+      if (originalKeyword) {
+        return (
+          <span
+            key={i}
+            onClick={(e) => {
+              e.stopPropagation();
+              // Pass the ORIGINAL keyword (exactly as it appears in KEYWORD_DATA)
+              onKeywordClick(originalKeyword);
+            }}
+            className="cursor-pointer text-yellow-500 font-bold border-b border-dashed border-yellow-500/30 hover:border-yellow-500 hover:text-yellow-400 transition-all duration-300"
+          >
+            {part}
+          </span>
+        );
+      }
+      return part;
     });
-    
-    return (
-      <span 
-        dangerouslySetInnerHTML={{ __html: result }}
-        onClick={(e) => {
-          const target = e.target as HTMLElement;
-          if (target.classList.contains('keyword-link')) {
-            const keyword = target.textContent || '';
-            onKeywordClick(keyword);
-          }
-        }}
-      />
-    );
   };
 
   return (
-    <Card className="group relative overflow-hidden border-border/50 bg-card/30 backdrop-blur-sm hover:bg-card/50 transition-all duration-500 hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5">
-      <div className="p-5 sm:p-6">
-        <div className="flex items-start gap-4">
-          {/* Number Badge */}
-          <div className="flex-shrink-0">
-            <div className="relative">
-              <div className="w-10 h-10 rounded-full bg-primary/10 border border-primary/20 flex items-center justify-center group-hover:bg-primary/20 group-hover:border-primary/30 transition-all duration-300">
-                <span className="text-base font-bold text-primary">
-                  {index + 1}
-                </span>
-              </div>
-              <div className="absolute inset-0 rounded-full bg-primary/5 scale-0 group-hover:scale-150 transition-transform duration-500 ease-out"></div>
-            </div>
-          </div>
-          
-          {/* Content */}
-          <div className="flex-1 min-w-0">
-            <div className="text-base sm:text-lg font-medium leading-relaxed text-foreground group-hover:text-foreground transition-colors duration-300">
-              {typeof point === 'string' ? renderTextWithKeywords(point) : point}
-            </div>
-          </div>
-        </div>
+    <Card className="group relative overflow-hidden rounded-2xl p-10 flex flex-col justify-center items-center text-center bg-black border border-white/10 hover:border-yellow-500/40 shadow-2xl transition-all duration-700 min-h-[250px]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-yellow-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
+
+      <div className="relative z-10 text-lg sm:text-xl font-medium leading-relaxed text-white/90 tracking-tight">
+        {renderTextWithInteractions(point)}
       </div>
-      
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-primary/0 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+
+      {index === 3 && (
+        <div
+          className="relative z-10 mt-10 font-mono text-2xl tracking-[0.15em] text-yellow-500/90 cursor-pointer hover:text-yellow-400 transition-colors"
+          onClick={() => onKeywordClick('Az2→Sp∈P')}
+        >
+          <span>
+            A<sub>z</sub>
+            <sup>2</sup>
+          </span>
+          <span>→</span>
+          <span>
+            S<sub>i</sub>
+          </span>
+          <span>∈</span>
+          <span>P</span>
+        </div>
+      )}
     </Card>
   );
 };
