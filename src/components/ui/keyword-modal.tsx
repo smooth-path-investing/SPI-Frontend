@@ -5,13 +5,8 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-
-interface KeywordInfo {
-  title: string;
-  description: string;
-  details: string[];
-}
+} from '@/components/ui/dialog';
+import { KeywordInfo } from '@/constants/keywords';
 
 interface KeywordModalProps {
   keyword: KeywordInfo | null;
@@ -19,11 +14,7 @@ interface KeywordModalProps {
   onClose: () => void;
 }
 
-export const KeywordModal: React.FC<KeywordModalProps> = ({
-  keyword,
-  isOpen,
-  onClose,
-}) => {
+export const KeywordModal: React.FC<KeywordModalProps> = ({ keyword, isOpen, onClose }) => {
   if (!keyword) return null;
 
   return (
@@ -37,16 +28,6 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({
             {keyword.description}
           </DialogDescription>
         </DialogHeader>
-        <div className="mt-8 pb-4">
-          <ul className="space-y-6">
-            {keyword.details.map((detail, index) => (
-              <li key={index} className="flex items-start gap-4 text-base sm:text-lg text-muted-foreground leading-relaxed group">
-                <span className="text-primary mt-1.5 flex-shrink-0 w-2 h-2 rounded-full bg-primary group-hover:scale-125 transition-transform duration-200"></span>
-                <span className="flex-1">{detail}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
       </DialogContent>
     </Dialog>
   );

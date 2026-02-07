@@ -29,7 +29,7 @@ export const Navigation: React.FC = () => {
     } else {
       document.body.style.overflow = 'unset';
     }
-    
+
     return () => {
       document.body.style.overflow = 'unset';
     };
@@ -48,15 +48,9 @@ export const Navigation: React.FC = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-4">
-            <Link to="/" className="flex items-center space-x-2 flex-shrink-0" onClick={closeMobileMenu}>
-              <img 
-                src="/lovable-uploads/90c91ea3-0281-4a04-9490-78e894e448df.png" 
-                alt={textContent["navigation-logo-alt"]} 
-                className="w-8 h-8 object-contain"
-              />
-              <span className="text-foreground font-bold text-xl">{textContent["navigation-brand-name"]}</span>
-            </Link>
-            
+            {/* to be changed when logo is updated */}
+            <img src="images/SPI.png" alt={''} className="w-8 h-8 object-contain" />
+
             <div className="hidden md:flex space-x-6 flex-1 justify-center">
               {navigationItems.map((item) => (
                 <Link
@@ -72,21 +66,14 @@ export const Navigation: React.FC = () => {
                 </Link>
               ))}
             </div>
-            
+
             <div className="flex items-center gap-4 flex-shrink-0">
               <div className="hidden md:block">
                 {isAuthenticated ? (
-                  <ProfileDropdown
-                    user={user!}
-                    onLogout={logout}
-                  />
+                  <ProfileDropdown user={user!} onLogout={logout} />
                 ) : (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setIsAuthModalOpen(true)}
-                  >
-                    {textContent["navigation-login"]}
+                  <Button variant="outline" size="sm" onClick={() => setIsAuthModalOpen(true)}>
+                    Login
                   </Button>
                 )}
               </div>
@@ -97,10 +84,10 @@ export const Navigation: React.FC = () => {
                 user={user}
                 isMobileMenuOpen={isMobileMenuOpen}
                 onToggleMobileMenu={toggleMobileMenu}
-              onCloseMobileMenu={closeMobileMenu}
-              onAuthClick={() => setIsAuthModalOpen(true)}
-              onLogout={logout}
-            />
+                onCloseMobileMenu={closeMobileMenu}
+                onAuthClick={() => setIsAuthModalOpen(true)}
+                onLogout={logout}
+              />
             </div>
           </div>
         </div>
