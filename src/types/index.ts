@@ -1,27 +1,3 @@
-export interface IStock {
-  ticker: string;
-  name: string;
-  reason: string[];
-  indicators: string[];
-  price?: number;
-  change?: number;
-  changePercent?: number;
-}
-
-export interface IPerformanceMetric {
-  label: string;
-  value: string;
-  change: string;
-  isPositive: boolean;
-}
-
-export interface IApproachSection {
-  title: string;
-  description: string;
-  icon: string;
-  details: string[];
-}
-
 export interface INavItem {
   label: string;
   href: string;
@@ -33,23 +9,6 @@ export interface User {
   email: string;
   plan: 'free' | 'pro' | 'elite';
   isPremium: boolean;
-}
-
-export interface ITeamMember {
-  id: string;
-  name: string;
-  role: string;
-  bio: string;
-  image: string;
-  portfolio: {
-    description: string;
-    achievements: string[];
-    experience: string[];
-    websites: {
-      label: string;
-      url: string;
-    }[];
-  };
 }
 
 export interface OverallPerformanceChartProps {
@@ -65,49 +24,13 @@ export interface AuthModalProps {
   onSignup: (email: string, password: string, firstName: string, lastName: string) => void;
 }
 
-export interface DesktopNavigationProps {
-  navigationItems: { href: string; label: string }[];
-  isAuthenticated: boolean;
-  user: User | null;
-  onAuthClick: () => void;
-  onLogout: () => void;
-}
-
-// types.ts
-export interface MetricDetail {
-  endingVami: number;
-  maxDrawdown: number;
-  sharpe: number;
-  sortino: number;
-  stdDev: number;
-  downsideDev: number;
-  meanReturn: number;
-  positivePeriods: { count: number; percent: number };
-  negativePeriods: { count: number; percent: number };
-}
-
-export interface FormattedMetricDetail {
-  annualizedReturn: string;
-  gainLossRatio: string;
-}
-
-export interface MetricsData {
-  ivv: MetricDetail;
-  spi: MetricDetail;
-}
-
 export interface PerformanceRow {
   date: string;
   day: string;
-  spiCum: number; // Portfolio cumulative %
-  ivvCum: number; // S&P500 cumulative %
-  spiVal: number; // Portfolio total value
-  ivvVal: number; // S&P500 total value
-}
-
-export interface FormattedData {
-  ivv: FormattedMetricDetail;
-  spi: FormattedMetricDetail;
+  spiCum: number;
+  ivvCum: number;
+  spiVal: number;
+  ivvVal: number;
 }
 
 export interface TooltipProps {
