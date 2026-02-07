@@ -5,9 +5,7 @@ import { Button } from '../ui/button';
 import { ProfileDropdown } from '../ui/profile-dropdown';
 import { useAuth } from '../../hooks/useAuth';
 import { NAVIGATION_ITEMS } from '../../constants';
-import { DesktopNavigation } from '../navigation/DesktopNavigation';
 import { MobileNavigation } from '../navigation/MobileNavigation';
-import { textContent } from '@/constants/textContent';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
