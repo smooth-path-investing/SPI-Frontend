@@ -66,27 +66,3 @@ export const derivedMetrics = {
     ),
   },
 };
-
-// ------------------------------
-// Precomputed Rounded Values (optional)
-// ------------------------------
-
-export const formattedMetrics = {
-  ivv: {
-    annualizedReturn:
-      (computeAnnualizedReturn(performanceMetrics.ivv.endingVami) * 100).toFixed(2) + '%',
-    gainLossRatio: computeGainLoss(
-      performanceMetrics.ivv.stdDev,
-      performanceMetrics.ivv.downsideDev,
-    ).toFixed(2),
-  },
-
-  spi: {
-    annualizedReturn:
-      (computeAnnualizedReturn(performanceMetrics.spi.endingVami) * 100).toFixed(2) + '%',
-    gainLossRatio: computeGainLoss(
-      performanceMetrics.spi.stdDev,
-      performanceMetrics.spi.downsideDev,
-    ).toFixed(2),
-  },
-};
