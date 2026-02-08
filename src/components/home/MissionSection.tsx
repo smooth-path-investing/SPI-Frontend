@@ -3,15 +3,14 @@ import { KeywordModal } from '@/components/ui/keyword-modal';
 import { MissionPoint } from './MissionPoint';
 import { KEYWORD_DATA, KeywordInfo } from '@/constants/keywords';
 import { getMissionPoints } from '@/constants/mission';
+import { ScrollSection } from '../animations/scrollSection';
 
 export const MissionSection: React.FC = () => {
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordInfo | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleKeywordClick = (keyword: string) => {
-    // Normalize key for lookup
     const keywordInfo = KEYWORD_DATA[keyword] || KEYWORD_DATA[keyword.toLowerCase()];
-
     if (keywordInfo) {
       setSelectedKeyword(keywordInfo);
       setIsModalOpen(true);
@@ -28,28 +27,25 @@ export const MissionSection: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
       />
 
-      <section className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          {/* Header: wall street font weight and tight tracking */}
+      <ScrollSection className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8" triggerClass="mission-content">
+        <div className="max-w-6xl mx-auto mission-content">
+          {/* Header */}
           <div className="text-center mb-16 sm:mb-20">
             <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.05]">
               Wall Street Horsepower <br className="hidden sm:block" /> for Main Street
             </h2>
           </div>
 
-          {/* Balanced 2x2 Grid with tight gap for luxury feel */}
+          {/* Grid of MissionPoints */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {missionPoints.map((point, index) => (
-              <MissionPoint
-                key={index}
-                point={point}
-                index={index}
-                onKeywordClick={handleKeywordClick}
-              />
+              <div key={index}>
+                <MissionPoint point={point} index={index} onKeywordClick={handleKeywordClick} />
+              </div>
             ))}
           </div>
         </div>
-      </section>
+      </ScrollSection>
     </div>
   );
 };

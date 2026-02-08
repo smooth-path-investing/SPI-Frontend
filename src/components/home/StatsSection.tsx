@@ -1,6 +1,8 @@
 import React from 'react';
 import { Shield, Users, Search, Smartphone, Settings } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { ScrollSection } from '../animations/scrollSection';
+
 
 const footerStats = [
   {
@@ -43,8 +45,11 @@ const footerStats = [
 
 export const StatsSection: React.FC = () => {
   return (
-    <section className="relative overflow-visible py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background/50 to-background">
-      <div className="max-w-7xl mx-auto">
+    <ScrollSection
+      className="relative overflow-visible py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-background/50 to-background"
+      triggerClass="stats-content"
+    >
+      <div className="max-w-7xl mx-auto stats-content">
         <TooltipProvider delayDuration={300} skipDelayDuration={100}>
           <div className="flex flex-col items-center gap-6">
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
@@ -74,6 +79,6 @@ export const StatsSection: React.FC = () => {
           </div>
         </TooltipProvider>
       </div>
-    </section>
+    </ScrollSection>
   );
 };
