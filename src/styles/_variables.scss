@@ -1,0 +1,65 @@
+// src/styles/_variables.scss
+
+// ------------------------------
+// BASE COLORS
+// ------------------------------
+$color-background: hsl(0 0% 0%); // Main background
+$color-foreground: hsl(0 0% 100%); // Main text
+
+// Cards / Panels
+$color-card-bg: hsl(0 0% 1%); // Card backgrounds (MissionPoint)
+$color-card-border: hsl(0 0% 5%); // subtle card borders
+$color-card-hover: hsl(42 90% 50%); // gold accent hover (MissionPoint / hover effects)
+
+// Muted Text
+$color-muted-text: hsl(0 0% 65%); // secondary / muted text
+
+// Accent Colors
+$color-accent: hsl(42 88% 65%); // #EAB308, keywords / glow
+$color-accent-light: hsl(42 92% 70%); // hover highlight
+
+// Hero Section overlay
+$color-hero-overlay: rgba(0, 0, 0, 0.5);
+$color-hero-overlay-sm: rgba(0, 0, 0, 0.7);
+
+// Blob / Gradient Accents
+$color-blob-primary: hsl(42 88% 65%);
+$color-blob-secondary: hsl(38 85% 58%);
+$color-blob-accent: hsl(48 82% 70%);
+
+// Inputs / Borders / Rings
+$color-border: hsl(0 0% 20%);
+$color-input: hsl(0 0% 20%);
+$color-ring: hsl(0 0% 100%);
+
+// Destructive / Alerts
+$color-destructive: hsl(0 62.8% 30.6%);
+$color-destructive-text: hsl(0 0% 100%);
+
+// Border Radius
+$border-radius: 0.5rem;
+
+// ------------------------------
+// EXPORT AS CSS VARIABLES
+// ------------------------------
+:root {
+  --background: #{$color-background};
+  --foreground: #{$color-foreground};
+  --card-bg: #{$color-card-bg};
+  --card-border: #{$color-card-border};
+  --card-hover: #{$color-card-hover};
+  --muted-text: #{$color-muted-text};
+  --accent: #{$color-accent};
+  --accent-light: #{$color-accent-light};
+  --hero-overlay: #{$color-hero-overlay};
+  --hero-overlay-sm: #{$color-hero-overlay-sm};
+  --blob-primary: #{$color-blob-primary};
+  --blob-secondary: #{$color-blob-secondary};
+  --blob-accent: #{$color-blob-accent};
+  --border: #{$color-border};
+  --input: #{$color-input};
+  --ring: #{$color-ring};
+  --destructive: #{$color-destructive};
+  --destructive-text: #{$color-destructive-text};
+  --radius: #{$border-radius};
+}

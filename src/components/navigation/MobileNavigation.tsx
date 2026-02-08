@@ -1,8 +1,8 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
+import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Menu, X } from 'lucide-react';
 import { User } from '../../types';
 
 interface MobileNavigationProps {
@@ -24,107 +24,133 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   onToggleMobileMenu,
   onCloseMobileMenu,
   onAuthClick,
-  onLogout
+  onLogout,
 }) => {
   const location = useLocation();
+
+  const menuButtonClasses =
+    'md:hidden text-[var(--muted-text)] hover:text-[var(--foreground)] p-2 transition-colors z-[60] min-w-[44px] min-h-[44px] flex items-center justify-center';
+
+  const linkBaseClasses = 'relative text-[20px] font-medium tracking-wide transition-colors pl-8';
+  const linkActiveClasses =
+    'text-[var(--accent)] font-medium before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-[1.2em] before:bg-[var(--accent)]';
+  const linkInactiveClasses =
+    'text-white/60 hover:text-[var(--accent)] font-medium tracking-[0.05em]';
+
+  const renderLoginButton = () => (
+    <Button
+      variant="default"
+      size="sm"
+      className="w-full rounded-md px-4 py-3 mb-8 bg-[var(--accent)] text-[var(--background)] font-semibold transition-colors"
+      onClick={() => {
+        onAuthClick();
+        onCloseMobileMenu();
+      }}
+    >
+      Login
+    </Button>
+  );
 
   return (
     <>
       {/* Mobile Menu Button */}
-      <button 
-        className="md:hidden text-muted-foreground hover:text-foreground p-2 transition-colors relative z-[60] min-w-[44px] min-h-[44px] flex items-center justify-center"
+      <button
+        className={menuButtonClasses}
         onClick={onToggleMobileMenu}
         aria-label="Toggle mobile menu"
         aria-expanded={isMobileMenuOpen}
       >
         {isMobileMenuOpen ? (
-          <X className="w-6 h-6" />
+          <X className="w-7 h-7 text-[var(--accent)]" />
         ) : (
-          <Menu className="w-6 h-6" />
+          <X className="w-6 h-6 opacity-0" /> // Invisible placeholder when closed
         )}
       </button>
 
-
-      {/* Mobile Navigation Menu (Portal) */}
       {isMobileMenuOpen &&
         createPortal(
           <>
             {/* Overlay */}
             <div
-              className="fixed inset-0 z-[95] bg-black/50 backdrop-blur-sm md:hidden"
+              className="fixed inset-0 z-[95] bg-black md:hidden"
               onClick={onCloseMobileMenu}
               aria-hidden="true"
             />
 
-            {/* Sliding Drawer */}
-            <div className="fixed inset-x-0 top-16 bottom-0 z-[100] bg-background/98 backdrop-blur-md md:hidden animate-slide-in-right">
-              <div className="flex flex-col h-full overflow-y-auto">
-                <div className="flex-1 px-4 py-6 space-y-1">
-                  {navigationItems.map((item) => (
-                    <Link
-                      key={item.href}
-                      to={item.href}
-                      onClick={onCloseMobileMenu}
-                      className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
-                        location.pathname === item.href
-                          ? 'text-foreground bg-accent'
-                          : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-                
-                {/* Mobile Auth Section */}
-                <div className="border-t border-border p-4">
-                  {isAuthenticated ? (
-                    <div className="space-y-4">
-                      <div className="flex items-center space-x-3 px-4 py-2">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-                          <span className="text-primary-foreground text-sm font-medium">
-                            {user?.email?.[0]?.toUpperCase()}
-                          </span>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-foreground">{user?.email}</p>
-                          <p className="text-xs text-muted-foreground">
-                            {user?.isPremium ? 'Premium Member' : 'Free Member'}
-                          </p>
-                        </div>
+            {/* Drawer */}
+            <div className="fixed inset-x-0 top-0 bottom-0 z-[100] bg-black md:hidden flex flex-col h-full animate-slide-in-right">
+              {/* Top Right Close Button */}
+              <div className="flex justify-end p-4">
+                <button
+                  onClick={onCloseMobileMenu}
+                  aria-label="Close menu"
+                  className="p-3 hover:text-[var(--accent)] transition-colors"
+                >
+                  <X className="w-8 h-8 text-[var(--accent)]" />
+                </button>
+              </div>
+
+              {/* Spacer for “expensive empty space” */}
+              <div className="flex-1" />
+
+              {/* Bottom 40%: Login + Navigation */}
+              <div className="flex flex-col justify-end px-6 pb-12 space-y-9">
+                {/* Login button */}
+                {!isAuthenticated && renderLoginButton()}
+
+                {/* Auth Section */}
+                {isAuthenticated && user && (
+                  <div className="space-y-6">
+                    <div className="flex items-center space-x-3 px-2 py-2">
+                      <div className="w-10 h-10 bg-[var(--accent)] rounded-md flex items-center justify-center">
+                        <span className="text-[var(--background)] text-sm font-medium">
+                          {user.email?.[0].toUpperCase() || '?'}
+                        </span>
                       </div>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="w-full mt-4"
-                        onClick={() => {
-                          onLogout();
-                          onCloseMobileMenu();
-                        }}
-                      >
-                        Logout
-                      </Button>
+                      <div>
+                        <p className="text-white font-medium">{user.email}</p>
+                        <p className="text-white/65 text-sm">
+                          {user.isPremium ? 'Premium Member' : 'Free Member'}
+                        </p>
+                      </div>
                     </div>
-                  ) : (
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full"
+                      className="w-full rounded-md px-4 py-3 hover:bg-[var(--accent)] hover:text-[var(--background)] transition-all"
                       onClick={() => {
-                        onAuthClick();
+                        onLogout();
                         onCloseMobileMenu();
                       }}
                     >
-                      Login
+                      Logout
                     </Button>
-                  )}
+                  </div>
+                )}
+
+                {/* Navigation Links */}
+                <div className="flex flex-col space-y-9">
+                  {navigationItems.map((item) => {
+                    const isActive = location.pathname === item.href;
+                    return (
+                      <Link
+                        key={item.href}
+                        to={item.href}
+                        onClick={onCloseMobileMenu}
+                        className={`${linkBaseClasses} ${
+                          isActive ? linkActiveClasses : linkInactiveClasses
+                        }`}
+                      >
+                        {item.label}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
             </div>
           </>,
-          document.body
+          document.body,
         )}
-
     </>
   );
 };

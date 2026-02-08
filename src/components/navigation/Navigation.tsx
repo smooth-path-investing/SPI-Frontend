@@ -13,71 +13,72 @@ export const Navigation: React.FC = () => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const navigationItems = NAVIGATION_ITEMS;
-
-  // Close mobile menu when route changes
+  // Close mobile menu on route change
   useEffect(() => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-
+    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
     return () => {
       document.body.style.overflow = 'unset';
     };
   }, [isMobileMenuOpen]);
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  const toggleMobileMenu = () => setIsMobileMenuOpen((prev) => !prev);
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-md border-b border-border shadow-lg">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)] text-[var(--foreground)] border-b border-[var(--border)] shadow-md backdrop-blur-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-4">
-            {/* to be changed when logo is updated */}
-            <img src="images/SPI.png" alt={''} className="w-8 h-8 object-contain" />
-
-            <div className="hidden md:flex space-x-6 flex-1 justify-center">
-              {navigationItems.map((item) => (
-                <Link
-                  key={item.href}
-                  to={item.href}
-                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors whitespace-nowrap ${
-                    location.pathname === item.href
-                      ? 'text-foreground bg-accent'
-                      : 'text-muted-foreground hover:text-foreground hover:bg-accent/50'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              ))}
+            {/* Logo */}
+            <div className="w-8 h-8 flex items-center justify-center bg-[var(--background)]">
+              <img src="images/SPI.png" alt="SPI Logo" className="w-6 h-6 object-contain" />
             </div>
 
+            {/* Centered Links */}
+            <div className="hidden md:flex flex-1 justify-center gap-8">
+              {NAVIGATION_ITEMS.map((item) => {
+                const isActive = location.pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    to={item.href}
+                    className="relative px-4 py-2 text-sm font-medium transition-colors tracking-wide hover:text-[var(--accent)]"
+                  >
+                    {item.label}
+                    {isActive && (
+                      <span className="absolute left-1/2 bottom-0 transform -translate-x-1/2 w-3/4 h-[1px] bg-[var(--accent)] rounded-full"></span>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+
+            {/* Auth / Mobile */}
             <div className="flex items-center gap-4 flex-shrink-0">
+              {/* Desktop Auth */}
               <div className="hidden md:block">
-                {isAuthenticated ? (
-                  <ProfileDropdown user={user!} onLogout={logout} />
+                {isAuthenticated && user ? (
+                  <ProfileDropdown user={user} onLogout={logout} />
                 ) : (
-                  <Button variant="outline" size="sm" onClick={() => setIsAuthModalOpen(true)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setIsAuthModalOpen(true)}
+                    className="border-[var(--accent)] text-[var(--foreground)] px-5 py-2 rounded-md hover:bg-[var(--accent)] hover:text-[var(--background)] transition-all"
+                  >
                     Login
                   </Button>
                 )}
               </div>
 
+              {/* Mobile Menu */}
               <MobileNavigation
-                navigationItems={navigationItems}
+                navigationItems={NAVIGATION_ITEMS}
                 isAuthenticated={isAuthenticated}
                 user={user}
                 isMobileMenuOpen={isMobileMenuOpen}
@@ -91,6 +92,7 @@ export const Navigation: React.FC = () => {
         </div>
       </nav>
 
+      {/* Authentication Modal */}
       <AuthModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}

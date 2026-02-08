@@ -23,7 +23,7 @@ const App = () => (
         <BrowserRouter>
           <div className="min-h-screen w-full bg-black overflow-x-hidden">
             <Navigation />
-            <DevModePanel />
+            {/* <DevModePanel /> */}
             <main className="pt-16">
               <Routes>
                 <Route path="/" element={<Home />} />

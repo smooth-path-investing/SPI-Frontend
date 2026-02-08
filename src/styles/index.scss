@@ -1,0 +1,32 @@
+@use './variables';
+@use './theme';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --vh: 100vh;
+
+    @supports (height: 100dvh) {
+      --vh: 100dvh;
+    }
+  }
+
+  html,
+  body {
+    height: auto;
+    overflow-y: auto;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  * {
+    @apply border-border;
+  }
+}
+
+/* animations, helpers, utilities go here */
