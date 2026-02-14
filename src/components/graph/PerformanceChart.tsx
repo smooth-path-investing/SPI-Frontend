@@ -30,18 +30,17 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
     <div
       className={`
         bg-[var(--card-bg)]
-        border border-[var(--card-border)]
+        border border-[var(--ring)]
         rounded-[var(--radius)]
         px-3 py-2 sm:px-6 sm:py-4
         ${className}
       `}
     >
-      {/* ResponsiveContainer keeps width:height ratio */}
       <ResponsiveContainer width="100%" aspect={isMobile ? 1.5 : 2}>
         <AreaChart
           data={data}
           margin={{
-            top: 10,
+            top: 20,
             right: 10,
             left: 10,
             bottom: 10,
@@ -97,7 +96,7 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
             tick={{ fill: 'var(--muted-text)', fontSize: 11 }}
             axisLine={{ stroke: 'var(--ring)' }}
             tickLine={{ stroke: 'var(--card-border)' }}
-            width={isMobile ? 15 : 55}
+            width={isMobile ? 15 : 15}
           >
             {!isMobile ? (
               <Label
@@ -110,7 +109,7 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
                   fontWeight: 500,
                   textAnchor: 'middle',
                 }}
-                dx={5}
+                dx={-20}
               />
             ) : null}
           </YAxis>
