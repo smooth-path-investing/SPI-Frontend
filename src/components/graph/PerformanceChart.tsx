@@ -30,8 +30,12 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
     <div
       className={`
         bg-[var(--card-bg)]
-        border border-[var(--ring)]
+         border border-[var(--card-border)]
         rounded-[var(--radius)]
+         transition-all duration-300
+        transform hover:scale-105
+        hover:border-[var(--card-hover)]
+        hover:shadow-[0_0_30px_var(--card-hover)]
         px-3 py-2 sm:px-6 sm:py-4
         ${className}
       `}

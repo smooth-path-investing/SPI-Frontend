@@ -17,10 +17,20 @@ const MetricsTable: React.FC<MetricsTableProps> = ({ className }) => {
 
   return (
     <div
-      className={`h-[400px] w-full bg-card rounded-xl border border-border p-6 flex flex-col shadow-lg ${className}`}
+      className=" w-full
+    h-[300px] sm:h-[350px] md:h-[400px]
+    bg-[var(--card-bg)] 
+    rounded-[var(--radius)] 
+    border border-[var(--card-border)]
+    transition-all duration-300
+    transform hover:scale-105
+    hover:border-[var(--card-hover)]
+    hover:shadow-[0_0_30px_var(--card-hover)]
+    p-4 sm:p-6 
+    flex flex-col 
+    shadow-lg"
     >
       <div className="flex-1">
-        {/* Removed table-fixed to allow natural content width */}
         <table className="w-full h-full border-collapse">
           <thead>
             <tr className="border-b border-border text-muted-foreground text-s font-semibold tracking-wider uppercase">

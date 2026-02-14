@@ -9,7 +9,43 @@ interface MissionPointProps {
   onKeywordClick: (keyword: string) => void;
 }
 
+/** Formula Block for index 3 */
+const FormulaBlock: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  return (
+    <div
+      onClick={onClick}
+      className="
+        relative z-10 mt-4 sm:mt-6 md:mt-10
+        flex flex-wrap items-center justify-center gap-2 sm:gap-3
+        cursor-pointer select-none
+        transition-transform duration-300 hover:scale-[1.02]
+        text-[var(--accent)]
+      "
+    >
+      {/* Az² */}
+      <span className="text-xl sm:text-2xl md:text-3xl flex items-center">
+        A<sup className="font-bold text-[0.55em] sm:text-[0.65em] md:text-[0.7em]">2</sup>z
+      </span>
+
+      {/* Arrow */}
+      <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">→</span>
+
+      {/* Si */}
+      <span className="text-xl sm:text-2xl md:text-3xl flex items-baseline">
+        S<sub className="text-[0.55em] sm:text-[0.65em] md:text-[0.7em] ml-0.5">i</sub>
+      </span>
+
+      {/* ∈ */}
+      <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">∈</span>
+
+      {/* P */}
+      <span className="text-xl sm:text-2xl md:text-3xl font-bold">P</span>
+    </div>
+  );
+};
+
 export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeywordClick }) => {
+  /** Highlight and attach onClick to keywords in text */
   const renderTextWithInteractions = (text: string) => {
     const escapedKeywords = KEYWORDS.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
     const regex = new RegExp(`(${escapedKeywords.join('|')})`, 'gi');
@@ -17,7 +53,6 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
 
     return parts.map((part, i) => {
       const originalKeyword = KEYWORDS.find((k) => k.toLowerCase() === part.toLowerCase());
-
       if (originalKeyword) {
         return (
           <span
@@ -28,20 +63,24 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
             }}
             className="
               inline-block
-              cursor-pointer font-semibold px-1
+              cursor-pointer
+              font-semibold
+              px-2
+              py-0.5
               text-[var(--accent)]
               hover:text-[var(--accent-light)]
-              hover:scale-[1.02]
+              hover:scale-110
               transform-gpu
               transition-all duration-300
               antialiased
+              hover:drop-shadow-[0_0_4px_var(--accent)]
+              rounded
             "
           >
             {part}
           </span>
         );
       }
-
       return part;
     });
   };
@@ -49,27 +88,19 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
   return (
     <Card
       className="
-        group relative overflow-hidden rounded-xl
-        p-4 sm:p-8 md:p-10
-        flex flex-col justify-center items-center text-center
-        bg-transparent border border-[#222]
-        transition-all duration-500
-        hover:border-[var(--accent)]/40 hover:bg-[#0A0A0A]
+        bg-[var(--card-bg)]
+        border border-[var(--card-border)]
+        p-6 sm:p-8 lg:p-12
+        rounded-[var(--radius)]
+        transition-all duration-300
+        transform hover:scale-105
+        hover:border-[var(--card-hover)]
+        hover:shadow-[0_0_30px_var(--card-hover)]
         min-h-[200px] sm:min-h-[220px]
+        relative
       "
     >
-      {/* Subtle glow on hover */}
-      <div
-        className="
-          absolute inset-0
-          bg-[radial-gradient(circle_at_center,_rgba(234,179,8,0.08),transparent_70%)]
-          opacity-0 group-hover:opacity-100
-          transition-opacity duration-700
-          pointer-events-none
-        "
-      />
-
-      {/* Utility label (dashboard detail) */}
+      {/* Section number */}
       <div
         className="
           absolute top-3 left-4
@@ -95,49 +126,8 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
         {renderTextWithInteractions(point)}
       </div>
 
-      {/* Formula block */}
-      {index === 3 && (
-        <div
-          onClick={() => onKeywordClick('Az2→Sp∈P')}
-          className="
-            relative z-10 mt-4 sm:mt-6 md:mt-10
-            font-mono
-            text-xl sm:text-2xl md:text-3xl
-            flex flex-wrap items-center justify-center
-            gap-1 sm:gap-2
-            cursor-pointer select-none
-            transition-transform duration-500
-            hover:scale-[1.02]
-            text-[var(--accent)]
-          "
-        >
-          {/* Term 1: Az^2 */}
-          <div className="flex items-center">
-            <span className="text-xl sm:text-2xl md:text-3xl">A</span>
-            <span className="ml-0.5 flex flex-col items-center leading-none">
-              <span className="text-[0.55em] sm:text-[0.65em] md:text-[0.7em] font-bold">2</span>
-              <span className="text-[0.55em] sm:text-[0.65em] md:text-[0.7em]">z</span>
-            </span>
-          </div>
-
-          <span className="font-mono text-white text-sm sm:text-base md:text-lg mx-1 sm:mx-2">
-            →
-          </span>
-
-          <div className="flex items-baseline">
-            <span className="leading-none text-xl sm:text-2xl md:text-3xl">S</span>
-            <span className="text-[0.55em] sm:text-[0.65em] md:text-[0.7em] ml-0.5 translate-y-[0.1em]">
-              i
-            </span>
-          </div>
-
-          <span className="font-mono text-white text-sm sm:text-base md:text-lg mx-1 sm:mx-2">
-            ∈
-          </span>
-
-          <span className="leading-none font-bold text-xl sm:text-2xl md:text-3xl">P</span>
-        </div>
-      )}
+      {/* Formula block for index 3 */}
+      {index === 3 && <FormulaBlock onClick={() => onKeywordClick('Az2→Sp∈P')} />}
     </Card>
   );
 };
