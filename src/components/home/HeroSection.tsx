@@ -56,9 +56,9 @@ export const HeroSection: React.FC = () => {
         ref={headerRef}
         className="relative z-10 flex flex-col items-center text-center max-w-[90%] sm:max-w-3xl"
       >
-        <h1 className="text-white font-medium sm:font-semibold text-[2.75rem] sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1] sm:leading-[1.2] tracking-tight">
-          Symmetry & Structure
-          <span className="block mt-2">For Investment</span>
+        <h1 className="text-white font-extrabold leading-[1.05] tracking-tight text-[clamp(2.5rem,6vw,5rem)]">
+          Structure and Symmetry
+          <span className="block mt-2 text-[clamp(1.5rem,3vw,2.5rem)]">For Investment</span>
         </h1>
 
         <button

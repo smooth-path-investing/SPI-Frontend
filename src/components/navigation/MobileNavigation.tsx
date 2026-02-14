@@ -1,7 +1,7 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
-import { X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { User } from '../../types';
 
@@ -60,11 +60,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
         aria-label="Toggle mobile menu"
         aria-expanded={isMobileMenuOpen}
       >
-        {isMobileMenuOpen ? (
-          <X className="w-7 h-7 text-[var(--accent)]" />
-        ) : (
-          <X className="w-6 h-6 opacity-0" /> // Invisible placeholder when closed
-        )}
+        <Menu className="w-7 h-7 text-[var(--foreground)]" />
       </button>
 
       {isMobileMenuOpen &&
@@ -80,13 +76,13 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
             {/* Drawer */}
             <div className="fixed inset-x-0 top-0 bottom-0 z-[100] bg-black md:hidden flex flex-col h-full animate-slide-in-right">
               {/* Top Right Close Button */}
-              <div className="flex justify-end p-4">
+              <div className="flex justify-end p-2">
                 <button
                   onClick={onCloseMobileMenu}
                   aria-label="Close menu"
-                  className="p-3 hover:text-[var(--accent)] transition-colors"
+                  className="p-3 hover:text-[var(--forground)] transition-colors"
                 >
-                  <X className="w-8 h-8 text-[var(--accent)]" />
+                  <X className="w-8 h-8 text-[var(--foreground)]" /> 
                 </button>
               </div>
 
