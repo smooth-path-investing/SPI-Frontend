@@ -45,7 +45,7 @@ export const PerformanceSection: React.FC = () => {
         {/* Chart + Table */}
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
           {/* Chart */}
-          <div className="w-full lg:flex-[3.5] bg-[var(--card-bg)] border border-[var(--ring)] rounded-[var(--radius)] p-6 sm:p-8">
+          <div className="w-full sm:w-3/4 lg:w-2/3 bg-[var(--card-bg)] border border-[var(--ring)] rounded-[var(--radius)] p-2 sm:p-4 md:p-6">
             <OverallPerformanceChart data={performanceData} />
             {/* <OverallPerformanceChart data={graphData} /> */}
           </div>
