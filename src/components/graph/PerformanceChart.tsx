@@ -97,22 +97,7 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
             axisLine={{ stroke: 'var(--ring)' }}
             tickLine={{ stroke: 'var(--card-border)' }}
             width={isMobile ? 15 : 15}
-          >
-            {!isMobile ? (
-              <Label
-                value="Cumulative Return (%)"
-                angle={-90}
-                position="insideLeft"
-                style={{
-                  fontSize: 10,
-                  fill: 'var(--muted-text)',
-                  fontWeight: 500,
-                  textAnchor: 'middle',
-                }}
-                dx={-20}
-              />
-            ) : null}
-          </YAxis>
+          ></YAxis>
 
           {/* Reference Line */}
           <ReferenceLine
@@ -123,7 +108,7 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
           />
 
           {/* Tooltip */}
-          <Tooltip content={<CustomTooltip />} />
+          <Tooltip content={<CustomTooltip />} trigger={isMobile ? 'click' : 'hover'} />
 
           {/* Benchmark */}
           <Area

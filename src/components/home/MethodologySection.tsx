@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import { Cpu, Brain, TrendingUp } from 'lucide-react';
 import { ScrollSection } from '../animations/scrollSection';
 
@@ -64,29 +62,6 @@ export const MethodologySection: React.FC = () => {
               </p>
             </div>
           ))}
-        </div>
-
-        {/* Button */}
-        <div className="text-center px-4">
-          <Link to="/approach" className="w-full sm:w-auto inline-block">
-            <Button
-              variant="outline"
-              size="lg"
-              className="
-                w-full sm:w-auto
-                text-lg sm:text-xl
-                px-8 sm:px-12 py-4 sm:py-6
-                border border-[var(--border)]
-                text-[var(--foreground)]
-                bg-transparent
-                hover:bg-[var(--accent)]
-                hover:text-black
-                transition-all duration-300
-              "
-            >
-              Explore Our Approach
-            </Button>
-          </Link>
         </div>
       </div>
     </ScrollSection>
