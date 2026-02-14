@@ -19,23 +19,35 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
   className = '',
 }) => {
   return (
-    <div className={`bg-card rounded-lg border border-border p-4 ${height} ${className}`}>
+    <div
+      className={`
+        bg-[var(--card-bg)]
+        border border-[var(--card-border)]
+        rounded-[var(--radius)]
+        p-6
+        ${height}
+        ${className}
+      `}
+    >
       <ResponsiveContainer width="100%">
         <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+          {/* Gradients */}
           <defs>
-            <linearGradient id="spiGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#FFD700" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#FFD700" stopOpacity={0} />
+            <linearGradient id="portfolioGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.35} />
+              <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
             </linearGradient>
 
-            <linearGradient id="ivvGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.25} />
-              <stop offset="95%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0} />
+            <linearGradient id="benchmarkGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--muted-text)" stopOpacity={0.25} />
+              <stop offset="95%" stopColor="var(--muted-text)" stopOpacity={0} />
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+          {/* Grid */}
+          <CartesianGrid stroke="var(--card-border)" strokeDasharray="3 3" opacity={0.25} />
 
+          {/* X Axis */}
           <XAxis
             dataKey="date"
             tickFormatter={(() => {
@@ -50,69 +62,65 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
                 return '';
               };
             })()}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
-            tickLine={{ stroke: 'hsl(var(--border))' }}
+            tick={{ fill: 'var(--muted-text)', fontSize: 11 }}
+            axisLine={{ stroke: 'var(--ring)' }}
+            tickLine={{ stroke: 'var(--card-border)' }}
             angle={-45}
             textAnchor="end"
             interval={0}
           />
 
+          {/* Y Axis */}
           <YAxis
             domain={[60, 160]}
             ticks={[60, 80, 100, 120, 140, 160]}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
-            tickLine={{ stroke: 'hsl(var(--border))' }}
-            width={50}
+            tick={{ fill: 'var(--muted-text)', fontSize: 11 }}
+            axisLine={{ stroke: 'var(--ring)' }}
+            tickLine={{ stroke: 'var(--card-border)' }}
+            width={55}
           >
             <Label
               value="Cumulative Return (%)"
               angle={-90}
-              position="insideLeft" // Changed to insideLeft for more reliable alignment
+              position="insideLeft"
               style={{
-                fontSize: 10,
-                fill: 'hsl(var(--muted-foreground))',
+                fontSize: 11,
+                fill: 'var(--muted-text)',
                 fontWeight: 500,
                 textAnchor: 'middle',
               }}
-              offset={0}
-              dx={-5} // Fine-tune this based on your specific font
+              dx={-8}
             />
           </YAxis>
 
+          {/* Reference Line at 100 */}
           <ReferenceLine
             y={100}
-            stroke="hsl(var(--muted-foreground))"
-            strokeDasharray="3 3"
-            strokeWidth={1}
-            strokeOpacity={0.8}
-          >
-            <Label
-              position="insideBottomLeft"
-              fill="hsl(var(--muted-foreground))"
-              fontSize={10}
-              dy={-5}
-            />
-          </ReferenceLine>
+            stroke="var(--muted-text)"
+            strokeDasharray="4 4"
+            strokeOpacity={0.6}
+          />
 
+          {/* Tooltip */}
           <Tooltip content={<CustomTooltip />} />
 
+          {/* Benchmark */}
           <Area
             type="monotone"
             dataKey="ivvVal"
-            stroke="hsl(var(--muted-foreground))"
+            stroke="var(--muted-text)"
             strokeWidth={2}
-            fill="url(#ivvGradient)"
+            fill="url(#benchmarkGradient)"
             name="S&P 500"
           />
 
+          {/* Portfolio */}
           <Area
             type="monotone"
             dataKey="spiVal"
-            stroke="#FFD700"
-            strokeWidth={2}
-            fill="url(#spiGradient)"
+            stroke="var(--accent)"
+            strokeWidth={2.5}
+            fill="url(#portfolioGradient)"
             name="Portfolio"
           />
         </AreaChart>

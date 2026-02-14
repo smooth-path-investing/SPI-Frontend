@@ -19,16 +19,25 @@ export const PerformanceSection: React.FC = () => {
 
   return (
     <ScrollSection
-      className="relative px-4 bg-card/30 z-10 py-24 sm:py-32"
+      className="
+        relative
+        px-4
+        py-24 sm:py-32
+        z-10
+        bg-[var(--background)]
+        text-[var(--foreground)]
+      "
       triggerClass="performance-content"
     >
       <div className="max-w-7xl mx-auto performance-content">
         {/* Header */}
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
+          <h2 className="relative inline-block text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
             Live Performance
+            <span className="block h-[2px] w-1/2 mx-auto mt-4 bg-[var(--accent)]" />
           </h2>
-          <p className="text-base sm:text-lg lg:text-2xl text-muted-foreground max-w-4xl mx-auto px-2">
+
+          <p className="text-base sm:text-lg lg:text-2xl text-[var(--muted-text)] max-w-4xl mx-auto px-2">
             Real results from real positions – actual trading, no simulations
           </p>
         </div>
@@ -36,13 +45,13 @@ export const PerformanceSection: React.FC = () => {
         {/* Chart + Table */}
         <div className="flex flex-col lg:flex-row gap-8 items-stretch">
           {/* Chart */}
-          <div className="w-full lg:flex-[3.5]">
+          <div className="w-full lg:flex-[3.5] bg-[var(--card-bg)] border border-[var(--ring)] rounded-[var(--radius)] p-6 sm:p-8">
             <OverallPerformanceChart data={performanceData} />
             {/* <OverallPerformanceChart data={graphData} /> */}
           </div>
 
           {/* Table */}
-          <div className="w-full lg:flex-[1.5]">
+          <div className="w-full lg:flex-[1.5] bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[var(--radius)] p-6 sm:p-8">
             <MetricsTable />
           </div>
         </div>
