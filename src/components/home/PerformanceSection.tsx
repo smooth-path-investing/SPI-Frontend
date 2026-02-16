@@ -9,14 +9,13 @@ import { ScrollSection } from '../animations/scrollSection';
 import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
 
 export const PerformanceSection: React.FC = () => {
-  const [graphData, setGraphData] = useState<PerformanceRow[]>([]);
-
-  useEffect(() => {
-    fetchGraphData().then((data) => {
-      console.log('Fetched data:', data);
-      setGraphData(data);
-    });
-  }, []);
+  // const [graphData, setGraphData] = useState<PerformanceRow[]>([]);
+  // useEffect(() => {
+  //   fetchGraphData().then((data) => {
+  //     console.log('Fetched data:', data);
+  //     setGraphData(data);
+  //   });
+  // }, []);
 
   return (
     <ScrollSection

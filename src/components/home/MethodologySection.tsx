@@ -22,17 +22,17 @@ export const MethodologySection: React.FC = () => {
             {
               icon: <Cpu className="w-10 h-10 sm:w-12 sm:h-12 text-[var(--accent)]" />,
               title: 'Indicator',
-              text: 'The five decisive measures no stock escapes',
+              text: 'Five decisive predictors no stock escapes',
             },
             {
               icon: <TrendingUp className="w-10 h-10 sm:w-12 sm:h-12 text-[var(--accent)]" />,
               title: 'Behavior',
-              text: 'Crowd psychology distilled into three structural investment themes: trend-following, mean-reverting, indexing',
+              text: 'Crowd psychology distilled into trend investing, reverting, or indexing.',
             },
             {
               icon: <Brain className="w-10 h-10 sm:w-12 sm:h-12 text-[var(--accent)]" />,
               title: 'Allocator',
-              text: 'Mathematical sophistication applied to stock selection, that is, to what, when, and how much',
+              text: 'Mathematical sophistication applied to stock selection, that is, to what, when, and how much.',
             },
           ].map((card, idx) => (
             <div
