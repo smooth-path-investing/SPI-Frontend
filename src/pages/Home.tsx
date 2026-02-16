@@ -1,3 +1,4 @@
+import { ApproachSection } from '@/components/home/Approach';
 import { HeroSection } from '@/components/home/HeroSection';
 import { MethodologySection } from '@/components/home/MethodologySection';
 import { MissionSection } from '@/components/home/MissionSection';
@@ -10,8 +11,9 @@ export const Home: React.FC = () => {
       <HeroSection />
       <MissionSection />
       <MethodologySection />
+      <ApproachSection />
       <PerformanceSection />
-      <StatsSection />/
+      <StatsSection />
     </div>
   );
 };
