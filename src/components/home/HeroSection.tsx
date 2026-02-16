@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { MainTitleComponent } from '../sectionHeaders/LandingPageTitle/MainTitle';
 
 export const HeroSection: React.FC = () => {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -44,30 +45,14 @@ export const HeroSection: React.FC = () => {
         className="absolute inset-0 bg-cover scale-105"
         style={{
           backgroundImage: "url('/images/turtleFox.png')",
-          backgroundPosition: '25% center', // keep fox in view
+          backgroundPosition: '25% center',
         }}
       ></div>
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/30 to-black/90"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/90 via-black/30 to-black/100"></div>
 
-      {/* Centered Text + CTA */}
-      <div
-        ref={headerRef}
-        className="relative z-10 flex flex-col items-center text-center max-w-[90%] sm:max-w-3xl"
-      >
-        <h1 className="text-white font-extrabold leading-[1.05] tracking-tight text-[clamp(2.5rem,6vw,5rem)]">
-          Structure and Symmetry
-          <span className="block mt-2 text-[clamp(1.5rem,3vw,2.5rem)]">For Investment</span>
-        </h1>
-
-        <button
-          ref={ctaRef}
-          className="mt-8 px-8 py-3 bg-yellow-400 text-black font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all"
-        >
-          Get Started
-        </button>
-      </div>
+      <MainTitleComponent />
     </section>
   );
 };

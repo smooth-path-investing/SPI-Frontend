@@ -88,17 +88,18 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
   return (
     <Card
       className="
-        bg-[var(--card-bg)]
-        border border-[var(--card-border)]
-        p-6 sm:p-8 lg:p-12
-        rounded-[var(--radius)]
-        transition-all duration-300
-        transform hover:scale-105
-        hover:border-[var(--card-hover)]
-        hover:shadow-[0_0_30px_var(--card-hover)]
-        min-h-[200px] sm:min-h-[220px]
-        relative
-      "
+    mb-6 sm:mb-0
+    bg-[var(--card-bg)]
+    border border-[var(--card-border)]
+    px-5 py-6 sm:p-8 lg:p-12
+    rounded-[var(--radius)]
+    transition-all duration-300
+    transform sm:hover:scale-105
+    hover:border-[var(--card-hover)]
+    hover:shadow-[0_0_30px_var(--card-hover)]
+    min-h-fit sm:min-h-fit
+    relative
+  "
     >
       {/* Section number */}
       <div

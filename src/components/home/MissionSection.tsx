@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { KeywordModal } from '@/components/ui/keyword-modal';
-import { MissionPoint } from './MissionPoint';
+import { MissionPoint } from '../missionPoint/MissionPoint';
 import { KEYWORD_DATA, KeywordInfo } from '@/constants/keywords';
 import { getMissionPoints } from '@/constants/mission';
 import { ScrollSection } from '../animations/scrollSection';
+import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
 
 export const MissionSection: React.FC = () => {
   const [selectedKeyword, setSelectedKeyword] = useState<KeywordInfo | null>(null);
@@ -30,11 +31,7 @@ export const MissionSection: React.FC = () => {
       <ScrollSection className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8" triggerClass="mission-content">
         <div className="max-w-6xl mx-auto mission-content">
           {/* Header */}
-          <div className="text-center mb-16 sm:mb-20">
-            <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tighter leading-[1.05]">
-              Wall Street Horsepower <br className="hidden sm:block" /> for Main Street
-            </h2>
-          </div>
+          <SectionHeader mainText="Wall Street Horsepower for Main Street." subText="" />
 
           {/* Grid of MissionPoints */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">

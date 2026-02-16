@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cpu, Brain, TrendingUp } from 'lucide-react';
 import { ScrollSection } from '../animations/scrollSection';
+import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
 
 export const MethodologySection: React.FC = () => {
   return (
@@ -10,14 +11,10 @@ export const MethodologySection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto methodology-content">
         {/* Header */}
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-            The Smooth Path Edge
-          </h2>
-          <p className="text-base sm:text-lg lg:text-2xl text-[var(--muted-text)] max-w-4xl mx-auto px-2">
-            We Segregate, Condition, Integrate, Order, Exclude and Concentrate
-          </p>
-        </div>
+        <SectionHeader
+          mainText="The Smooth Path Edge"
+          subText="We Segregate, Condition, Integrate, Order, Exclude and Concentrate"
+        />
 
         {/* Grid */}
         <div className="grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16">
