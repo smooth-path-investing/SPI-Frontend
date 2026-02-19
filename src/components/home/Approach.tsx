@@ -87,7 +87,7 @@ const storyParagraphs: { id: string; content: ReactNode }[] = [
 
 export const ApproachSection = () => {
   return (
-    <ScrollSection className={sectionClassName}>
+    <ScrollSection className={sectionClassName} triggerClass="approach-content">
       <div className="max-w-6xl mx-auto space-y-10">
         <SectionHeader mainText="Investment Approach" subText="The Smooth Path Edge" />
         <div className={cardClassName}>
