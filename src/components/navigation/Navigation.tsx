@@ -36,7 +36,7 @@ export const Navigation: React.FC = () => {
           <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
             <div className="w-8 h-8 flex items-center justify-center bg-[var(--background)]">
-              <img src="images/SPI.png" alt="SPI Logo" className="w-6 h-6 object-contain" />
+              <img src="/images/SPI.png" alt="SPI Logo" className="w-6 h-6 object-contain" />
             </div>
 
             {/* Centered Links */}
