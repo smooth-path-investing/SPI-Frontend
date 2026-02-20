@@ -120,7 +120,7 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
           text-sm sm:text-base md:text-lg
           font-light
           leading-[1.5] sm:leading-[1.65]
-          tracking-wide text-white/80
+          tracking-wide text-white/80 text-center
           antialiased
         "
       >

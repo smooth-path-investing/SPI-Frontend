@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { KeywordModal } from '@/components/ui/keyword-modal';
-import { MissionPoint } from '../missionPoint/MissionPoint';
+import { MissionPoint } from '../Cards/missionPoint/MissionPoint';
 import { KEYWORD_DATA, KeywordInfo } from '@/constants/keywords';
 import { getMissionPoints } from '@/constants/mission';
 import { ScrollSection } from '../animations/scrollSection';

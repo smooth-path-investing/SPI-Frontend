@@ -21,7 +21,7 @@ export const MethodologyCard: FC<MethodologyCardProps> = ({ icon: Icon, title, d
 
       <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-3 sm:mb-6 text-center">{title}</h3>
 
-      <p className="text-[var(--muted-text)] text-sm sm:text-base lg:text-lg leading-relaxed">
+      <p className="text-[var(--muted-text)] text-sm sm:text-base lg:text-lg leading-relaxed text-center">
         {description}
       </p>
     </div>

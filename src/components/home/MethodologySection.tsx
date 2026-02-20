@@ -2,7 +2,7 @@ import type { FC } from 'react';
 import { Brain, Cpu, TrendingUp } from 'lucide-react';
 import { ScrollSection } from '../animations/scrollSection';
 import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
-import { MethodologyCard } from '../MethodologyCard/MethodologyCard';
+import { MethodologyCard } from '../Cards/MethodologyCard/MethodologyCard';
 
 const sectionClassName =
   'relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 z-10 bg-[var(--background)] text-[var(--foreground)]';
