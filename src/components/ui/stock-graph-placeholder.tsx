@@ -14,15 +14,17 @@ export const StockGraphPlaceholder: React.FC<StockGraphPlaceholderProps> = ({
   className = '' 
 }) => {
   return (
-    <div className={`${height} ${className} bg-card rounded-lg border border-border flex items-center justify-center`}>
+    <div
+      className={`${height} ${className} rounded-lg border border-[var(--card-border)] bg-[var(--card-bg)] flex items-center justify-center`}
+    >
       <div className="text-center">
-        <div className="w-16 h-16 mx-auto mb-4 bg-muted rounded-lg flex items-center justify-center">
-          <BarChart3 className="w-8 h-8 text-foreground" />
+        <div className="w-16 h-16 mx-auto mb-4 bg-black/20 border border-[var(--card-border)] rounded-lg flex items-center justify-center">
+          <BarChart3 className="w-8 h-8 text-[var(--accent)]" />
         </div>
-        <p className="text-foreground font-medium">
+        <p className="text-[var(--foreground)] font-medium">
           {ticker ? `${ticker} Analysis` : 'Smooth Path Logo'}
         </p>
-        <p className="text-muted-foreground text-sm mt-1">Coming Soon</p>
+        <p className="text-[var(--muted-text)] text-sm mt-1">Coming Soon</p>
       </div>
     </div>
   );

@@ -8,9 +8,10 @@ import { Badge } from '@/components/ui/badge';
 import { Lock, ArrowLeft } from 'lucide-react';
 import { AuthModal } from '@/components/ui/auth-modal';
 import { StockCard } from '@/components/stocks/StockCard';
-import { PortfolioMetricCard, PortfolioStatCard } from '@/components/portfolio/PortfolioMetricCard';
+import { PortfolioMetricCard } from '@/components/portfolio/PortfolioMetricCard';
 import { useAuth } from '@/hooks/useAuth';
 import { TrendingUp, Shield, Calendar, Package } from 'lucide-react';
+import { SectionHeader } from '@/components/sectionHeaders/reusableHeaders/sectionHeader';
 
 const PORTFOLIO_DETAIL_TEXT = {
   back: 'Back to Portfolios',
@@ -43,6 +44,8 @@ export const PortfolioDetail: React.FC = () => {
   }
 
   const isPurchased = isAuthenticated && hasPurchasedPortfolio(portfolio.id);
+  const isPreviewPortfolio = portfolio.id === 'long-contrarian';
+  const canViewPortfolio = isPurchased || isPreviewPortfolio;
 
   const handleAccessRequest = () => {
     if (!isAuthenticated) {
@@ -62,7 +65,7 @@ export const PortfolioDetail: React.FC = () => {
     }
   };
 
-  if (!isPurchased) {
+  if (!canViewPortfolio) {
     return (
       <>
         <div className="min-h-screen bg-background text-foreground pt-24">
@@ -143,52 +146,16 @@ export const PortfolioDetail: React.FC = () => {
 
   // Purchased view - show actual portfolio content
   const stocks = getStocksForPortfolio(portfolio.id);
+  const stocksSectionTitle =
+    portfolio.id === 'long-contrarian'
+      ? 'Current SPI Recommended Stocks (Long/Buy)'
+      : 'Current SPI Recommended Stocks';
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <Button 
-          variant="ghost" 
-          onClick={() => navigate('/stock')}
-          className="mb-6"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          {PORTFOLIO_DETAIL_TEXT.back}
-        </Button>
-
         <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-4">{portfolio.name}</h1>
-          <p className="text-xl text-muted-foreground">{portfolio.description}</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <PortfolioStatCard
-            label={PORTFOLIO_DETAIL_TEXT.expectedReturn}
-            value={portfolio.expectedReturn}
-          />
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground mb-2">{PORTFOLIO_DETAIL_TEXT.riskLevel}</p>
-              <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
-                {portfolio.riskLevel}
-              </Badge>
-            </CardContent>
-          </Card>
-          <PortfolioStatCard
-            label={PORTFOLIO_DETAIL_TEXT.holdings}
-            value={String(portfolio.holdings)}
-          />
-          <Card>
-            <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground mb-2">{PORTFOLIO_DETAIL_TEXT.rebalance}</p>
-              <p className="text-lg font-bold">{portfolio.rebalanceFrequency}</p>
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Stock Holdings Grid */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">{PORTFOLIO_DETAIL_TEXT.currentHoldings}</h2>
+          <SectionHeader mainText={stocksSectionTitle} className="mb-6" />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stocks.map((stock) => (
               <StockCard
