@@ -44,7 +44,8 @@ export const PortfolioDetail: React.FC = () => {
   }
 
   const isPurchased = isAuthenticated && hasPurchasedPortfolio(portfolio.id);
-  const isPreviewPortfolio = portfolio.id === 'long-contrarian';
+  const isPreviewPortfolio =
+    portfolio.id === 'long-contrarian' || portfolio.id === 'short-contrarian';
   const canViewPortfolio = isPurchased || isPreviewPortfolio;
 
   const handleAccessRequest = () => {
@@ -149,7 +150,9 @@ export const PortfolioDetail: React.FC = () => {
   const stocksSectionTitle =
     portfolio.id === 'long-contrarian'
       ? 'Current SPI Recommended Stocks (Long/Buy)'
-      : 'Current SPI Recommended Stocks';
+      : portfolio.id === 'short-contrarian'
+        ? 'Current SPI Recommended Stocks (Short/Sell)'
+        : 'Current SPI Recommended Stocks';
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
