@@ -10,8 +10,19 @@ import { AuthModal } from '@/components/ui/auth-modal';
 import { StockCard } from '@/components/stocks/StockCard';
 import { PortfolioMetricCard, PortfolioStatCard } from '@/components/portfolio/PortfolioMetricCard';
 import { useAuth } from '@/hooks/useAuth';
-import { textContent } from '@/constants/textContent';
 import { TrendingUp, Shield, Calendar, Package } from 'lucide-react';
+
+const PORTFOLIO_DETAIL_TEXT = {
+  back: 'Back to Portfolios',
+  expectedReturn: 'Expected Return',
+  riskLevel: 'Risk Level',
+  holdings: 'Total Holdings',
+  rebalance: 'Rebalance',
+  oneTimeFee: 'One-time access fee',
+  purchaseAccess: 'Purchase Access',
+  loginPurchase: 'Login to Purchase',
+  currentHoldings: 'Current Holdings',
+};
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId: string }>();
@@ -23,7 +34,7 @@ export const PortfolioDetail: React.FC = () => {
 
   useEffect(() => {
     if (!portfolio) {
-      navigate('/stocks');
+      navigate('/stock');
     }
   }, [portfolio, navigate]);
 
@@ -58,11 +69,11 @@ export const PortfolioDetail: React.FC = () => {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
             <Button 
               variant="ghost" 
-              onClick={() => navigate('/stocks')}
+              onClick={() => navigate('/stock')}
               className="mb-6"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {textContent["portfolio-detail-back"]}
+              {PORTFOLIO_DETAIL_TEXT.back}
             </Button>
 
             <Card className="text-center">
@@ -76,12 +87,12 @@ export const PortfolioDetail: React.FC = () => {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8 max-w-2xl mx-auto">
                   <PortfolioMetricCard
                     icon={TrendingUp}
-                    label={textContent["portfolio-detail-expected-return"]}
+                    label={PORTFOLIO_DETAIL_TEXT.expectedReturn}
                     value={portfolio.expectedReturn}
                   />
                   <PortfolioMetricCard
                     icon={Shield}
-                    label={textContent["portfolio-detail-risk-level"]}
+                    label={PORTFOLIO_DETAIL_TEXT.riskLevel}
                     value={
                       <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
                         {portfolio.riskLevel}
@@ -90,12 +101,12 @@ export const PortfolioDetail: React.FC = () => {
                   />
                   <PortfolioMetricCard
                     icon={Package}
-                    label={textContent["portfolio-detail-holdings"]}
+                    label={PORTFOLIO_DETAIL_TEXT.holdings}
                     value={portfolio.holdings}
                   />
                   <PortfolioMetricCard
                     icon={Calendar}
-                    label={textContent["portfolio-detail-rebalance"]}
+                    label={PORTFOLIO_DETAIL_TEXT.rebalance}
                     value={portfolio.rebalanceFrequency}
                     className="text-sm"
                   />
@@ -103,7 +114,7 @@ export const PortfolioDetail: React.FC = () => {
 
                 <div className="bg-accent/50 p-6 rounded-lg mb-8 max-w-md mx-auto">
                   <p className="text-3xl font-bold mb-2">${portfolio.price}</p>
-                  <p className="text-sm text-muted-foreground">{textContent["portfolio-detail-one-time-fee"]}</p>
+                  <p className="text-sm text-muted-foreground">{PORTFOLIO_DETAIL_TEXT.oneTimeFee}</p>
                 </div>
 
                 <Button 
@@ -111,7 +122,9 @@ export const PortfolioDetail: React.FC = () => {
                   size="lg"
                   className="text-lg px-8"
                 >
-                  {isAuthenticated ? textContent["portfolio-detail-purchase-access"] : textContent["portfolio-detail-login-purchase"]}
+                  {isAuthenticated
+                    ? PORTFOLIO_DETAIL_TEXT.purchaseAccess
+                    : PORTFOLIO_DETAIL_TEXT.loginPurchase}
                 </Button>
               </CardContent>
             </Card>
@@ -136,11 +149,11 @@ export const PortfolioDetail: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <Button 
           variant="ghost" 
-          onClick={() => navigate('/stocks')}
+          onClick={() => navigate('/stock')}
           className="mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          {textContent["portfolio-detail-back"]}
+          {PORTFOLIO_DETAIL_TEXT.back}
         </Button>
 
         <div className="mb-8">
@@ -150,24 +163,24 @@ export const PortfolioDetail: React.FC = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <PortfolioStatCard
-            label={textContent["portfolio-detail-expected-return"]}
+            label={PORTFOLIO_DETAIL_TEXT.expectedReturn}
             value={portfolio.expectedReturn}
           />
           <Card>
             <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground mb-2">{textContent["portfolio-detail-risk-level"]}</p>
+              <p className="text-sm text-muted-foreground mb-2">{PORTFOLIO_DETAIL_TEXT.riskLevel}</p>
               <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
                 {portfolio.riskLevel}
               </Badge>
             </CardContent>
           </Card>
           <PortfolioStatCard
-            label={textContent["portfolio-detail-holdings"]}
+            label={PORTFOLIO_DETAIL_TEXT.holdings}
             value={String(portfolio.holdings)}
           />
           <Card>
             <CardContent className="pt-6">
-              <p className="text-sm text-muted-foreground mb-2">{textContent["portfolio-detail-rebalance"]}</p>
+              <p className="text-sm text-muted-foreground mb-2">{PORTFOLIO_DETAIL_TEXT.rebalance}</p>
               <p className="text-lg font-bold">{portfolio.rebalanceFrequency}</p>
             </CardContent>
           </Card>
@@ -175,7 +188,7 @@ export const PortfolioDetail: React.FC = () => {
 
         {/* Stock Holdings Grid */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-6">{textContent["portfolio-detail-current-holdings"]}</h2>
+          <h2 className="text-2xl font-bold mb-6">{PORTFOLIO_DETAIL_TEXT.currentHoldings}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {stocks.map((stock) => (
               <StockCard

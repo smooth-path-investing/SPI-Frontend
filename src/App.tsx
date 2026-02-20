@@ -4,7 +4,6 @@ import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './hooks/useAuth';
-import { DevModePanel } from './components/dev/DevModePanel';
 import { Home } from './pages/Home';
 import { Stocks } from './pages/Stocks';
 import { PortfolioDetail } from './pages/PortfolioDetail';
@@ -27,6 +26,7 @@ const App = () => (
             <main className="pt-16">
               <Routes>
                 <Route path="/" element={<Home />} />
+                <Route path="/stock" element={<Stocks />} />
                 <Route path="/stocks" element={<Stocks />} />
                 <Route path="/portfolio/:portfolioId" element={<PortfolioDetail />} />
                 <Route path="/portfolio/:portfolioId/stock/:ticker" element={<StockDetail />} />

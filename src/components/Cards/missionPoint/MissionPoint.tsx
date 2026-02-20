@@ -1,87 +1,84 @@
-// src/components/mission/MissionPoint.tsx
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { Card } from '@/components/ui/card';
-import { KEYWORDS } from '@/constants/keywords';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { KEYWORD_DATA, KEYWORDS } from '@/constants/keywords';
 
 interface MissionPointProps {
   point: string;
   index: number;
-  onKeywordClick: (keyword: string) => void;
 }
 
-/** Formula Block for index 3 */
-const FormulaBlock: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+const keywordBaseClassName =
+  'inline-block align-baseline cursor-help font-semibold px-2 py-0.5 text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors duration-300 antialiased rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]';
+
+const keywordTooltipClassName =
+  'max-w-xs sm:max-w-sm border-2 border-[var(--accent)]/80 bg-[var(--card-bg)] text-[var(--foreground)] shadow-[0_0_0_1px_rgba(234,179,8,0.25)]';
+
+const FormulaBlock: React.FC = () => {
   return (
-    <div
-      onClick={onClick}
+    <span
       className="
         relative z-10 mt-4 sm:mt-6 md:mt-10
         flex flex-wrap items-center justify-center gap-2 sm:gap-3
-        cursor-pointer select-none
-        transition-transform duration-300 hover:scale-[1.02]
-        text-[var(--accent)]
+        select-none text-[var(--accent)]
       "
     >
-      {/* Az² */}
       <span className="text-xl sm:text-2xl md:text-3xl flex items-center">
         A<sup className="font-bold text-[0.55em] sm:text-[0.65em] md:text-[0.7em]">2</sup>z
       </span>
-
-      {/* Arrow */}
       <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">→</span>
-
-      {/* Si */}
       <span className="text-xl sm:text-2xl md:text-3xl flex items-baseline">
         S<sub className="text-[0.55em] sm:text-[0.65em] md:text-[0.7em] ml-0.5">i</sub>
       </span>
-
-      {/* ∈ */}
       <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">∈</span>
-
-      {/* P */}
       <span className="text-xl sm:text-2xl md:text-3xl font-bold">P</span>
-    </div>
+    </span>
   );
 };
 
-export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeywordClick }) => {
-  /** Highlight and attach onClick to keywords in text */
+const KeywordTooltip = ({ keyword, children }: { keyword: string; children: ReactNode }) => {
+  const keywordInfo = KEYWORD_DATA[keyword.toLowerCase()];
+
+  if (!keywordInfo) {
+    return <>{children}</>;
+  }
+
+  return (
+    <Tooltip delayDuration={120}>
+      <TooltipTrigger asChild>
+        <button type="button" className={keywordBaseClassName} onClick={(e) => e.stopPropagation()}>
+          {children}
+        </button>
+      </TooltipTrigger>
+      <TooltipContent className={keywordTooltipClassName}>
+        <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--accent)] mb-1">
+          {keywordInfo.title}
+        </p>
+        <p className="text-sm leading-relaxed text-[var(--foreground)]">{keywordInfo.description}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+};
+
+export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
   const renderTextWithInteractions = (text: string) => {
-    const escapedKeywords = KEYWORDS.map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+    const escapedKeywords = KEYWORDS.map((keyword) =>
+      keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'),
+    );
     const regex = new RegExp(`(${escapedKeywords.join('|')})`, 'gi');
     const parts = text.split(regex);
 
-    return parts.map((part, i) => {
-      const originalKeyword = KEYWORDS.find((k) => k.toLowerCase() === part.toLowerCase());
+    return parts.map((part, partIndex) => {
+      const originalKeyword = KEYWORDS.find((keyword) => keyword.toLowerCase() === part.toLowerCase());
       if (originalKeyword) {
         return (
-          <span
-            key={i}
-            onClick={(e) => {
-              e.stopPropagation();
-              onKeywordClick(originalKeyword);
-            }}
-            className="
-              inline-block
-              cursor-pointer
-              font-semibold
-              px-2
-              py-0.5
-              text-[var(--accent)]
-              hover:text-[var(--accent-light)]
-              hover:scale-110
-              transform-gpu
-              transition-all duration-300
-              antialiased
-              hover:drop-shadow-[0_0_4px_var(--accent)]
-              rounded
-            "
-          >
+          <KeywordTooltip key={`${index}-${partIndex}`} keyword={originalKeyword}>
             {part}
-          </span>
+          </KeywordTooltip>
         );
       }
-      return part;
+
+      return <React.Fragment key={`${index}-${partIndex}`}>{part}</React.Fragment>;
     });
   };
 
@@ -101,7 +98,6 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
     relative
   "
     >
-      {/* Section number */}
       <div
         className="
           absolute top-3 left-4
@@ -113,7 +109,6 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
         SEC. 0{index + 1} // CORE
       </div>
 
-      {/* Main content */}
       <div
         className="
           relative z-10
@@ -127,8 +122,11 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
         {renderTextWithInteractions(point)}
       </div>
 
-      {/* Formula block for index 3 */}
-      {index === 3 && <FormulaBlock onClick={() => onKeywordClick('Az2→Sp∈P')} />}
+      {index === 3 && (
+        <KeywordTooltip keyword="Az2→Sp∈P">
+          <FormulaBlock />
+        </KeywordTooltip>
+      )}
     </Card>
   );
 };

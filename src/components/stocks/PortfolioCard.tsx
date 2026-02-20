@@ -34,7 +34,9 @@ export const PortfolioCard: React.FC<PortfolioCardProps> = ({
             <Badge variant="default" className="bg-primary">Owned</Badge>
           )}
         </div>
-        <p className="text-muted-foreground">{portfolio.shortDescription}</p>
+        {portfolio.shortDescription ? (
+          <p className="text-muted-foreground">{portfolio.shortDescription}</p>
+        ) : null}
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

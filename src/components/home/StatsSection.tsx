@@ -27,9 +27,37 @@ export const StatsSection: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto stats-content">
         <TooltipProvider delayDuration={300} skipDelayDuration={100}>
-          <div className="flex flex-col items-center gap-8">
-            {/* Pills */}
-            <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
+          <div className="flex flex-col items-center gap-6 sm:gap-8">
+            {/* Mobile cards */}
+            <div className="md:hidden w-full grid grid-cols-1 gap-3">
+              {FOOTER_STATS.map((stat, index) => {
+                const Icon = footerStatIconMap[stat.icon];
+                return (
+                  <article
+                    key={index}
+                    className="
+                      rounded-[var(--radius)]
+                      border border-[var(--card-border)]
+                      bg-[var(--card-bg)]
+                      px-4 py-3.5
+                    "
+                  >
+                    <div className="flex items-center gap-2.5 mb-2">
+                      <Icon className="w-4 h-4 text-[var(--accent)] flex-shrink-0" />
+                      <h3 className="font-semibold text-sm tracking-wide text-[var(--foreground)]">
+                        {stat.title}
+                      </h3>
+                    </div>
+                    <p className="text-xs leading-relaxed text-[var(--muted-text)]">
+                      {stat.description}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
+
+            {/* Desktop pills */}
+            <div className="hidden md:flex flex-wrap justify-center gap-4 sm:gap-6">
               {FOOTER_STATS.map((stat, index) => {
                 const Icon = footerStatIconMap[stat.icon];
                 return (

@@ -7,7 +7,29 @@ import { ArrowLeft, ArrowUpRight, ArrowDownRight, MessageSquare, X } from 'lucid
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
 import { MetricRow } from '@/components/stock/MetricRow';
 import { getStocksForPortfolio } from '@/constants/stockData';
-import { textContent } from '@/constants/textContent';
+
+const STOCK_DETAIL_TEXT = {
+  back: 'Back to Portfolio',
+  notFound: 'Stock not found',
+  priceChart: 'Price Chart',
+  about: 'About',
+  keyFactors: 'Key Predictive Factors',
+  keyFactorsDescription:
+    'Our proprietary algorithm identified these factors as the most significant predictors for this stock:',
+  keyMetrics: 'Key Metrics',
+  marketCap: 'Market Cap',
+  peRatio: 'P/E Ratio',
+  dividendYield: 'Dividend Yield',
+  beta: 'Beta',
+  modelPerformance: 'Model Performance',
+  predictionAccuracy: 'Prediction Accuracy',
+  rSquared: 'R-Squared',
+  confidenceLevel: 'Confidence Level',
+  recommendation: 'Recommendation',
+  rating: 'Rating',
+  askAiAbout: 'Ask AI About',
+  aiComingSoon: 'AI Chatbot - Coming Soon',
+};
 
 export const StockDetail: React.FC = () => {
   const { portfolioId, ticker } = useParams<{ portfolioId: string; ticker: string }>();
@@ -21,13 +43,13 @@ export const StockDetail: React.FC = () => {
     return (
       <div className="min-h-screen bg-background text-foreground pt-24 px-4">
         <div className="max-w-7xl mx-auto">
-          <p className="text-center text-muted-foreground">{textContent["stock-detail-not-found"]}</p>
+          <p className="text-center text-muted-foreground">{STOCK_DETAIL_TEXT.notFound}</p>
           <Button 
             onClick={() => navigate(`/portfolio/${portfolioId}`)}
             className="mt-4 mx-auto block"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {textContent["stock-detail-back"]}
+            {STOCK_DETAIL_TEXT.back}
           </Button>
         </div>
       </div>
@@ -46,7 +68,7 @@ export const StockDetail: React.FC = () => {
           className="mb-8"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          {textContent["stock-detail-back"]}
+          {STOCK_DETAIL_TEXT.back}
         </Button>
 
         {/* Stock Header */}
@@ -77,7 +99,7 @@ export const StockDetail: React.FC = () => {
             {/* Chart */}
             <Card>
               <CardHeader>
-                <CardTitle>{textContent["stock-detail-price-chart"]}</CardTitle>
+                <CardTitle>{STOCK_DETAIL_TEXT.priceChart}</CardTitle>
               </CardHeader>
               <CardContent>
                 <StockGraphPlaceholder height="h-96" ticker={stock.ticker} />
@@ -87,7 +109,7 @@ export const StockDetail: React.FC = () => {
             {/* Company Description */}
             <Card>
               <CardHeader>
-                <CardTitle>{textContent["stock-detail-about"]} {stock.name}</CardTitle>
+                <CardTitle>{STOCK_DETAIL_TEXT.about} {stock.name}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground leading-relaxed">
@@ -99,11 +121,11 @@ export const StockDetail: React.FC = () => {
             {/* Key Factors */}
             <Card>
               <CardHeader>
-                <CardTitle>{textContent["stock-detail-key-factors"]}</CardTitle>
+                <CardTitle>{STOCK_DETAIL_TEXT.keyFactors}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground mb-4">
-                  {textContent["stock-detail-key-factors-desc"]}
+                  {STOCK_DETAIL_TEXT.keyFactorsDescription}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {stock.factors.map((factor, index) => (
@@ -121,23 +143,23 @@ export const StockDetail: React.FC = () => {
             {/* Key Metrics Card */}
             <Card>
               <CardHeader>
-                <CardTitle>{textContent["stock-detail-key-metrics"]}</CardTitle>
+                <CardTitle>{STOCK_DETAIL_TEXT.keyMetrics}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <MetricRow
-                  label={textContent["stock-detail-market-cap"]}
+                  label={STOCK_DETAIL_TEXT.marketCap}
                   value={stock.keyMetrics.marketCap}
                 />
                 <MetricRow
-                  label={textContent["stock-detail-pe-ratio"]}
+                  label={STOCK_DETAIL_TEXT.peRatio}
                   value={stock.keyMetrics.peRatio}
                 />
                 <MetricRow
-                  label={textContent["stock-detail-dividend-yield"]}
+                  label={STOCK_DETAIL_TEXT.dividendYield}
                   value={stock.keyMetrics.dividend}
                 />
                 <MetricRow
-                  label={textContent["stock-detail-beta"]}
+                  label={STOCK_DETAIL_TEXT.beta}
                   value={stock.keyMetrics.beta}
                   hasBorder={false}
                 />
@@ -147,20 +169,20 @@ export const StockDetail: React.FC = () => {
             {/* Model Performance */}
             <Card>
               <CardHeader>
-                <CardTitle>{textContent["stock-detail-model-performance"]}</CardTitle>
+                <CardTitle>{STOCK_DETAIL_TEXT.modelPerformance}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <MetricRow
-                  label={textContent["stock-detail-prediction-accuracy"]}
+                  label={STOCK_DETAIL_TEXT.predictionAccuracy}
                   value="87.3%"
                   valueClassName="font-semibold text-green-400"
                 />
                 <MetricRow
-                  label={textContent["stock-detail-r-squared"]}
+                  label={STOCK_DETAIL_TEXT.rSquared}
                   value="0.762"
                 />
                 <MetricRow
-                  label={textContent["stock-detail-confidence-level"]}
+                  label={STOCK_DETAIL_TEXT.confidenceLevel}
                   value="High"
                   valueClassName="font-semibold text-green-400"
                   hasBorder={false}
@@ -171,11 +193,11 @@ export const StockDetail: React.FC = () => {
             {/* Recommendation */}
             <Card>
               <CardHeader>
-                <CardTitle>{textContent["stock-detail-recommendation"]}</CardTitle>
+                <CardTitle>{STOCK_DETAIL_TEXT.recommendation}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <MetricRow
-                  label={textContent["stock-detail-rating"]}
+                  label={STOCK_DETAIL_TEXT.rating}
                   value={
                     <Badge 
                       variant={
@@ -190,7 +212,7 @@ export const StockDetail: React.FC = () => {
                 />
                 <div className="py-3">
                   <div className="flex justify-between mb-2">
-                    <span className="text-muted-foreground">{textContent["stock-detail-confidence-level"]}</span>
+                    <span className="text-muted-foreground">{STOCK_DETAIL_TEXT.confidenceLevel}</span>
                     <span className="font-semibold">{stock.confidence}%</span>
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
@@ -224,10 +246,10 @@ export const StockDetail: React.FC = () => {
       >
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-border">
-            <h3 className="text-lg font-semibold">{textContent["stock-detail-ask-ai"]} {stock.ticker}</h3>
+            <h3 className="text-lg font-semibold">{STOCK_DETAIL_TEXT.askAiAbout} {stock.ticker}</h3>
           </div>
           <div className="flex-1 p-4 flex items-center justify-center">
-            <p className="text-muted-foreground">{textContent["stock-detail-ai-coming-soon"]}</p>
+            <p className="text-muted-foreground">{STOCK_DETAIL_TEXT.aiComingSoon}</p>
           </div>
         </div>
       </div>
