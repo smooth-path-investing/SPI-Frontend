@@ -21,14 +21,17 @@ export const MissionSection: React.FC = () => {
   const missionPoints = getMissionPoints(handleKeywordClick);
 
   return (
-    <div className="bg-black">
+    <div className="bg-[var(--background)]">
       <KeywordModal
         keyword={selectedKeyword}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
 
-      <ScrollSection className="py-24 sm:py-32 px-4 sm:px-6 lg:px-8" triggerClass="mission-content">
+      <ScrollSection
+        className="py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 text-[var(--foreground)]"
+        triggerClass="mission-content"
+      >
         <div className="max-w-6xl mx-auto mission-content">
           {/* Header */}
           <SectionHeader mainText="Wall Street Horsepower for Main Street." subText="" />

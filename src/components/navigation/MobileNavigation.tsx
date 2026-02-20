@@ -31,9 +31,10 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   const menuButtonClasses =
     'md:hidden text-[var(--muted-text)] hover:text-[var(--foreground)] p-2 transition-colors z-[60] min-w-[44px] min-h-[44px] flex items-center justify-center';
 
-  const linkBaseClasses = 'relative text-[20px] font-medium tracking-wide transition-colors pl-8';
+  const linkBaseClasses =
+    'relative text-lg sm:text-xl font-medium tracking-wide transition-colors pl-7 py-1.5';
   const linkActiveClasses =
-    'text-[var(--accent)] font-medium before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1.5 before:h-[1.2em] before:bg-[var(--accent)]';
+    'text-[var(--accent)] font-medium before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-[1.1em] before:bg-[var(--accent)]';
   const linkInactiveClasses =
     'text-white/60 hover:text-[var(--accent)] font-medium tracking-[0.05em]';
 
@@ -41,7 +42,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
     <Button
       variant="default"
       size="sm"
-      className="w-full rounded-md px-4 py-3 mb-8 bg-[var(--accent)] text-[var(--background)] font-semibold transition-colors"
+      className="w-full rounded-md px-4 py-3 bg-[var(--accent)] text-[var(--background)] font-semibold transition-colors"
       onClick={() => {
         onAuthClick();
         onCloseMobileMenu();
@@ -68,29 +69,26 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
           <>
             {/* Overlay */}
             <div
-              className="fixed inset-0 z-[95] bg-black md:hidden"
+              className="fixed inset-0 z-[95] bg-black/75 backdrop-blur-[2px] md:hidden"
               onClick={onCloseMobileMenu}
               aria-hidden="true"
             />
 
             {/* Drawer */}
-            <div className="fixed inset-x-0 top-0 bottom-0 z-[100] bg-black md:hidden flex flex-col h-full animate-slide-in-right">
+            <div className="fixed right-0 top-0 bottom-0 z-[100] w-[88%] max-w-sm bg-black border-l border-[var(--card-border)] md:hidden flex flex-col h-full animate-slide-in-right">
               {/* Top Right Close Button */}
-              <div className="flex justify-end p-2">
+              <div className="flex justify-end p-2 border-b border-[var(--card-border)]">
                 <button
                   onClick={onCloseMobileMenu}
                   aria-label="Close menu"
-                  className="p-3 hover:text-[var(--forground)] transition-colors"
+                  className="p-3 hover:text-[var(--foreground)] transition-colors"
                 >
-                  <X className="w-8 h-8 text-[var(--foreground)]" /> 
+                  <X className="w-7 h-7 text-[var(--foreground)]" />
                 </button>
               </div>
 
-              {/* Spacer for “expensive empty space” */}
-              <div className="flex-1" />
-
-              {/* Bottom 40%: Login + Navigation */}
-              <div className="flex flex-col justify-end px-6 pb-12 space-y-9">
+              {/* Content */}
+              <div className="flex flex-col px-6 pt-6 pb-10 gap-8 h-full overflow-y-auto">
                 {/* Login button */}
                 {!isAuthenticated && renderLoginButton()}
 
@@ -113,7 +111,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                     <Button
                       variant="outline"
                       size="sm"
-                      className="w-full rounded-md px-4 py-3 hover:bg-[var(--accent)] hover:text-[var(--background)] transition-all"
+                      className="w-full rounded-md px-4 py-3 border-[var(--card-border)] hover:bg-[var(--accent)] hover:text-[var(--background)] transition-all"
                       onClick={() => {
                         onLogout();
                         onCloseMobileMenu();
@@ -125,7 +123,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                 )}
 
                 {/* Navigation Links */}
-                <div className="flex flex-col space-y-9">
+                <div className="flex flex-col space-y-4">
                   {navigationItems.map((item) => {
                     const isActive = location.pathname === item.href;
                     return (

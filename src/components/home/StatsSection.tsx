@@ -18,7 +18,7 @@ export const StatsSection: React.FC = () => {
       className="
         relative
         overflow-visible
-        py-16
+        py-20 sm:py-24 lg:py-28
         px-4 sm:px-6 lg:px-8
         bg-[var(--background)]
         text-[var(--foreground)]
@@ -33,45 +33,44 @@ export const StatsSection: React.FC = () => {
               {FOOTER_STATS.map((stat, index) => {
                 const Icon = footerStatIconMap[stat.icon];
                 return (
-                <Tooltip key={index}>
-                  <TooltipTrigger asChild>
-                    <div
+                  <Tooltip key={index}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="
+                          flex items-center gap-2
+                          cursor-help
+                          px-5 py-2.5
+                          border border-[var(--card-border)]
+                          rounded-full
+                          bg-[var(--card-bg)]
+                          transition-all duration-300
+                          hover:border-[var(--accent)]
+                          hover:shadow-[0_0_10px_var(--accent)]
+                        "
+                      >
+                        <div className="flex-shrink-0 flex items-center justify-center">
+                          <Icon className="w-4 h-4 text-[var(--accent)]" />
+                        </div>
+
+                        <span className="font-medium text-sm tracking-wide">{stat.title}</span>
+                      </div>
+                    </TooltipTrigger>
+
+                    <TooltipContent
+                      side="top"
                       className="
-                        flex items-center gap-2
-                        cursor-help
-                        px-5 py-2.5
-                        border border-[var(--card-border)]
-                        rounded-full
+                        max-w-xs
+                        z-[9999]
                         bg-[var(--card-bg)]
-                        transition-all duration-300
-                        hover:border-[var(--accent)]
-                        hover:shadow-[0_0_15px_var(--accent)]
-                        hover:scale-105
+                        border border-[var(--card-border)]
+                        text-[var(--muted-text)]
+                        rounded-[var(--radius)]
+                        shadow-xl
                       "
                     >
-                      <div className="flex-shrink-0 flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-[var(--accent)]" />
-                      </div>
-
-                      <span className="font-medium text-sm tracking-wide">{stat.title}</span>
-                    </div>
-                  </TooltipTrigger>
-
-                  <TooltipContent
-                    side="top"
-                    className="
-                      max-w-xs
-                      z-[9999]
-                      bg-[var(--card-bg)]
-                      border border-[var(--card-border)]
-                      text-[var(--muted-text)]
-                      rounded-[var(--radius)]
-                      shadow-xl
-                    "
-                  >
-                    <p className="text-sm leading-relaxed">{stat.description}</p>
-                  </TooltipContent>
-                </Tooltip>
+                      <p className="text-sm leading-relaxed">{stat.description}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 );
               })}
             </div>

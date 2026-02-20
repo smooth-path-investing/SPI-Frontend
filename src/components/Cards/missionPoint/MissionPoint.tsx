@@ -94,9 +94,9 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
     px-5 py-6 sm:p-8 lg:p-12
     rounded-[var(--radius)]
     transition-all duration-300
-    transform sm:hover:scale-105
-    hover:border-[var(--card-hover)]
-    hover:shadow-[0_0_30px_var(--card-hover)]
+    sm:hover:-translate-y-0.5
+    hover:border-[var(--accent)]/70
+    hover:shadow-[0_10px_26px_rgba(0,0,0,0.2)]
     min-h-fit sm:min-h-fit
     relative
   "
@@ -120,7 +120,7 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index, onKeyw
           text-sm sm:text-base md:text-lg
           font-light
           leading-[1.5] sm:leading-[1.65]
-          tracking-wide text-white/80 text-center
+          tracking-wide text-[var(--foreground)]/85 text-center
           antialiased
         "
       >

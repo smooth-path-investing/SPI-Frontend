@@ -20,7 +20,7 @@ export const PerformanceSection: React.FC = () => {
       className="
         relative
         px-4 sm:px-6 lg:px-8
-        py-24 sm:py-32
+        py-20 sm:py-24 lg:py-28
         z-10
         bg-[var(--background)]
         text-[var(--foreground)]
@@ -34,15 +34,15 @@ export const PerformanceSection: React.FC = () => {
         />
 
         {/* Chart + Table */}
-        <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-4 sm:gap-6 lg:gap-8 items-stretch">
           {/* Chart */}
-          <div className="w-full lg:w-2/3 p-2 sm:p-4 md:p-6">
+          <div className="w-full">
             <OverallPerformanceChart data={performanceData} />
             {/* <OverallPerformanceChart data={graphData} /> */}
           </div>
 
           {/* Table */}
-          <div className="w-full lg:flex-[1.5] p-2 sm:p-4 lg:p-6">
+          <div className="w-full">
             <MetricsTable />
           </div>
         </div>

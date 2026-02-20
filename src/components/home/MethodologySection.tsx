@@ -6,9 +6,9 @@ import { MethodologyCard } from '../Cards/MethodologyCard/MethodologyCard';
 import { METHODOLOGY_CARDS, type MethodologyIconKey } from '@/constants/methodologyCards';
 
 const sectionClassName =
-  'relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 z-10 bg-[var(--background)] text-[var(--foreground)]';
+  'relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 z-10 bg-[var(--background)] text-[var(--foreground)]';
 
-const cardsGridClassName = 'grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16';
+const cardsGridClassName = 'grid md:grid-cols-3 gap-5 sm:gap-7 lg:gap-10';
 
 const methodologyIconMap: Record<MethodologyIconKey, LucideIcon> = {
   cpu: Cpu,

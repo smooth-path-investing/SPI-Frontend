@@ -7,7 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Label,
   ReferenceLine,
 } from 'recharts';
 import type { OverallPerformanceChartProps } from '../../types';
@@ -33,9 +32,8 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
          border border-[var(--card-border)]
         rounded-[var(--radius)]
          transition-all duration-300
-        transform hover:scale-105
-        hover:border-[var(--card-hover)]
-        hover:shadow-[0_0_30px_var(--card-hover)]
+        hover:border-[var(--accent)]/70
+        hover:shadow-[0_10px_28px_rgba(0,0,0,0.22)]
         px-3 py-2 sm:px-6 sm:py-4
         ${className}
       `}

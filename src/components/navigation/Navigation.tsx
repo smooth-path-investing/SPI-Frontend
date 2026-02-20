@@ -31,7 +31,7 @@ export const Navigation: React.FC = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)] text-[var(--foreground)] border-b border-[var(--border)] shadow-md backdrop-blur-sm">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-[var(--background)]/85 text-[var(--foreground)] border-b border-[var(--card-border)] shadow-[0_6px_20px_rgba(0,0,0,0.15)] backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 gap-4">
             {/* Logo */}
@@ -47,11 +47,11 @@ export const Navigation: React.FC = () => {
                   <Link
                     key={item.href}
                     to={item.href}
-                    className="relative px-4 py-2 text-sm font-medium transition-colors tracking-wide hover:text-[var(--accent)]"
+                    className="relative px-4 py-2 text-sm font-medium transition-colors tracking-wide text-[var(--muted-text)] hover:text-[var(--foreground)]"
                   >
                     {item.label}
                     {isActive && (
-                      <span className="absolute left-1/2 bottom-0 transform -translate-x-1/2 w-3/4 h-[1px] bg-[var(--accent)] rounded-full"></span>
+                      <span className="absolute left-1/2 bottom-0 transform -translate-x-1/2 w-3/4 h-[2px] bg-[var(--accent)] rounded-full" />
                     )}
                   </Link>
                 );

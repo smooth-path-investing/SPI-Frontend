@@ -8,7 +8,7 @@ interface MethodologyCardProps {
 }
 
 const cardClassName =
-  'bg-[var(--card-bg)] border border-[var(--card-border)] p-6 sm:p-8 lg:p-12 rounded-[var(--radius)] transition-all duration-300 transform hover:scale-105 hover:border-[var(--card-hover)] hover:shadow-[0_0_30px_var(--card-hover)]';
+  'h-full bg-[var(--card-bg)] border border-[var(--card-border)] p-6 sm:p-8 lg:p-10 rounded-[var(--radius)] transition-all duration-300 hover:border-[var(--accent)]/70 hover:shadow-[0_10px_26px_rgba(0,0,0,0.2)]';
 
 const iconClassName = 'w-10 h-10 sm:w-12 sm:h-12 text-[var(--accent)]';
 
