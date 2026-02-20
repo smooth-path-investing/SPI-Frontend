@@ -1,46 +1,16 @@
 import React from 'react';
-import { Shield, Users, Search, Smartphone, Settings } from 'lucide-react';
+import { Search, Settings, Shield, Smartphone, Users, type LucideIcon } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { ScrollSection } from '../animations/scrollSection';
+import { FOOTER_STATS, type FooterStatIconKey } from '@/constants/footerStats';
 
-const footerStats = [
-  {
-    title: 'Dynamic Management',
-    description:
-      'Ramy Sukarieh trades the exact same stock recommendations with his own capital and instantly relays every move via our AI, Ras.',
-    icon: <Settings className="w-4 h-4 text-[var(--accent)]" />,
-  },
-  {
-    title: 'Risk-aligned Strategy',
-    description:
-      'We only use hyper-liquid universes (S&P 500, IWM, …) and cap tracking error to a pre-set band (6–12%).',
-    icon: <Shield className="w-4 h-4 text-[var(--accent)]" />,
-  },
-  {
-    title: 'Independence & Acceptance',
-    description:
-      'Proprietary SigGA model built in-house. Once we’re in, we stay in — and double down when the market gives us the chance.',
-    icon: <Users className="w-4 h-4 text-[var(--accent)]" />,
-  },
-  {
-    title: 'Full Transparency',
-    description:
-      'Methodology, live positions, performance, and the original academic papers (downloadable on the Approach page).',
-    icon: <Search className="w-4 h-4 text-[var(--accent)]" />,
-  },
-  {
-    title: 'No Upselling',
-    description:
-      'Research + experience matter. Clear plan pricing, zero hidden costs, no nonsense — ever.',
-    icon: <Shield className="w-4 h-4 text-[var(--accent)]" />,
-  },
-  {
-    title: 'Mobile First',
-    description:
-      'Designed from day one to be fast and beautiful on your phone — no zooming, no clutter.',
-    icon: <Smartphone className="w-4 h-4 text-[var(--accent)]" />,
-  },
-];
+const footerStatIconMap: Record<FooterStatIconKey, LucideIcon> = {
+  settings: Settings,
+  shield: Shield,
+  users: Users,
+  search: Search,
+  smartphone: Smartphone,
+};
 
 export const StatsSection: React.FC = () => {
   return (
@@ -60,7 +30,9 @@ export const StatsSection: React.FC = () => {
           <div className="flex flex-col items-center gap-8">
             {/* Pills */}
             <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-              {footerStats.map((stat, index) => (
+              {FOOTER_STATS.map((stat, index) => {
+                const Icon = footerStatIconMap[stat.icon];
+                return (
                 <Tooltip key={index}>
                   <TooltipTrigger asChild>
                     <div
@@ -78,7 +50,7 @@ export const StatsSection: React.FC = () => {
                       "
                     >
                       <div className="flex-shrink-0 flex items-center justify-center">
-                        {stat.icon}
+                        <Icon className="w-4 h-4 text-[var(--accent)]" />
                       </div>
 
                       <span className="font-medium text-sm tracking-wide">{stat.title}</span>
@@ -100,7 +72,8 @@ export const StatsSection: React.FC = () => {
                     <p className="text-sm leading-relaxed">{stat.description}</p>
                   </TooltipContent>
                 </Tooltip>
-              ))}
+                );
+              })}
             </div>
 
             {/* Disclaimer */}

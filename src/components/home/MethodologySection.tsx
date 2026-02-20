@@ -1,32 +1,20 @@
 import type { FC } from 'react';
-import { Brain, Cpu, TrendingUp } from 'lucide-react';
+import { Brain, Cpu, TrendingUp, type LucideIcon } from 'lucide-react';
 import { ScrollSection } from '../animations/scrollSection';
 import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
 import { MethodologyCard } from '../Cards/MethodologyCard/MethodologyCard';
+import { METHODOLOGY_CARDS, type MethodologyIconKey } from '@/constants/methodologyCards';
 
 const sectionClassName =
   'relative py-16 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 z-10 bg-[var(--background)] text-[var(--foreground)]';
 
 const cardsGridClassName = 'grid md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mb-12 sm:mb-16';
 
-const methodologyCards = [
-  {
-    icon: Cpu,
-    title: 'Indicator',
-    description: 'Five decisive predictors no stock escapes',
-  },
-  {
-    icon: TrendingUp,
-    title: 'Behavior',
-    description: 'Crowd psychology distilled into trend investing, reverting, or indexing.',
-  },
-  {
-    icon: Brain,
-    title: 'Allocator',
-    description:
-      'Mathematical sophistication applied to stock selection, that is, to what, when, and how much.',
-  },
-] as const;
+const methodologyIconMap: Record<MethodologyIconKey, LucideIcon> = {
+  cpu: Cpu,
+  'trending-up': TrendingUp,
+  brain: Brain,
+};
 
 export const MethodologySection: FC = () => {
   return (
@@ -38,10 +26,10 @@ export const MethodologySection: FC = () => {
         />
 
         <div className={cardsGridClassName}>
-          {methodologyCards.map((card) => (
+          {METHODOLOGY_CARDS.map((card) => (
             <MethodologyCard
               key={card.title}
-              icon={card.icon}
+              icon={methodologyIconMap[card.icon]}
               title={card.title}
               description={card.description}
             />
