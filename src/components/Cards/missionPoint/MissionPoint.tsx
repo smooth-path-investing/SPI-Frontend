@@ -123,9 +123,11 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
       </div>
 
       {index === 3 && (
-        <KeywordTooltip keyword="Az2→Sp∈P">
-          <FormulaBlock />
-        </KeywordTooltip>
+        <div className="flex justify-center">
+          <KeywordTooltip keyword="Az2→Sp∈P">
+            <FormulaBlock />
+          </KeywordTooltip>
+        </div>
       )}
     </Card>
   );
