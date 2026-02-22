@@ -11,11 +11,11 @@ export const MetricRow: React.FC<MetricRowProps> = ({
   label,
   value,
   hasBorder = true,
-  valueClassName = 'font-semibold'
+  valueClassName = 'font-semibold text-[var(--foreground)]'
 }) => {
   return (
-    <div className={`flex justify-between py-3 ${hasBorder ? 'border-b border-border' : ''}`}>
-      <span className="text-muted-foreground">{label}</span>
+    <div className={`flex justify-between py-3 ${hasBorder ? 'border-b border-[var(--card-border)]' : ''}`}>
+      <span className="text-[var(--muted-text)]">{label}</span>
       {typeof value === 'string' ? (
         <span className={valueClassName}>{value}</span>
       ) : (

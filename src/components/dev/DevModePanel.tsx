@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Settings, X, ChevronDown, ChevronUp } from 'lucide-react';
+import { Settings, ChevronDown, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';

@@ -19,12 +19,26 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ keyword, isOpen, onC
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
-        <DialogHeader className="space-y-4 pb-6">
-          <DialogTitle className="text-3xl sm:text-4xl font-bold text-primary leading-tight">
+      <DialogContent
+        className="
+          sm:max-w-[700px] max-w-full
+          max-h-[85vh] sm:max-h-[80vh]
+          overflow-y-auto
+          px-4 sm:px-6 lg:px-8
+          py-6 sm:py-8
+          bg-[var(--card-bg)]
+          border border-[var(--card-border)]
+          rounded-xl
+        "
+      >
+        <DialogHeader className="space-y-4 sm:space-y-5">
+          {/* Title */}
+          <DialogTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-[var(--foreground)] leading-tight">
             {keyword.title}
           </DialogTitle>
-          <DialogDescription className="text-lg sm:text-xl text-foreground leading-relaxed pt-2">
+
+          {/* Description */}
+          <DialogDescription className="text-base sm:text-lg md:text-xl text-[var(--foreground)] leading-relaxed">
             {keyword.description}
           </DialogDescription>
         </DialogHeader>

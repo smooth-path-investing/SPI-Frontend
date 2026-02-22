@@ -3,22 +3,22 @@ export interface KeywordInfo {
   description: string;
 }
 
+// 1. Map lowercase keys to the data
 export const KEYWORD_DATA: Record<string, KeywordInfo> = {
-  'Rigorous Math': {
+  'rigorous math': {
     title: 'Proprietary in-house SigGA Model',
     description:
-      'Rough Path Signatures + Genetic Algorithms + Behaviorally-linked Machine Learning, Built through original mathematical finance research for stock ranking',
+      'Rough Path Signatures + Genetic Algorithms + Behaviorally-linked Machine Learning...',
   },
-  'Risk Budget': {
+  'risk budget': {
     title: 'Risk Budget Management & Portfolio Allocation',
-    description:
-      'Guide investors to dial up or down risks in their portfolio based on their risk tolerance.',
+    description: 'Guide investors to dial up or down risks in their portfolio...',
   },
-  'Az2→Sp∈P': {
+  'az2→sp∈p': {
     title: 'Smooth Path Investing Framework',
-    description:
-      'Encapsulates our complete investment framework from A to Z, delivering comprehensive services to put smart stock portfolios in your pocket.',
+    description: 'Encapsulates our complete investment framework from A to Z...',
   },
 };
 
+// 2. Keep the display strings for the Regex search
 export const KEYWORDS = ['Rigorous Math', 'Risk Budget', 'Az2→Sp∈P'];

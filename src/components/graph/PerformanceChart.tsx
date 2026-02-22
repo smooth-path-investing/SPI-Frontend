@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AreaChart,
   Area,
@@ -7,7 +7,6 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Label,
   ReferenceLine,
 } from 'recharts';
 import type { OverallPerformanceChartProps } from '../../types';
@@ -15,27 +14,61 @@ import CustomTooltip from './tooltip';
 
 export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = ({
   data,
-  height = 'h-[400px]',
   className = '',
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
   return (
-    <div className={`bg-card rounded-lg border border-border p-4 ${height} ${className}`}>
-      <ResponsiveContainer width="100%">
-        <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 10 }}>
+    <div
+      className={`
+        bg-[var(--card-bg)]
+         border border-[var(--card-border)]
+        rounded-[var(--radius)]
+         transition-all duration-300
+        hover:border-[var(--accent)]/70
+        hover:shadow-[0_10px_28px_rgba(0,0,0,0.22)]
+        px-3 py-2 sm:px-6 sm:py-4
+        ${className}
+      `}
+    >
+      <ResponsiveContainer width="100%" aspect={isMobile ? 1.5 : 2}>
+        <AreaChart
+          data={data}
+          margin={{
+            top: 20,
+            right: 10,
+            left: 10,
+            bottom: 10,
+          }}
+        >
+          {/* Gradients */}
           <defs>
-            <linearGradient id="spiGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="#FFD700" stopOpacity={0.3} />
-              <stop offset="95%" stopColor="#FFD700" stopOpacity={0} />
+            <linearGradient id="portfolioGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.35} />
+              <stop offset="95%" stopColor="var(--accent)" stopOpacity={0} />
             </linearGradient>
 
-            <linearGradient id="ivvGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0.25} />
-              <stop offset="95%" stopColor="hsl(var(--muted-foreground))" stopOpacity={0} />
+            <linearGradient id="benchmarkGradient" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="var(--muted-text)" stopOpacity={0.2} />
+              <stop offset="95%" stopColor="var(--muted-text)" stopOpacity={0} />
             </linearGradient>
           </defs>
 
-          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.3} />
+          {/* Grid */}
+          <CartesianGrid
+            stroke="var(--card-border)"
+            strokeDasharray="3 3"
+            opacity={isMobile ? 0.15 : 0.25}
+          />
 
+          {/* X Axis */}
           <XAxis
             dataKey="date"
             tickFormatter={(() => {
@@ -50,69 +83,52 @@ export const OverallPerformanceChart: React.FC<OverallPerformanceChartProps> = (
                 return '';
               };
             })()}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
-            tickLine={{ stroke: 'hsl(var(--border))' }}
+            tick={{ fill: 'var(--muted-text)', fontSize: 11 }}
+            axisLine={{ stroke: 'var(--ring)' }}
+            tickLine={{ stroke: 'var(--card-border)' }}
             angle={-45}
             textAnchor="end"
             interval={0}
           />
 
+          {/* Y Axis */}
           <YAxis
             domain={[60, 160]}
             ticks={[60, 80, 100, 120, 140, 160]}
-            tick={{ fill: 'hsl(var(--muted-foreground))', fontSize: 10 }}
-            axisLine={{ stroke: 'hsl(var(--border))' }}
-            tickLine={{ stroke: 'hsl(var(--border))' }}
-            width={50}
-          >
-            <Label
-              value="Cumulative Return (%)"
-              angle={-90}
-              position="insideLeft" // Changed to insideLeft for more reliable alignment
-              style={{
-                fontSize: 10,
-                fill: 'hsl(var(--muted-foreground))',
-                fontWeight: 500,
-                textAnchor: 'middle',
-              }}
-              offset={0}
-              dx={-5} // Fine-tune this based on your specific font
-            />
-          </YAxis>
+            tick={{ fill: 'var(--muted-text)', fontSize: 11 }}
+            axisLine={{ stroke: 'var(--ring)' }}
+            tickLine={{ stroke: 'var(--card-border)' }}
+            width={isMobile ? 15 : 15}
+          ></YAxis>
 
+          {/* Reference Line */}
           <ReferenceLine
             y={100}
-            stroke="hsl(var(--muted-foreground))"
-            strokeDasharray="3 3"
-            strokeWidth={1}
-            strokeOpacity={0.8}
-          >
-            <Label
-              position="insideBottomLeft"
-              fill="hsl(var(--muted-foreground))"
-              fontSize={10}
-              dy={-5}
-            />
-          </ReferenceLine>
+            stroke="var(--muted-text)"
+            strokeDasharray="4 4"
+            strokeOpacity={0.5}
+          />
 
-          <Tooltip content={<CustomTooltip />} />
+          {/* Tooltip */}
+          <Tooltip content={<CustomTooltip />} trigger={isMobile ? 'click' : 'hover'} />
 
+          {/* Benchmark */}
           <Area
             type="monotone"
             dataKey="ivvVal"
-            stroke="hsl(var(--muted-foreground))"
-            strokeWidth={2}
-            fill="url(#ivvGradient)"
+            stroke="var(--muted-text)"
+            strokeWidth={isMobile ? 1.5 : 2}
+            fill="url(#benchmarkGradient)"
             name="S&P 500"
           />
 
+          {/* Portfolio */}
           <Area
             type="monotone"
             dataKey="spiVal"
-            stroke="#FFD700"
-            strokeWidth={2}
-            fill="url(#spiGradient)"
+            stroke="var(--accent)"
+            strokeWidth={isMobile ? 2 : 2.5}
+            fill="url(#portfolioGradient)"
             name="Portfolio"
           />
         </AreaChart>

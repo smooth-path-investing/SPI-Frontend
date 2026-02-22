@@ -1,45 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import MetricsTable from '../statsTable/metricsTable';
 import { OverallPerformanceChart } from '../graph/PerformanceChart';
 import { performanceData } from '@/constants/graph';
-import { PerformanceRow } from '@/types';
-import { fetchGraphData } from '@/API/fetchPerformance';
+import { ScrollSection } from '../animations/scrollSection';
+import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
 
 export const PerformanceSection: React.FC = () => {
-  const [graphData, setGraphData] = useState<PerformanceRow[]>([]);
-
-  useEffect(() => {
-    fetchGraphData().then((data) => {
-      console.log('Fetched data:', data); // Should show the array
-      setGraphData(data);
-    });
-  }, []);
-
-  console.log('Fetched data:', graphData);
+  // const [graphData, setGraphData] = useState<PerformanceRow[]>([]);
+  // useEffect(() => {
+  //   fetchGraphData().then((data) => {
+  //     console.log('Fetched data:', data);
+  //     setGraphData(data);
+  //   });
+  // }, []);
 
   return (
-    <section className="relative px-4 bg-card/30 z-10">
-      <div className="text-center mb-12 sm:mb-16">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-          Live Performance
-        </h2>
-        <p className="text-base sm:text-lg lg:text-2xl text-muted-foreground max-w-4xl mx-auto px-2">
-          Real results from real positions – actual trading, no simulations
-        </p>
-      </div>
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-8 items-stretch">
-        {/* Chart Container - Fixed height is key here */}
-        <div className="w-full lg:flex-[3.5]">
-          <OverallPerformanceChart data={performanceData} />
-          {/* <OverallPerformanceChart data={graphData} /> */}
-        </div>
+    <ScrollSection
+      className="
+        relative
+        px-4 sm:px-6 lg:px-8
+        py-20 sm:py-24 lg:py-28
+        z-10
+        bg-[var(--background)]
+        text-[var(--foreground)]
+      "
+      triggerClass="performance-content"
+    >
+      <div className="max-w-7xl mx-auto performance-content">
+        <SectionHeader
+          mainText="Live Performance"
+          subText="Real results from real positions – actual trading, no simulations"
+        />
 
-        {/* Table Container */}
-        <div className="w-full lg:flex-[1.5]">
-          <MetricsTable />
+        {/* Chart + Table */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-4 sm:gap-6 lg:gap-8 items-stretch">
+          {/* Chart */}
+          <div className="w-full">
+            <OverallPerformanceChart data={performanceData} />
+            {/* <OverallPerformanceChart data={graphData} /> */}
+          </div>
+
+          {/* Table */}
+          <div className="w-full">
+            <MetricsTable />
+          </div>
         </div>
       </div>
-    </section>
+    </ScrollSection>
   );
 };

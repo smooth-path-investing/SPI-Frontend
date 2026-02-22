@@ -1,0 +1,63 @@
+// Core palette (kept as Sass variables for style modules that import this file)
+$color-background: hsl(0 0% 0%);
+$color-foreground: hsl(0 0% 100%);
+
+$color-card-bg: hsl(0 0% 1%);
+$color-card-border: hsl(0 0% 5%);
+$color-card-hover: hsl(42 90% 50%);
+
+$color-muted-text: hsl(0 0% 65%);
+$color-accent: hsl(42 88% 65%);
+$color-accent-light: hsl(42 92% 70%);
+
+// Legacy Sass tokens retained for compatibility with src/styles/theme.scss
+$color-hero-overlay: rgba(0, 0, 0, 0.5);
+$color-hero-overlay-sm: rgba(0, 0, 0, 0.7);
+$color-blob-primary: hsl(42 88% 65%);
+$color-blob-secondary: hsl(38 85% 58%);
+$color-blob-accent: hsl(48 82% 70%);
+
+$color-border: hsl(0 0% 20%);
+$color-input: hsl(0 0% 20%);
+$color-ring: hsl(0 0% 100%);
+
+$color-destructive: hsl(0 62.8% 30.6%);
+$color-destructive-text: hsl(0 0% 100%);
+
+$border-radius: 0.5rem;
+
+// App custom tokens + semantic Tailwind/Shadcn tokens used by components.
+:root {
+  // Custom app tokens (var(--...))
+  --background: #{$color-background};
+  --foreground: #{$color-foreground};
+  --card-bg: #{$color-card-bg};
+  --card-border: #{$color-card-border};
+  --card-hover: #{$color-card-hover};
+  --muted-text: #{$color-muted-text};
+  --accent: #{$color-accent};
+  --accent-light: #{$color-accent-light};
+  --radius: #{$border-radius};
+
+  // Semantic tokens consumed via Tailwind config hsl(var(--token))
+  --border: #{$color-border};
+  --input: #{$color-input};
+  --ring: #{$color-ring};
+
+  --card: #{$color-card-bg};
+  --card-foreground: #{$color-foreground};
+  --popover: #{$color-card-bg};
+  --popover-foreground: #{$color-foreground};
+
+  --primary: #{$color-accent};
+  --primary-foreground: hsl(0 0% 0%);
+  --secondary: hsl(0 0% 14%);
+  --secondary-foreground: #{$color-foreground};
+  --accent-foreground: hsl(0 0% 0%);
+
+  --muted: hsl(0 0% 12%);
+  --muted-foreground: #{$color-muted-text};
+
+  --destructive: #{$color-destructive};
+  --destructive-foreground: #{$color-destructive-text};
+}

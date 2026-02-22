@@ -1,0 +1,63 @@
+// src/styles/theme.scss
+
+@use './variables' as v;
+
+// ------------------------------
+// LIGHT MODE (default)
+// ------------------------------
+:root {
+  --color-background: #{v.$color-background};
+  --color-foreground: #{v.$color-foreground};
+
+  --color-card-bg: #{v.$color-card-bg};
+  --color-card-border: #{v.$color-card-border};
+  --color-card-hover: #{v.$color-card-hover};
+
+  --color-muted-text: #{v.$color-muted-text};
+
+  --color-accent: #{v.$color-accent};
+  --color-accent-light: #{v.$color-accent-light};
+
+  --color-hero-overlay: #{v.$color-hero-overlay};
+  --color-hero-overlay-sm: #{v.$color-hero-overlay-sm};
+
+  --color-blob-primary: #{v.$color-blob-primary};
+  --color-blob-secondary: #{v.$color-blob-secondary};
+  --color-blob-accent: #{v.$color-blob-accent};
+
+  --color-border: #{v.$color-border};
+  --color-input: #{v.$color-input};
+  --color-ring: #{v.$color-ring};
+
+  --color-destructive: #{v.$color-destructive};
+  --color-destructive-text: #{v.$color-destructive-text};
+
+  --border-radius: #{v.$border-radius};
+}
+
+// ------------------------------
+// DARK MODE OVERRIDES
+// ------------------------------
+.dark {
+  --color-background: hsl(0 0% 0%);
+  --color-foreground: hsl(0 0% 100%);
+
+  --color-card-bg: hsl(0 0% 8%);
+  --color-card-border: hsl(0 0% 15%);
+
+  --color-muted-text: hsl(0 0% 65%);
+
+  --color-accent: hsl(42 80% 55%);
+  --color-accent-light: hsl(42 88% 65%);
+
+  --color-blob-primary: hsl(42 80% 55%);
+  --color-blob-secondary: hsl(38 75% 48%);
+  --color-blob-accent: hsl(48 72% 60%);
+
+  --color-border: hsl(0 0% 20%);
+  --color-input: hsl(0 0% 20%);
+  --color-ring: hsl(0 0% 100%);
+
+  --color-destructive: hsl(0 62.8% 30.6%);
+  --color-destructive-text: hsl(0 0% 100%);
+}

@@ -1,27 +1,29 @@
 import React from 'react';
+import { MainTitleComponent } from '../sectionHeaders/LandingPageTitle/MainTitle';
+import { ScrollSection } from '../animations/scrollSection';
 
 export const HeroSection: React.FC = () => {
   return (
-    <section
-      className="
-        relative pt-16 pb-12 px-4 sm:pt-24 sm:pb-16 sm:px-6 lg:px-8
-        h-[60vh] sm:h-[80vh] md:h-screen 
-        flex items-center justify-center bg-no-repeat bg-center bg-cover
-      "
-      style={{ backgroundImage: "url('/images/turtleFox.png')" }}
+    <ScrollSection
+      className="relative isolate flex items-center justify-center min-h-[92svh] sm:min-h-[82svh] md:min-h-screen px-4 sm:px-8 lg:px-12 pt-16"
+      triggerClass="hero-content"
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/50 sm:bg-black/70"></div>
+      {/* Background Image with Focal Point */}
+      <div
+        className="absolute inset-0 bg-cover bg-center blur-[6px] sm:blur-[8px] scale-[1.08]"
+        style={{
+          backgroundImage: "url('/images/turtleFox.png')",
+          backgroundPosition: '25% center',
+        }}
+      />
 
-      {/* Content */}
-      <div className="max-w-3xl mx-auto text-center relative z-10">
-        <div className="animate-fade-in">
-          <h1 className="font-bold text-white leading-tight">
-            <div className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl">Smooth Path</div>
-            <div className="mt-2 text-3xl sm:text-5xl md:text-6xl lg:text-7xl">Investing</div>
-          </h1>
-        </div>
+      <div className="absolute inset-0 bg-black/45" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/70 to-black/95" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(234,179,8,0.05),transparent_50%)]" />
+
+      <div className="hero-content max-w-5xl mx-auto px-2 sm:px-4">
+        <MainTitleComponent />
       </div>
-    </section>
+    </ScrollSection>
   );
 };
