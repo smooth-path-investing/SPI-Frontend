@@ -10,8 +10,8 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
 
-  // 🔥 CRITICAL FOR DEPLOYMENT (FIXES BLANK PAGE)
-  base: './',
+  // Use absolute asset URLs so deep-route reloads (e.g. /portfolio/:id) can load bundles.
+  base: '/',
 
   plugins: [react(), mode === 'development' && componentTagger()].filter(Boolean),
 

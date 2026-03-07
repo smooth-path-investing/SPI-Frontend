@@ -20,9 +20,26 @@ export const Navigation: React.FC = () => {
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
+    const html = document.documentElement;
+    const body = document.body;
+
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyTouchAction = body.style.touchAction;
+    const previousBodyOverscrollBehavior = body.style.overscrollBehavior;
+
+    if (isMobileMenuOpen) {
+      html.style.overflow = 'hidden';
+      body.style.overflow = 'hidden';
+      body.style.touchAction = 'none';
+      body.style.overscrollBehavior = 'none';
+    }
+
     return () => {
-      document.body.style.overflow = 'unset';
+      html.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
+      body.style.touchAction = previousBodyTouchAction;
+      body.style.overscrollBehavior = previousBodyOverscrollBehavior;
     };
   }, [isMobileMenuOpen]);
 

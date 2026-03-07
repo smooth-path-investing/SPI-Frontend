@@ -32,11 +32,11 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
     'md:hidden text-[var(--muted-text)] hover:text-[var(--foreground)] p-2 transition-colors z-[60] min-w-[44px] min-h-[44px] flex items-center justify-center';
 
   const linkBaseClasses =
-    'relative text-lg sm:text-xl font-medium tracking-wide transition-colors pl-7 py-1.5';
+    'block w-full rounded-xl border px-4 py-3 text-base font-semibold transition-colors';
   const linkActiveClasses =
-    'text-[var(--accent)] font-medium before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-1 before:h-[1.1em] before:bg-[var(--accent)]';
+    'border-[var(--accent)] bg-[var(--accent)]/20 text-[var(--foreground)]';
   const linkInactiveClasses =
-    'text-white/60 hover:text-[var(--accent)] font-medium tracking-[0.05em]';
+    'border-white/15 bg-black/20 text-white/75 hover:border-[var(--accent)]/40 hover:text-[var(--foreground)]';
 
   const renderLoginButton = () => (
     <Button
@@ -52,6 +52,86 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
     </Button>
   );
 
+  const mobileMenu = isMobileMenuOpen
+    ? createPortal(
+        <div className="fixed inset-0 z-[100] md:hidden bg-[var(--background)] text-[var(--foreground)]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.12),transparent_55%)]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/90 to-black/95" />
+
+          <div className="relative h-[100dvh] w-full flex flex-col px-5 sm:px-6 pt-[max(1rem,env(safe-area-inset-top))] pb-[max(1.2rem,env(safe-area-inset-bottom))]">
+            <div className="flex items-center justify-between pb-4 border-b border-[var(--card-border)]/80">
+              <div className="flex items-center gap-3">
+                <img src="/images/SPI.png" alt="SPI Logo" className="w-6 h-6 object-contain" />
+                <p className="text-sm uppercase tracking-[0.14em] text-[var(--muted-text)]">Menu</p>
+              </div>
+              <button
+                onClick={onCloseMobileMenu}
+                aria-label="Close menu"
+                className="p-2 rounded-md hover:bg-white/5 transition-colors"
+              >
+                <X className="w-7 h-7 text-[var(--foreground)]" />
+              </button>
+            </div>
+
+            <div className="pt-5">
+              {!isAuthenticated && renderLoginButton()}
+
+              {isAuthenticated && user && (
+                <div className="rounded-xl border border-white/15 bg-black/20 px-4 py-3">
+                  <div className="flex items-center space-x-3">
+                    <div className="w-10 h-10 bg-[var(--accent)] rounded-md flex items-center justify-center shrink-0">
+                      <span className="text-[var(--background)] text-sm font-medium">
+                        {user.email?.[0].toUpperCase() || '?'}
+                      </span>
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-white font-medium truncate">{user.email}</p>
+                      <p className="text-white/65 text-sm leading-tight">
+                        {user.isPremium ? 'Premium Member' : 'Free Member'}
+                      </p>
+                    </div>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="w-full mt-4 rounded-md px-4 py-3 border-[var(--card-border)] hover:bg-[var(--accent)] hover:text-[var(--background)] transition-all"
+                    onClick={() => {
+                      onLogout();
+                      onCloseMobileMenu();
+                    }}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-auto">
+              <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--muted-text)] mb-3">
+                Navigation
+              </p>
+              <div className="grid grid-cols-1 gap-3">
+                {navigationItems.map((item) => {
+                  const isActive = location.pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      to={item.href}
+                      onClick={onCloseMobileMenu}
+                      className={`${linkBaseClasses} ${isActive ? linkActiveClasses : linkInactiveClasses}`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body,
+      )
+    : null;
+
   return (
     <>
       {/* Mobile Menu Button */}
@@ -61,90 +141,13 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
         aria-label="Toggle mobile menu"
         aria-expanded={isMobileMenuOpen}
       >
-        <Menu className="w-7 h-7 text-[var(--foreground)]" />
-      </button>
-
-      {isMobileMenuOpen &&
-        createPortal(
-          <>
-            {/* Overlay */}
-            <div
-              className="fixed inset-0 z-[95] bg-black/75 backdrop-blur-[2px] md:hidden"
-              onClick={onCloseMobileMenu}
-              aria-hidden="true"
-            />
-
-            {/* Drawer */}
-            <div className="fixed right-0 top-0 bottom-0 z-[100] w-[88%] max-w-sm bg-black border-l border-[var(--card-border)] md:hidden flex flex-col h-full animate-slide-in-right">
-              {/* Top Right Close Button */}
-              <div className="flex justify-end p-2 border-b border-[var(--card-border)]">
-                <button
-                  onClick={onCloseMobileMenu}
-                  aria-label="Close menu"
-                  className="p-3 hover:text-[var(--foreground)] transition-colors"
-                >
-                  <X className="w-7 h-7 text-[var(--foreground)]" />
-                </button>
-              </div>
-
-              {/* Content */}
-              <div className="flex flex-col px-6 pt-6 pb-10 gap-8 h-full overflow-y-auto">
-                {/* Login button */}
-                {!isAuthenticated && renderLoginButton()}
-
-                {/* Auth Section */}
-                {isAuthenticated && user && (
-                  <div className="space-y-6">
-                    <div className="flex items-center space-x-3 px-2 py-2">
-                      <div className="w-10 h-10 bg-[var(--accent)] rounded-md flex items-center justify-center">
-                        <span className="text-[var(--background)] text-sm font-medium">
-                          {user.email?.[0].toUpperCase() || '?'}
-                        </span>
-                      </div>
-                      <div>
-                        <p className="text-white font-medium">{user.email}</p>
-                        <p className="text-white/65 text-sm">
-                          {user.isPremium ? 'Premium Member' : 'Free Member'}
-                        </p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full rounded-md px-4 py-3 border-[var(--card-border)] hover:bg-[var(--accent)] hover:text-[var(--background)] transition-all"
-                      onClick={() => {
-                        onLogout();
-                        onCloseMobileMenu();
-                      }}
-                    >
-                      Logout
-                    </Button>
-                  </div>
-                )}
-
-                {/* Navigation Links */}
-                <div className="flex flex-col space-y-4">
-                  {navigationItems.map((item) => {
-                    const isActive = location.pathname === item.href;
-                    return (
-                      <Link
-                        key={item.href}
-                        to={item.href}
-                        onClick={onCloseMobileMenu}
-                        className={`${linkBaseClasses} ${
-                          isActive ? linkActiveClasses : linkInactiveClasses
-                        }`}
-                      >
-                        {item.label}
-                      </Link>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          </>,
-          document.body,
+        {isMobileMenuOpen ? (
+          <X className="w-7 h-7 text-[var(--foreground)]" />
+        ) : (
+          <Menu className="w-7 h-7 text-[var(--foreground)]" />
         )}
+      </button>
+      {mobileMenu}
     </>
   );
 };
