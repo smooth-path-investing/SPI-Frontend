@@ -26,12 +26,13 @@ const PORTFOLIO_DETAIL_TEXT = {
 };
 
 export const PortfolioDetail: React.FC = () => {
-  const { portfolioId } = useParams<{ portfolioId: string }>();
+  const { portfolioId } = useParams<{ portfolioId?: string }>();
   const { isAuthenticated, login, signup, hasPurchasedPortfolio } = useAuth();
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
 
-  const portfolio = PORTFOLIOS.find(p => p.id === portfolioId);
+  const portfolio = PORTFOLIOS.find(p => p.id === resolvedPortfolioId);
 
   useEffect(() => {
     if (!portfolio) {
@@ -182,22 +183,22 @@ export const PortfolioDetail: React.FC = () => {
           }
         >
           <SectionHeader mainText={stocksSectionTitle} className="mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl mx-auto">
-            {stocks.map((stock, index) => {
-              const isLast = index === stocks.length - 1;
-              const centerLastOnDesktop = shouldLockTickers && isLast;
-
-              return (
-                <div key={stock.ticker} className={centerLastOnDesktop ? 'lg:col-start-2' : ''}>
-                  <StockCard
-                    stock={stock}
-                    blurred={false}
-                    disableViewAnalysis={shouldLockTickers}
-                    onViewDetails={() => navigate(`/portfolio/${portfolio.id}/stock/${stock.ticker}`)}
-                  />
-                </div>
-              );
-            })}
+          <div className="grid grid-cols-1 gap-3 max-w-5xl mx-auto">
+            {stocks.map((stock) => (
+              <StockCard
+                key={stock.ticker}
+                stock={stock}
+                blurred={false}
+                disableViewAnalysis={shouldLockTickers}
+                onViewDetails={() =>
+                  navigate(
+                    portfolio.id === 'long-contrarian'
+                      ? `/portfolio/stock/${stock.ticker}`
+                      : `/portfolio/${portfolio.id}/stock/${stock.ticker}`,
+                  )
+                }
+              />
+            ))}
           </div>
         </div>
       </div>

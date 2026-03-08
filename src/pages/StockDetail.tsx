@@ -21,14 +21,15 @@ const STOCK_DETAIL_TEXT = {
 };
 
 export const StockDetail: React.FC = () => {
-  const { portfolioId, ticker } = useParams<{ portfolioId: string; ticker: string }>();
+  const { portfolioId, ticker } = useParams<{ portfolioId?: string; ticker: string }>();
   const navigate = useNavigate();
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
+  const backToPortfolioPath = resolvedPortfolioId === 'long-contrarian' ? '/portfolio' : `/portfolio/${resolvedPortfolioId}`;
 
-  const stocks = portfolioId ? getStocksForPortfolio(portfolioId) : [];
+  const stocks = getStocksForPortfolio(resolvedPortfolioId);
   const stock = stocks.find(s => s.ticker === ticker);
-  const stockChartData =
-    portfolioId && ticker ? getStockChartForPortfolioTicker(portfolioId, ticker) : [];
+  const stockChartData = ticker ? getStockChartForPortfolioTicker(resolvedPortfolioId, ticker) : [];
 
   if (!stock) {
     return (
@@ -36,7 +37,7 @@ export const StockDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <p className="text-center text-[var(--muted-text)]">{STOCK_DETAIL_TEXT.notFound}</p>
           <Button
-            onClick={() => navigate(`/portfolio/${portfolioId}`)}
+            onClick={() => navigate(backToPortfolioPath)}
             className="mt-4 mx-auto block border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
             variant="outline"
           >
@@ -55,7 +56,7 @@ export const StockDetail: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 pr-4">
         {/* Back Button */}
         <Button
-          onClick={() => navigate(`/portfolio/${portfolioId}`)}
+          onClick={() => navigate(backToPortfolioPath)}
           variant="outline"
           className="mb-6 border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
         >

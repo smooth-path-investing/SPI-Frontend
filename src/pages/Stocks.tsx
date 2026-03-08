@@ -48,7 +48,7 @@ export const Stocks: React.FC = () => {
     }
 
     if (isSubscribed) {
-      navigate(`/portfolio/${STOCK_LIST.id}`);
+      navigate('/portfolio');
       return;
     }
 
@@ -58,7 +58,7 @@ export const Stocks: React.FC = () => {
   const handleOfferSelection = (offer: OfferType) => {
     setSelectedOffer(offer);
     setIsOffersModalOpen(false);
-    navigate(`/portfolio/${STOCK_LIST.id}`);
+    navigate('/portfolio');
   };
 
   const primaryButtonText = !isAuthenticated
