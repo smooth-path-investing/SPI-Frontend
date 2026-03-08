@@ -44,8 +44,7 @@ export const PortfolioDetail: React.FC = () => {
   }
 
   const isPurchased = isAuthenticated && hasPurchasedPortfolio(portfolio.id);
-  const isPreviewPortfolio =
-    portfolio.id === 'long-contrarian' || portfolio.id === 'short-contrarian';
+  const isPreviewPortfolio = portfolio.id === 'long-contrarian';
   const canViewPortfolio = isPurchased || isPreviewPortfolio;
 
   const handleAccessRequest = () => {
@@ -147,29 +146,68 @@ export const PortfolioDetail: React.FC = () => {
 
   // Purchased view - show actual portfolio content
   const stocks = getStocksForPortfolio(portfolio.id);
-  const stocksSectionTitle =
-    portfolio.id === 'long-contrarian'
-      ? 'Current SPI Recommended Stocks (Long/Buy)'
-      : portfolio.id === 'short-contrarian'
-        ? 'Current SPI Recommended Stocks (Short/Sell)'
-        : 'Current SPI Recommended Stocks';
+  const isLongPortfolio = portfolio.id === 'long-contrarian';
+  const shouldLockTickers = false;
+  const stocksSectionTitle = 'Current SPI Recommended Stocks';
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="mb-8">
+    <div className="min-h-screen bg-background text-foreground pt-20 sm:pt-24 relative overflow-hidden">
+      {isLongPortfolio ? (
+        <>
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.2) 0%, rgba(250, 204, 21, 0) 46%), radial-gradient(circle at 18% 35%, rgba(250, 204, 21, 0.1) 0%, rgba(250, 204, 21, 0) 42%)',
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-yellow-300/10 to-transparent"
+          />
+        </>
+      ) : null}
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+        <div
+          className={isLongPortfolio ? 'mb-8 rounded-2xl border border-[var(--accent)]/35 p-4 sm:p-6 lg:p-7 shadow-[0_12px_28px_rgba(0,0,0,0.24)]' : 'mb-8'}
+          style={
+            isLongPortfolio
+              ? {
+                  background:
+                    'linear-gradient(180deg, rgba(250, 204, 21, 0.09) 0%, rgba(250, 204, 21, 0.02) 35%, rgba(0, 0, 0, 0) 100%)',
+                }
+              : undefined
+          }
+        >
           <SectionHeader mainText={stocksSectionTitle} className="mb-6" />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {stocks.map((stock) => (
-              <StockCard
-                key={stock.ticker}
-                stock={stock}
-                onViewDetails={() => navigate(`/portfolio/${portfolio.id}/stock/${stock.ticker}`)}
-              />
-            ))}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 max-w-5xl mx-auto">
+            {stocks.map((stock, index) => {
+              const isLast = index === stocks.length - 1;
+              const centerLastOnDesktop = shouldLockTickers && isLast;
+
+              return (
+                <div key={stock.ticker} className={centerLastOnDesktop ? 'lg:col-start-2' : ''}>
+                  <StockCard
+                    stock={stock}
+                    blurred={false}
+                    disableViewAnalysis={shouldLockTickers}
+                    onViewDetails={() => navigate(`/portfolio/${portfolio.id}/stock/${stock.ticker}`)}
+                  />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
+
+      <AuthModal
+        isOpen={showAuthModal}
+        onClose={() => setShowAuthModal(false)}
+        onLogin={login}
+        onSignup={signup}
+      />
     </div>
   );
 };

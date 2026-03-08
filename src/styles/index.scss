@@ -18,10 +18,18 @@
   body {
     height: auto;
     overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior-x: none;
+  }
+
+  #root {
+    width: 100%;
+    max-width: 100%;
   }
 
   body {
     @apply bg-background text-foreground;
+    overscroll-behavior: none;
   }
 
   * {

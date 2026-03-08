@@ -1,54 +1,71 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { SectionHeader } from '@/components/sectionHeaders/reusableHeaders/sectionHeader';
-import { CalendarClock, Package, Target, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
+import { getStocksForPortfolio } from '@/constants/stockData';
+import { Check, TrendingUp } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { AuthModal } from '@/components/ui/auth-modal';
 
 interface StockList {
   id: string;
   title: string;
-  target: string;
-  cadence: string;
-  holdings: string;
-  lastUpdated: string;
   accentLineClass: string;
-  badgeClass: string;
   headerKickerClass: string;
   titleClass: string;
-  icon: LucideIcon;
 }
 
-const STOCK_LISTS: StockList[] = [
-  {
-    id: 'long-contrarian',
-    title: 'Long Stocks List',
-    target: 'S&P 500 plus/minus 15%',
-    cadence: 'Quarterly',
-    holdings: '10 stocks',
-    lastUpdated: 'February 20, 2026',
-    accentLineClass: 'from-white via-white/85 to-transparent',
-    badgeClass: 'border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)]',
-    headerKickerClass: 'text-[var(--accent)]',
-    titleClass: 'text-[var(--foreground)]',
-    icon: TrendingUp,
-  },
-  {
-    id: 'short-contrarian',
-    title: 'Short Stocks List',
-    target: 'S&P 500 plus/minus 15%',
-    cadence: 'Quarterly',
-    holdings: '10 stocks',
-    lastUpdated: 'February 20, 2026',
-    accentLineClass: 'from-white via-white/85 to-transparent',
-    badgeClass: 'border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)]',
-    headerKickerClass: 'text-[var(--accent)]',
-    titleClass: 'text-[var(--foreground)]',
-    icon: TrendingDown,
-  },
-];
+type OfferType = 'tickers' | 'hf';
+
+const STOCK_LIST: StockList = {
+  id: 'long-contrarian',
+  title: 'Current stock picks',
+  accentLineClass: 'from-white via-white/85 to-transparent',
+  headerKickerClass: 'text-[var(--accent)]',
+  titleClass: 'text-[var(--foreground)]',
+};
 
 export const Stocks: React.FC = () => {
+  const { isAuthenticated, hasPurchasedPortfolio, canAccessPremiumStocks, login, signup } = useAuth();
   const navigate = useNavigate();
+  const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
+  const stockPreview = useMemo(() => getStocksForPortfolio('long-contrarian'), []);
+  const isSubscribed = hasPurchasedPortfolio(STOCK_LIST.id) || canAccessPremiumStocks();
+
+  const handlePrimaryAction = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    if (isSubscribed) {
+      navigate(`/portfolio/${STOCK_LIST.id}`);
+      return;
+    }
+
+    setIsOffersModalOpen(true);
+  };
+
+  const handleOfferSelection = (offer: OfferType) => {
+    setSelectedOffer(offer);
+    setIsOffersModalOpen(false);
+    navigate(`/portfolio/${STOCK_LIST.id}`);
+  };
+
+  const primaryButtonText = !isAuthenticated
+    ? 'Login to Continue'
+    : isSubscribed
+    ? 'View Stock List'
+    : 'View Offers';
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
@@ -58,80 +75,183 @@ export const Stocks: React.FC = () => {
           subText="build your portfolio with our 10 recommended stocks every quarter"
         />
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
-          {STOCK_LISTS.map((list) => {
-            const ListIcon = list.icon;
+        <section className="grid grid-cols-1 gap-5 sm:gap-6 md:gap-8 max-w-3xl mx-auto">
+          <div className="relative mx-auto w-full max-w-xl md:max-w-none">
+            <header className="mb-3 sm:mb-4">
+              <p className={`hidden sm:block text-xs uppercase tracking-[0.14em] mb-1 ${STOCK_LIST.headerKickerClass}`}>
+                Stock Profile
+              </p>
+              <h2 className={`text-2xl sm:text-3xl font-semibold tracking-tight ${STOCK_LIST.titleClass}`}>
+                {STOCK_LIST.title}
+              </h2>
+            </header>
 
-            return (
-              <div key={list.id} className="relative mx-auto w-full max-w-xl md:max-w-none">
-                <header className="mb-3 sm:mb-4">
-                  <p className={`hidden sm:block text-xs uppercase tracking-[0.14em] mb-1 ${list.headerKickerClass}`}>
-                    Stock Profile
-                  </p>
-                  <h2 className={`text-2xl sm:text-3xl font-semibold tracking-tight ${list.titleClass}`}>
-                    {list.title}
-                  </h2>
-                </header>
+            <article className="rounded-[var(--radius)] border-2 border-white/20 bg-gradient-to-b from-[var(--card-bg)] to-black/70 p-4 sm:p-7 shadow-[0_10px_22px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--card-hover)]/70 hover:shadow-[0_18px_32px_rgba(0,0,0,0.26)]">
+              <div className={`h-[2px] w-full mb-5 sm:mb-6 rounded-full bg-gradient-to-r ${STOCK_LIST.accentLineClass}`} />
 
-                <article className="rounded-[var(--radius)] border-2 border-white/20 bg-gradient-to-b from-[var(--card-bg)] to-black/70 p-4 sm:p-7 shadow-[0_10px_22px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--card-hover)]/70 hover:shadow-[0_18px_32px_rgba(0,0,0,0.26)]">
-                  <div className={`h-[2px] w-full mb-5 sm:mb-6 rounded-full bg-gradient-to-r ${list.accentLineClass}`} />
-
-                  <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
-                    <div className={`inline-flex items-center justify-center rounded-md border p-1.5 sm:p-2 ${list.badgeClass}`}>
-                      <ListIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
-                    <p className="text-sm sm:text-base font-medium text-[var(--muted-text)]">
-                      Quarterly Recommendation Set
-                    </p>
-                  </div>
-
-                  <div className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-7">
-                    <div className="rounded-md border border-white/15 bg-black/15 p-2.5 sm:p-3">
-                      <p className="text-[10px] sm:text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1 flex items-center gap-1.5">
-                        <Target className="w-3.5 h-3.5" />
-                        Target
-                      </p>
-                      <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">{list.target}</p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                      <div className="rounded-md border border-white/15 bg-black/15 p-2.5 sm:p-3">
-                        <p className="text-[10px] sm:text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1 flex items-center gap-1.5">
-                          <CalendarClock className="w-3.5 h-3.5" />
-                          Rebalance
-                        </p>
-                        <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">{list.cadence}</p>
-                      </div>
-                      <div className="rounded-md border border-white/15 bg-black/15 p-2.5 sm:p-3">
-                        <p className="text-[10px] sm:text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1 flex items-center gap-1.5">
-                          <Package className="w-3.5 h-3.5" />
-                          Holdings
-                        </p>
-                        <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">{list.holdings}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] sm:text-xs text-[var(--muted-text)] mb-3">Last Updated: {list.lastUpdated}</p>
-
-                  <Button
-                    onClick={() => navigate(`/portfolio/${list.id}`)}
-                    className="w-full h-10 sm:h-11 bg-[var(--accent)] text-black border border-[var(--accent)] hover:bg-[var(--accent-light)] font-semibold"
-                  >
-                    View List
-                  </Button>
-                </article>
-
-                {list.id === 'long-contrarian' ? (
-                  <div className="hidden md:block absolute top-0 -right-4 h-full w-px bg-white/80" />
-                ) : null}
-                {list.id === 'long-contrarian' ? (
-                  <div className="md:hidden mt-5 h-px w-full bg-white/80" />
-                ) : null}
+              <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
+                <div className="inline-flex items-center justify-center rounded-md border border-[var(--accent)]/50 bg-[var(--accent)]/15 p-1.5 sm:p-2 text-[var(--accent)]">
+                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
               </div>
-            );
-          })}
+
+              <div className="mb-5 rounded-xl border border-white/15 bg-black/30 p-3.5 sm:p-4">
+                <p className="text-[10px] sm:text-xs uppercase tracking-[0.11em] text-[var(--muted-text)] mb-3">
+                  Stock Preview
+                </p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 blur-[4px] select-none pointer-events-none">
+                  {stockPreview.map((stock) => (
+                    <div
+                      key={stock.ticker}
+                      className="rounded-md border border-white/20 bg-black/45 px-2.5 py-2 min-h-[54px]"
+                    >
+                      <p className="text-sm sm:text-base font-semibold text-[var(--foreground)] leading-tight">
+                        {stock.ticker}
+                      </p>
+                      <p className="text-[11px] text-[var(--muted-text)] leading-snug line-clamp-2">
+                        {stock.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <Button
+                onClick={handlePrimaryAction}
+                className="w-full h-10 sm:h-11 bg-[var(--accent)] text-black border border-[var(--accent)] hover:bg-[var(--accent-light)] font-semibold"
+              >
+                {primaryButtonText}
+              </Button>
+            </article>
+          </div>
         </section>
       </div>
+
+      <Dialog
+        open={isOffersModalOpen}
+        onOpenChange={(open) => {
+          setIsOffersModalOpen(open);
+          if (!open) setSelectedOffer(null);
+        }}
+      >
+        <DialogContent className="max-w-4xl rounded-3xl border-2 border-[#3f4654] bg-[var(--card-bg)] px-5 sm:px-8 py-6 sm:py-8 [&>button]:right-4 sm:[&>button]:right-5 [&>button]:top-4 sm:[&>button]:top-5 [&>button]:h-auto [&>button]:w-auto [&>button]:rounded-none [&>button]:border-0 [&>button]:bg-transparent [&>button]:text-[var(--muted-text)] [&>button]:opacity-100 [&>button]:shadow-none [&>button:hover]:bg-transparent [&>button:hover]:text-[var(--foreground)] [&>button:focus-visible]:ring-2 [&>button:focus-visible]:ring-[var(--accent)]/55 [&>button:focus-visible]:ring-offset-0 [&>button[data-state=open]]:bg-transparent [&>button[data-state=open]]:text-[var(--muted-text)]">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-[var(--accent)]/12 to-transparent"
+          />
+
+          <DialogHeader className="space-y-2 sm:space-y-3 text-left">
+            <p className="inline-flex w-fit items-center whitespace-nowrap rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3 py-1 text-[11px] uppercase tracking-[0.11em] text-[var(--accent)]">
+              Subscription Bundles
+            </p>
+            <DialogTitle className="text-2xl sm:text-3xl font-semibold text-[var(--foreground)] leading-tight">
+              Choose Your Bundle
+            </DialogTitle>
+            <DialogDescription className="max-w-2xl text-sm sm:text-base text-[var(--muted-text)] leading-relaxed">
+              Select the plan you want to unlock for SPI stock access.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+            <button
+              type="button"
+              aria-pressed={selectedOffer === 'tickers'}
+              onClick={() => handleOfferSelection('tickers')}
+              className={`h-full text-left rounded-2xl border bg-black/25 p-5 sm:p-6 shadow-[0_12px_24px_rgba(0,0,0,0.22)] transition-colors ${
+                selectedOffer === 'tickers'
+                  ? 'border-white'
+                  : 'border-[#3f4654] hover:border-white/55'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-1.5">
+                    Stock Tickers Only
+                  </h3>
+                  <p className="text-sm text-[var(--muted-text)] leading-relaxed">
+                    Ideal if you only want quarterly SPI ticker picks.
+                  </p>
+                </div>
+                <span className="shrink-0 whitespace-nowrap rounded-full border border-[var(--accent)]/45 bg-[var(--accent)]/12 px-2.5 py-1 text-[10px] uppercase tracking-[0.11em] text-[var(--accent)]">
+                  Offer 1
+                </span>
+              </div>
+
+              <div className="mt-5">
+                <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1.5">Price</p>
+                <p className="text-3xl font-bold text-[var(--accent)]">
+                  $10.99
+                  <span className="text-sm font-medium text-[var(--muted-text)]"> / month</span>
+                </p>
+              </div>
+
+              <div className="mt-5 space-y-2.5">
+                <div className="flex items-start gap-2 text-sm text-[var(--muted-text)]">
+                  <Check className="w-4 h-4 mt-0.5 shrink-0 text-[var(--accent)]" />
+                  Full quarterly ticker list access
+                </div>
+                <div className="flex items-start gap-2 text-sm text-[var(--muted-text)]">
+                  <Check className="w-4 h-4 mt-0.5 shrink-0 text-[var(--accent)]" />
+                  View individual stock analysis pages
+                </div>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              aria-pressed={selectedOffer === 'hf'}
+              onClick={() => handleOfferSelection('hf')}
+              className={`h-full text-left rounded-2xl border bg-black/25 p-5 sm:p-6 shadow-[0_12px_24px_rgba(0,0,0,0.22)] transition-colors ${
+                selectedOffer === 'hf'
+                  ? 'border-white'
+                  : 'border-[#3f4654] hover:border-white/55'
+              }`}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-[var(--foreground)] mb-1.5">
+                    HF Subscription
+                  </h3>
+                  <p className="text-sm text-[var(--muted-text)] leading-relaxed">
+                    Hedge-fund style subscription model with performance-based fees.
+                  </p>
+                </div>
+                <span className="shrink-0 whitespace-nowrap rounded-full border border-[var(--accent)]/45 bg-[var(--accent)]/12 px-2.5 py-1 text-[10px] uppercase tracking-[0.11em] text-[var(--accent)]">
+                  Offer 2
+                </span>
+              </div>
+
+              <div className="mt-5">
+                <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1.5">Fees</p>
+                <p className="text-2xl font-bold text-[var(--accent)]">2% fee per annum</p>
+                <p className="text-base font-semibold text-[var(--foreground)] mt-1">+ 20% management fee on profit</p>
+              </div>
+
+              <div className="mt-5 space-y-2.5">
+                <div className="flex items-start gap-2 text-sm text-[var(--muted-text)]">
+                  <Check className="w-4 h-4 mt-0.5 shrink-0 text-[var(--accent)]" />
+                  Structured for long-term managed exposure
+                </div>
+                <div className="flex items-start gap-2 text-sm text-[var(--muted-text)]">
+                  <Check className="w-4 h-4 mt-0.5 shrink-0 text-[var(--accent)]" />
+                  Performance fee applies only on profits
+                </div>
+              </div>
+            </button>
+          </div>
+
+          <div className="mt-5 rounded-xl border border-[#3f4654] bg-black/20 px-4 py-3 text-xs sm:text-sm text-[var(--muted-text)]">
+            Select any offer to continue. Payment integration and activation are coming soon.
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLogin={login}
+        onSignup={signup}
+      />
     </div>
   );
 };
