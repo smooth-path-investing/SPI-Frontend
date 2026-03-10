@@ -32,7 +32,7 @@ export const PortfolioDetail: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
 
-  const portfolio = PORTFOLIOS.find(p => p.id === resolvedPortfolioId);
+  const portfolio = PORTFOLIOS.find((p) => p.id === resolvedPortfolioId);
 
   useEffect(() => {
     if (!portfolio) {
@@ -59,10 +59,14 @@ export const PortfolioDetail: React.FC = () => {
 
   const getRiskColor = (risk: string) => {
     switch (risk) {
-      case 'Low': return 'bg-green-500/10 text-green-500 border-green-500/20';
-      case 'Medium': return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
-      case 'High': return 'bg-red-500/10 text-red-500 border-red-500/20';
-      default: return 'bg-muted text-muted-foreground';
+      case 'Low':
+        return 'bg-green-500/10 text-green-500 border-green-500/20';
+      case 'Medium':
+        return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
+      case 'High':
+        return 'bg-red-500/10 text-red-500 border-red-500/20';
+      default:
+        return 'bg-muted text-muted-foreground';
     }
   };
 
@@ -71,11 +75,7 @@ export const PortfolioDetail: React.FC = () => {
       <>
         <div className="min-h-screen bg-background text-foreground pt-24">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/stock')}
-              className="mb-6"
-            >
+            <Button variant="ghost" onClick={() => navigate('/stock')} className="mb-6">
               <ArrowLeft className="w-4 h-4 mr-2" />
               {PORTFOLIO_DETAIL_TEXT.back}
             </Button>
@@ -118,14 +118,12 @@ export const PortfolioDetail: React.FC = () => {
 
                 <div className="bg-accent/50 p-6 rounded-lg mb-8 max-w-md mx-auto">
                   <p className="text-3xl font-bold mb-2">${portfolio.price}</p>
-                  <p className="text-sm text-muted-foreground">{PORTFOLIO_DETAIL_TEXT.oneTimeFee}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {PORTFOLIO_DETAIL_TEXT.oneTimeFee}
+                  </p>
                 </div>
 
-                <Button 
-                  onClick={handleAccessRequest}
-                  size="lg"
-                  className="text-lg px-8"
-                >
+                <Button onClick={handleAccessRequest} size="lg" className="text-lg px-8">
                   {isAuthenticated
                     ? PORTFOLIO_DETAIL_TEXT.purchaseAccess
                     : PORTFOLIO_DETAIL_TEXT.loginPurchase}
@@ -147,43 +145,15 @@ export const PortfolioDetail: React.FC = () => {
 
   // Purchased view - show actual portfolio content
   const stocks = getStocksForPortfolio(portfolio.id);
-  const isLongPortfolio = portfolio.id === 'long-contrarian';
   // TODO(subscription-flow): set to `true` when you re-enable locked/blurred tickers.
   // Current requirement is to show all tickers unblurred after bundle selection.
   const shouldLockTickers = false;
-  const stocksSectionTitle = 'Current SPI Recommended Stocks';
+  const stocksSectionTitle = 'Current Recommended Stocks';
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-20 sm:pt-24 relative overflow-hidden">
-      {isLongPortfolio ? (
-        <>
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0"
-            style={{
-              background:
-                'radial-gradient(circle at 50% 0%, rgba(250, 204, 21, 0.2) 0%, rgba(250, 204, 21, 0) 46%), radial-gradient(circle at 18% 35%, rgba(250, 204, 21, 0.1) 0%, rgba(250, 204, 21, 0) 42%)',
-            }}
-          />
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-yellow-300/10 to-transparent"
-          />
-        </>
-      ) : null}
-
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
-        <div
-          className={isLongPortfolio ? 'mb-8 rounded-2xl border border-[var(--accent)]/35 p-4 sm:p-6 lg:p-7 shadow-[0_12px_28px_rgba(0,0,0,0.24)]' : 'mb-8'}
-          style={
-            isLongPortfolio
-              ? {
-                  background:
-                    'linear-gradient(180deg, rgba(250, 204, 21, 0.09) 0%, rgba(250, 204, 21, 0.02) 35%, rgba(0, 0, 0, 0) 100%)',
-                }
-              : undefined
-          }
-        >
+        <div className="mb-8">
           <SectionHeader mainText={stocksSectionTitle} className="mb-6" />
           <div className="grid grid-cols-1 gap-3 max-w-5xl mx-auto">
             {stocks.map((stock) => (
@@ -193,6 +163,7 @@ export const PortfolioDetail: React.FC = () => {
                 // TODO(subscription-flow): use `blurred={shouldLockTickers}` when lock returns.
                 blurred={false}
                 disableViewAnalysis={shouldLockTickers}
+                tickerClassName="text-[var(--accent)]"
                 onViewDetails={() =>
                   navigate(
                     portfolio.id === 'long-contrarian'

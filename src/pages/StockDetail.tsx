@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -7,9 +7,15 @@ import { ArrowLeft, ArrowUpRight, ArrowDownRight, MessageSquare, X } from 'lucid
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
 import { StockPriceChart } from '@/components/graph/StockPriceChart';
 import { getStockChartForPortfolioTicker, getStocksForPortfolio } from '@/constants/stockData';
+import {
+  isStockPreviewSampleTicker,
+  STOCK_PREVIEW_SAMPLE,
+  STOCK_PREVIEW_SAMPLE_CHART,
+} from '@/constants/stockPreviewSample';
 
 const STOCK_DETAIL_TEXT = {
-  back: 'Back to Portfolio',
+  backToPortfolio: 'Back to Portfolio',
+  backToStocks: 'Back to Stocks',
   notFound: 'Stock not found',
   priceChart: 'Price Chart',
   about: 'About',
@@ -23,13 +29,28 @@ const STOCK_DETAIL_TEXT = {
 export const StockDetail: React.FC = () => {
   const { portfolioId, ticker } = useParams<{ portfolioId?: string; ticker: string }>();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isChatOpen, setIsChatOpen] = useState(false);
   const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
-  const backToPortfolioPath = resolvedPortfolioId === 'long-contrarian' ? '/portfolio' : `/portfolio/${resolvedPortfolioId}`;
+  const isStockPreviewRoute = location.pathname.startsWith('/stock/');
+  const backPath = isStockPreviewRoute
+    ? '/stock'
+    : resolvedPortfolioId === 'long-contrarian'
+      ? '/portfolio'
+      : `/portfolio/${resolvedPortfolioId}`;
+  const backLabel = isStockPreviewRoute
+    ? STOCK_DETAIL_TEXT.backToStocks
+    : STOCK_DETAIL_TEXT.backToPortfolio;
 
   const stocks = getStocksForPortfolio(resolvedPortfolioId);
-  const stock = stocks.find(s => s.ticker === ticker);
-  const stockChartData = ticker ? getStockChartForPortfolioTicker(resolvedPortfolioId, ticker) : [];
+  const stock = isStockPreviewRoute
+    ? (isStockPreviewSampleTicker(ticker) ? STOCK_PREVIEW_SAMPLE : undefined)
+    : stocks.find((item) => item.ticker === ticker);
+  const stockChartData = isStockPreviewRoute
+    ? (isStockPreviewSampleTicker(ticker) ? STOCK_PREVIEW_SAMPLE_CHART : [])
+    : ticker
+      ? getStockChartForPortfolioTicker(resolvedPortfolioId, ticker)
+      : [];
 
   if (!stock) {
     return (
@@ -37,12 +58,12 @@ export const StockDetail: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <p className="text-center text-[var(--muted-text)]">{STOCK_DETAIL_TEXT.notFound}</p>
           <Button
-            onClick={() => navigate(backToPortfolioPath)}
+            onClick={() => navigate(backPath)}
             className="mt-4 mx-auto block border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
             variant="outline"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {STOCK_DETAIL_TEXT.back}
+            {backLabel}
           </Button>
         </div>
       </div>
@@ -56,12 +77,12 @@ export const StockDetail: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 pr-4">
         {/* Back Button */}
         <Button
-          onClick={() => navigate(backToPortfolioPath)}
+          onClick={() => navigate(backPath)}
           variant="outline"
           className="mb-6 border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          {STOCK_DETAIL_TEXT.back}
+          {backLabel}
         </Button>
 
         {/* Stock Header */}

@@ -10,7 +10,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { getStocksForPortfolio } from '@/constants/stockData';
-import { Check, TrendingUp } from 'lucide-react';
+import { STOCK_PREVIEW_SAMPLE } from '@/constants/stockPreviewSample';
+import { StockCard } from '@/components/stocks/StockCard';
+import { Check } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthModal } from '@/components/ui/auth-modal';
 
@@ -39,7 +41,13 @@ export const Stocks: React.FC = () => {
   const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
-  const stockPreview = useMemo(() => getStocksForPortfolio('long-contrarian'), []);
+  const stockPreview = useMemo(
+    () =>
+      getStocksForPortfolio('long-contrarian').filter(
+        (stock) => stock.ticker !== STOCK_PREVIEW_SAMPLE.ticker,
+      ),
+    [],
+  );
   const isSubscribed = hasPurchasedPortfolio(STOCK_LIST.id) || canAccessPremiumStocks();
 
   const handlePrimaryAction = () => {
@@ -81,37 +89,54 @@ export const Stocks: React.FC = () => {
           subText="build your portfolio with our 10 recommended stocks every quarter"
         />
 
-        <section className="grid grid-cols-1 gap-5 sm:gap-6 md:gap-8 max-w-3xl mx-auto">
-          <div className="relative mx-auto w-full max-w-xl md:max-w-none">
-            <article className="rounded-[var(--radius)] border-2 border-white/20 bg-gradient-to-b from-[var(--card-bg)] to-black/70 p-4 sm:p-7 shadow-[0_10px_22px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--card-hover)]/70 hover:shadow-[0_18px_32px_rgba(0,0,0,0.26)]">
-              <div className="mb-5 rounded-xl border border-white/15 bg-black/30 p-3.5 sm:p-4">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.11em] text-[var(--muted-text)] mb-3">
-                  Stock Preview
-                </p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5 blur-[4px] select-none pointer-events-none">
-                  {stockPreview.map((stock) => (
-                    <div
-                      key={stock.ticker}
-                      className="rounded-md border border-white/20 bg-black/45 px-2.5 py-2 min-h-[54px]"
-                    >
-                      <p className="text-sm sm:text-base font-semibold text-[var(--foreground)] leading-tight">
-                        {stock.ticker}
-                      </p>
-                      <p className="text-[11px] text-[var(--muted-text)] leading-snug line-clamp-2">
-                        {stock.name}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        <section className="grid grid-cols-1 gap-6 sm:gap-7 max-w-4xl mx-auto">
+          <div>
+            <div className="mb-3 sm:mb-4">
+              <p className="text-[10px] sm:text-xs uppercase tracking-[0.11em] text-[var(--accent)] mb-1.5">
+                Open Sample
+              </p>
+              <p className="text-sm sm:text-base text-[var(--muted-text)]">
+                Open one sample analysis now.
+              </p>
+            </div>
 
-              <Button
-                onClick={handlePrimaryAction}
-                className="w-full h-10 sm:h-11 bg-[var(--accent)] text-black border border-[var(--accent)] hover:bg-[var(--accent-light)] font-semibold"
-              >
-                {primaryButtonText}
-              </Button>
-            </article>
+            <StockCard
+              stock={STOCK_PREVIEW_SAMPLE}
+              onViewDetails={() => navigate(`/stock/${STOCK_PREVIEW_SAMPLE.ticker}`)}
+              clickable
+            />
+          </div>
+
+          <div>
+            <div className="mb-3 sm:mb-4">
+              <p className="text-[10px] sm:text-xs uppercase tracking-[0.11em] text-[var(--accent)] mb-1.5">
+                Locked Tickers
+              </p>
+              <p className="text-sm sm:text-base text-[var(--muted-text)]">
+                The remaining SPI picks stay locked until purchase.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 max-w-5xl mx-auto">
+              {stockPreview.map((stock) => (
+                <StockCard
+                  key={stock.ticker}
+                  stock={stock}
+                  onViewDetails={() => {}}
+                  blurred
+                  disableViewAnalysis
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="mx-auto w-full max-w-sm">
+            <Button
+              onClick={handlePrimaryAction}
+              className="w-full h-10 sm:h-11 bg-[var(--accent)] text-black border border-[var(--accent)] hover:bg-[var(--accent-light)] font-semibold"
+            >
+              {primaryButtonText}
+            </Button>
           </div>
         </section>
       </div>
