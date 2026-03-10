@@ -1,73 +1,41 @@
-export interface ApproachParagraphPart {
-  value: string;
-  isReference?: boolean;
-}
+export type ApproachContentBlock =
+  | {
+      id: string;
+      type: 'paragraph';
+      text: string;
+    }
+  | {
+      id: string;
+      type: 'rules';
+      items: string[];
+    };
 
-export interface ApproachParagraph {
-  id: string;
-  parts: ApproachParagraphPart[];
-}
-
-export const APPROACH_PARAGRAPHS: ApproachParagraph[] = [
+export const APPROACH_CONTENT: ApproachContentBlock[] = [
   {
     id: 'overview',
-    parts: [
-      { value: 'At Smooth Path Investing, we simplify stock trading through 16 interconnected ' },
-      { value: 'stories', isReference: true },
-      { value: ', mapping stocks to ' },
-      { value: 'human behaviors', isReference: true },
-      { value: ' (followers for trends, rebels for mean-reversion, neutrals for linear paths) using data ' },
-      { value: 'layers', isReference: true },
-      { value: ' (company, economy, market).' },
-    ],
+    type: 'paragraph',
+    text:
+      'At Smooth Path Investing, we simplify stock trading through a "proprietary constrained LLM enriched for portfolio construction", that maps stocks to human behaviors. In particular, we model followers as trend investors, rebels as mean-reverting, and neutrals behavior as linear dynamical systems, using data layers (company, economy, market).',
   },
   {
     id: 'model',
-    parts: [
-      { value: 'Our proprietary SigGA model analyzes paths, ' },
-      { value: 'speeds', isReference: true },
-      { value: ', ' },
-      { value: 'limits', isReference: true },
-      { value: ', ' },
-      { value: 'bumps', isReference: true },
-      { value: ', and time ' },
-      { value: 'slices', isReference: true },
-      {
-        value:
-          ' to predict and allocate, with tail risks (heavy for memory, thick for persistence, fat for mutation) guiding adaptive decisions.',
-      },
-    ],
+    type: 'paragraph',
+    text:
+      'Our proprietary machine learning models are based on "signature (from the mathematical theory of rough path) and genetic algorithms (from the mathematical theory of evolutionary optimization)" to analyze paths, speeds, limits, bumps, and time slices, to predict and allocate, with tail risks guiding adaptive decisions adjusted memory persistence.',
   },
   {
     id: 'rules',
-    parts: [
-      { value: 'Key rules: Buy/sell in stages at predefined ' },
-      { value: 'thresholds', isReference: true },
-      {
-        value:
-          ' (e.g., sell on 40-50% gains or 30-40% losses); position weights 2.5-20%; concise portfolios (5-40 stocks) by risk appetite; anchor (strategic index-like) + twin (tactical picks) structure.',
-      },
+    type: 'rules',
+    items: [
+      'Buy and sell in three staged entries and exits, each triggered at predefined portfolio thresholds.',
+      'Keep position weights between 2.5% and 20%, with a concise portfolio built from 10 to 12 stocks.',
+      'Split exposure into two sub-portfolios, anchor and twin, with 5 to 6 stocks for strategic and tactical views.',
     ],
   },
   {
     id: 'principles',
-    parts: [
-      { value: 'We emphasize ' },
-      { value: 'symmetry', isReference: true },
-      { value: ' (pair longs/shorts), ' },
-      { value: 'iteration', isReference: true },
-      { value: ' for correction, and the ' },
-      { value: 'SCIŒC', isReference: true },
-      {
-        value:
-          ' process: Segregate data, Condition models, Integrate ecosystems, Order by probability, Exclude neutrals, Concentrate views.',
-      },
-    ],
-  },
-  {
-    id: 'summary',
-    parts: [
-      { value: 'This data-driven, disciplined method turns speculation into structure for consistent success.' },
-    ],
+    type: 'paragraph',
+    text:
+      'We emphasize symmetry (pair longs/shorts) for selection, iteration for correction, and our proprietary "SCIŒC" process for structure: Segregate data, Condition models, Integrate ecosystems, Order by probability, Exclude neutrals, Concentrate views.',
   },
 ];

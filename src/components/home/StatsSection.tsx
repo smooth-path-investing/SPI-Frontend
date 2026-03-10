@@ -1,7 +1,6 @@
 import React from 'react';
 import { Search, Settings, Shield, Smartphone, Users, type LucideIcon } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ScrollSection } from '../animations/scrollSection';
 import { FOOTER_STATS, type FooterStatIconKey } from '@/constants/footerStats';
 
 const footerStatIconMap: Record<FooterStatIconKey, LucideIcon> = {
@@ -14,7 +13,7 @@ const footerStatIconMap: Record<FooterStatIconKey, LucideIcon> = {
 
 export const StatsSection: React.FC = () => {
   return (
-    <ScrollSection
+    <section
       className="
         relative
         overflow-visible
@@ -23,7 +22,6 @@ export const StatsSection: React.FC = () => {
         bg-[var(--background)]
         text-[var(--foreground)]
       "
-      triggerClass="stats-content"
     >
       <div className="max-w-7xl mx-auto stats-content">
         <TooltipProvider delayDuration={300} skipDelayDuration={100}>
@@ -112,6 +110,6 @@ export const StatsSection: React.FC = () => {
           </div>
         </TooltipProvider>
       </div>
-    </ScrollSection>
+    </section>
   );
 };
