@@ -23,8 +23,18 @@ const FormulaBlock: React.FC = () => {
         select-none text-[var(--accent)]
       "
     >
-      <span className="text-xl sm:text-2xl md:text-3xl flex items-center">
-        A<sup className="font-bold text-[0.55em] sm:text-[0.65em] md:text-[0.7em]">2</sup>z
+      <span className="text-xl sm:text-2xl md:text-3xl inline-flex items-baseline">
+        <span className="relative inline-block pr-[0.28em] leading-none">
+          <span className="mr-[-0.08em] inline-block">A</span>
+          <span className="absolute left-full top-1/2 ml-0 -translate-y-1/2 inline-flex flex-col items-center leading-none">
+            <sup className="font-bold text-[0.5em] sm:text-[0.58em] md:text-[0.62em] leading-none">
+              2
+            </sup>
+            <sub className="text-[0.5em] sm:text-[0.58em] md:text-[0.62em] leading-none -mt-[0.08em]">
+              z
+            </sub>
+          </span>
+        </span>
       </span>
       <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">→</span>
       <span className="text-xl sm:text-2xl md:text-3xl flex items-baseline">

@@ -10,7 +10,7 @@ export const MainTitleComponent = (): JSX.Element => {
     >
       <h1 className="text-5xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold text-white tracking-tight leading-[1.02]">
         Structure and Symmetry
-        <span className="block mt-3">For Investment</span>
+        <span className="block mt-3">In Investment</span>
       </h1>
     </div>
   );
