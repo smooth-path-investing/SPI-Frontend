@@ -19,6 +19,8 @@ export const StockCard: React.FC<StockCardProps> = ({
   return (
     <Card className="border-2 border-white/15 bg-[var(--card-bg)]/95 transition-all duration-300 hover:border-[var(--accent)]/60 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)]">
       <CardContent className="p-4 sm:p-5">
+        {/* TODO(subscription-flow): this wrapper controls lock-state visuals.
+            Keep `blurred` + pointer lock for gated ticker previews. */}
         <div className={`flex items-center justify-between gap-3 sm:gap-4 ${blurred ? 'blur-[4px] pointer-events-none select-none' : ''}`}>
           <div className="min-w-0 flex-1">
             <p className="text-xl sm:text-2xl font-bold tracking-tight text-[var(--foreground)]">{stock.ticker}</p>

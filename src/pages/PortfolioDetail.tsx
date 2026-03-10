@@ -148,6 +148,8 @@ export const PortfolioDetail: React.FC = () => {
   // Purchased view - show actual portfolio content
   const stocks = getStocksForPortfolio(portfolio.id);
   const isLongPortfolio = portfolio.id === 'long-contrarian';
+  // TODO(subscription-flow): set to `true` when you re-enable locked/blurred tickers.
+  // Current requirement is to show all tickers unblurred after bundle selection.
   const shouldLockTickers = false;
   const stocksSectionTitle = 'Current SPI Recommended Stocks';
 
@@ -188,6 +190,7 @@ export const PortfolioDetail: React.FC = () => {
               <StockCard
                 key={stock.ticker}
                 stock={stock}
+                // TODO(subscription-flow): use `blurred={shouldLockTickers}` when lock returns.
                 blurred={false}
                 disableViewAnalysis={shouldLockTickers}
                 onViewDetails={() =>

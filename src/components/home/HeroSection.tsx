@@ -18,7 +18,7 @@ export const HeroSection: React.FC = () => {
       />
 
       <div className="absolute inset-0 bg-black/45" />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/95 via-black/70 to-black/95" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/95" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(234,179,8,0.05),transparent_50%)]" />
 
       <div className="hero-content max-w-5xl mx-auto px-2 sm:px-4">

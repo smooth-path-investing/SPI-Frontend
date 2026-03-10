@@ -33,7 +33,8 @@ const STOCK_LIST: StockList = {
 };
 
 export const Stocks: React.FC = () => {
-  const { isAuthenticated, hasPurchasedPortfolio, canAccessPremiumStocks, login, signup } = useAuth();
+  const { isAuthenticated, hasPurchasedPortfolio, canAccessPremiumStocks, login, signup } =
+    useAuth();
   const navigate = useNavigate();
   const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -48,6 +49,8 @@ export const Stocks: React.FC = () => {
     }
 
     if (isSubscribed) {
+      // TODO(subscription-flow): keep this direct navigation while payment is pending.
+      // Later, replace with your real entitlement check (backend) before routing.
       navigate('/portfolio');
       return;
     }
@@ -58,43 +61,29 @@ export const Stocks: React.FC = () => {
   const handleOfferSelection = (offer: OfferType) => {
     setSelectedOffer(offer);
     setIsOffersModalOpen(false);
+    // TODO(subscription-flow): temporary behavior requested by product.
+    // Selecting ANY bundle unlocks immediate access to the unblurred ticker page.
+    // Replace this with payment + plan activation once backend is ready.
     navigate('/portfolio');
   };
 
   const primaryButtonText = !isAuthenticated
     ? 'Login to Continue'
     : isSubscribed
-    ? 'View Stock List'
-    : 'View Offers';
+      ? 'View Stock List'
+      : 'View Offers';
 
   return (
     <div className="min-h-screen bg-background text-foreground pt-24">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
         <SectionHeader
-          mainText="SPI Stock Selection"
+          mainText="Current Stock Picks"
           subText="build your portfolio with our 10 recommended stocks every quarter"
         />
 
         <section className="grid grid-cols-1 gap-5 sm:gap-6 md:gap-8 max-w-3xl mx-auto">
           <div className="relative mx-auto w-full max-w-xl md:max-w-none">
-            <header className="mb-3 sm:mb-4">
-              <p className={`hidden sm:block text-xs uppercase tracking-[0.14em] mb-1 ${STOCK_LIST.headerKickerClass}`}>
-                Stock Profile
-              </p>
-              <h2 className={`text-2xl sm:text-3xl font-semibold tracking-tight ${STOCK_LIST.titleClass}`}>
-                {STOCK_LIST.title}
-              </h2>
-            </header>
-
             <article className="rounded-[var(--radius)] border-2 border-white/20 bg-gradient-to-b from-[var(--card-bg)] to-black/70 p-4 sm:p-7 shadow-[0_10px_22px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--card-hover)]/70 hover:shadow-[0_18px_32px_rgba(0,0,0,0.26)]">
-              <div className={`h-[2px] w-full mb-5 sm:mb-6 rounded-full bg-gradient-to-r ${STOCK_LIST.accentLineClass}`} />
-
-              <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
-                <div className="inline-flex items-center justify-center rounded-md border border-[var(--accent)]/50 bg-[var(--accent)]/15 p-1.5 sm:p-2 text-[var(--accent)]">
-                  <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
-              </div>
-
               <div className="mb-5 rounded-xl border border-white/15 bg-black/30 p-3.5 sm:p-4">
                 <p className="text-[10px] sm:text-xs uppercase tracking-[0.11em] text-[var(--muted-text)] mb-3">
                   Stock Preview
@@ -178,7 +167,9 @@ export const Stocks: React.FC = () => {
               </div>
 
               <div className="mt-5">
-                <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1.5">Price</p>
+                <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1.5">
+                  Price
+                </p>
                 <p className="text-3xl font-bold text-[var(--accent)]">
                   $10.99
                   <span className="text-sm font-medium text-[var(--muted-text)]"> / month</span>
@@ -202,9 +193,7 @@ export const Stocks: React.FC = () => {
               aria-pressed={selectedOffer === 'hf'}
               onClick={() => handleOfferSelection('hf')}
               className={`h-full text-left rounded-2xl border bg-black/25 p-5 sm:p-6 shadow-[0_12px_24px_rgba(0,0,0,0.22)] transition-colors ${
-                selectedOffer === 'hf'
-                  ? 'border-white'
-                  : 'border-[#3f4654] hover:border-white/55'
+                selectedOffer === 'hf' ? 'border-white' : 'border-[#3f4654] hover:border-white/55'
               }`}
             >
               <div className="flex items-start justify-between gap-3">
@@ -222,9 +211,13 @@ export const Stocks: React.FC = () => {
               </div>
 
               <div className="mt-5">
-                <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1.5">Fees</p>
+                <p className="text-[11px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1.5">
+                  Fees
+                </p>
                 <p className="text-2xl font-bold text-[var(--accent)]">2% fee per annum</p>
-                <p className="text-base font-semibold text-[var(--foreground)] mt-1">+ 20% management fee on profit</p>
+                <p className="text-base font-semibold text-[var(--foreground)] mt-1">
+                  + 20% management fee on profit
+                </p>
               </div>
 
               <div className="mt-5 space-y-2.5">
