@@ -12,7 +12,7 @@ const keywordBaseClassName =
   'inline-block align-baseline cursor-help font-semibold px-2 py-0.5 text-[var(--accent)] hover:text-[var(--accent-light)] transition-colors duration-300 antialiased rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--background)]';
 
 const keywordTooltipClassName =
-  'max-w-xs sm:max-w-sm border-2 border-[var(--accent)]/80 bg-[var(--card-bg)] text-[var(--foreground)] shadow-[0_0_0_1px_rgba(234,179,8,0.25)]';
+  'max-w-sm sm:max-w-md border-2 border-[var(--accent)]/80 bg-[var(--card-bg)] text-[var(--foreground)] shadow-[0_0_0_1px_rgba(234,179,8,0.25)]';
 
 const FormulaBlock: React.FC = () => {
   return (
@@ -61,10 +61,12 @@ const KeywordTooltip = ({ keyword, children }: { keyword: string; children: Reac
         </button>
       </TooltipTrigger>
       <TooltipContent className={keywordTooltipClassName}>
-        <p className="text-[10px] uppercase tracking-[0.12em] text-[var(--accent)] mb-1">
+        <p className="text-xs sm:text-sm uppercase tracking-[0.12em] text-[var(--accent)] mb-1.5">
           {keywordInfo.title}
         </p>
-        <p className="text-sm leading-relaxed text-[var(--foreground)]">{keywordInfo.description}</p>
+        <p className="text-[15px] sm:text-base leading-relaxed text-[var(--foreground)]">
+          {keywordInfo.description}
+        </p>
       </TooltipContent>
     </Tooltip>
   );

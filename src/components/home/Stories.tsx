@@ -10,11 +10,25 @@ export const SuccessStories = () => {
       triggerClass="stories-content"
     >
       <div className="max-w-7xl mx-auto stories-content">
-        <SectionHeader mainText="Academic & Empirical Research" subText="Proprietary" />
+        <SectionHeader
+          mainText="Academic & Empirical Research"
+          subText="Proprietary AI Powered for Portfolio Construction"
+        />
+
+        <div className="mb-6 sm:mb-8 flex justify-center">
+          <p className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/8 px-4 py-2 text-[11px] sm:text-xs uppercase tracking-[0.13em] text-[var(--accent)]">
+            Hover each research note to preview its summary
+          </p>
+        </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 lg:gap-8">
-          {STORY_CARDS.map((story) => (
-            <StoriesCard key={story.title} title={story.title} description={story.subtitle} />
+          {STORY_CARDS.map((story, index) => (
+            <StoriesCard
+              key={story.title}
+              index={index}
+              title={story.title}
+              description={story.subtitle}
+            />
           ))}
         </div>
       </div>
