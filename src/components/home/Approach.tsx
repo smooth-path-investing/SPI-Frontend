@@ -33,14 +33,16 @@ export const ApproachSection = () => {
   return (
     <ScrollSection className={sectionClassName} triggerClass="approach-content">
       <div className="max-w-6xl mx-auto space-y-10">
-        <SectionHeader mainText="Investment Approach" subText="The Smooth Path Edge" />
+        <SectionHeader mainText="The Smooth Path Strategy" subText="Investment Approach" />
         <div className={cardClassName}>
           <div className="space-y-6">
             {APPROACH_PARAGRAPHS.map((paragraph) => (
               <p key={paragraph.id} className={paragraphClassName}>
                 {paragraph.parts.map((part, index) =>
                   part.isReference ? (
-                    <InlineStoryReference key={`${paragraph.id}-${index}`}>{part.value}</InlineStoryReference>
+                    <InlineStoryReference key={`${paragraph.id}-${index}`}>
+                      {part.value}
+                    </InlineStoryReference>
                   ) : (
                     <Fragment key={`${paragraph.id}-${index}`}>{part.value}</Fragment>
                   ),

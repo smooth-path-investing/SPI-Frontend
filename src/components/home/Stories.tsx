@@ -15,17 +15,10 @@ export const SuccessStories = () => {
           subText="Proprietary AI Powered for Portfolio Construction"
         />
 
-        <div className="mb-6 sm:mb-8 flex justify-center">
-          <p className="rounded-full border border-[var(--accent)]/30 bg-[var(--accent)]/8 px-4 py-2 text-[11px] sm:text-xs uppercase tracking-[0.13em] text-[var(--accent)]">
-            Hover each research note to preview its summary
-          </p>
-        </div>
-
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 lg:gap-8">
-          {STORY_CARDS.map((story, index) => (
+          {STORY_CARDS.map((story) => (
             <StoriesCard
               key={story.title}
-              index={index}
               title={story.title}
               description={story.subtitle}
             />
