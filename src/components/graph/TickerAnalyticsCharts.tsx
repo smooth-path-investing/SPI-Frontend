@@ -76,14 +76,13 @@ const formatLongDate = (date: string) => {
   });
 };
 
-const truncateIndicatorLabel = (label: string) =>
-  label.length > 18 ? `${label.slice(0, 18)}...` : label;
-
 const TooltipShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/95 px-3.5 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.24)] backdrop-blur-md">
     {children}
   </div>
 );
+
+const EmptyTooltip: React.FC = () => null;
 
 const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label }) => {
   if (!active || !payload?.length || !label) {
@@ -112,24 +111,6 @@ const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label 
           </div>
         ))}
       </div>
-    </TooltipShell>
-  );
-};
-
-const WeightTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label }) => {
-  if (!active || !payload?.length || !label) {
-    return null;
-  }
-
-  return (
-    <TooltipShell>
-      <p className="mb-1 text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)]">
-        Indicator
-      </p>
-      <p className="text-sm font-medium text-[var(--foreground)]">{label}</p>
-      <p className="mt-2 text-sm font-semibold tabular-nums text-[var(--accent)]">
-        {(payload[0]?.value ?? 0).toFixed(0)}%
-      </p>
     </TooltipShell>
   );
 };
@@ -266,12 +247,14 @@ export const IndicatorWeightsChart: React.FC<IndicatorWeightsChartProps> = ({
   }
 
   return (
-    <div className={`h-[280px] sm:h-[320px] w-full ${className}`}>
+    <div
+      className={`relative h-[280px] sm:h-[320px] w-full after:pointer-events-none after:absolute after:left-0 after:right-0 after:bottom-8 sm:after:bottom-9 after:h-px after:bg-white/45 after:content-[''] ${className}`}
+    >
       <ResponsiveContainer width="100%" height="100%">
         <BarChart
           data={data}
           layout="vertical"
-          margin={{ top: 12, right: 26, left: 20, bottom: 6 }}
+          margin={{ top: 12, right: 16, left: -8, bottom: 6 }}
           barCategoryGap={16}
         >
           <CartesianGrid
@@ -283,34 +266,51 @@ export const IndicatorWeightsChart: React.FC<IndicatorWeightsChartProps> = ({
             type="number"
             tickFormatter={(value: number) => `${value.toFixed(0)}%`}
             tick={{ fill: '#FFFFFF', fontSize: 11 }}
-            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            axisLine={false}
             tickLine={false}
             domain={[0, 100]}
             tickCount={5}
           />
           <YAxis
             type="category"
-            dataKey="indicator"
-            tickFormatter={truncateIndicatorLabel}
-            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            dataKey="key"
+            tick={false}
             axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
             tickLine={false}
-            width={130}
+            width={64}
           />
           <Tooltip
             cursor={{ fill: 'rgba(250,204,21,0.08)' }}
-            content={<WeightTooltip />}
+            content={<EmptyTooltip />}
           />
           <Bar dataKey="weight" fill="var(--accent)" radius={[0, 8, 8, 0]} barSize={26}>
             <LabelList
               dataKey="weight"
-              position="right"
+              position="insideRight"
               formatter={(value: number) => `${value.toFixed(0)}%`}
-              style={{ fill: '#FFFFFF', fontSize: 11, fontWeight: 600 }}
+              style={{ fill: '#0B0F19', fontSize: 11, fontWeight: 700 }}
             />
           </Bar>
         </BarChart>
       </ResponsiveContainer>
+
+      <div
+        className="pointer-events-none absolute right-0 top-3 bottom-8 sm:bottom-9 w-[140px] sm:w-[190px]"
+      >
+        <div
+          className="grid h-full min-w-0"
+          style={{ gridTemplateRows: `repeat(${data.length}, minmax(0, 1fr))` }}
+        >
+          {data.map((item) => (
+            <div
+              key={item.key}
+              className="flex items-center text-xs leading-tight text-white sm:text-sm"
+            >
+              {item.indicator}
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
