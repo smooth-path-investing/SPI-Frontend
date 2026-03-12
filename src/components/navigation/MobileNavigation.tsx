@@ -27,6 +27,19 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   onLogout,
 }) => {
   const location = useLocation();
+  const isStockInvestingPath =
+    location.pathname === '/stock' ||
+    location.pathname.startsWith('/stock/') ||
+    location.pathname === '/portfolio' ||
+    location.pathname.startsWith('/portfolio/');
+
+  const isNavigationItemActive = (href: string) => {
+    if (href === '/stock' || href === '/portfolio') {
+      return isStockInvestingPath;
+    }
+
+    return location.pathname === href;
+  };
 
   const menuButtonClasses =
     'md:hidden text-[var(--muted-text)] hover:text-[var(--foreground)] p-2 transition-colors z-[60] min-w-[44px] min-h-[44px] flex items-center justify-center';
@@ -112,7 +125,7 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
               </p>
               <div className="grid grid-cols-1 gap-3">
                 {navigationItems.map((item) => {
-                  const isActive = location.pathname === item.href;
+                  const isActive = isNavigationItemActive(item.href);
                   return (
                     <Link
                       key={item.href}

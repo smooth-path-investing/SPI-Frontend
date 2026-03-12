@@ -9,9 +9,28 @@ import { MobileNavigation } from '../navigation/MobileNavigation';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
-  const { user, login, signup, logout, isAuthenticated } = useAuth();
+  const { user, login, signup, logout, isAuthenticated, hasPurchasedPortfolio, canAccessPremiumStocks } =
+    useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const hasPortfolioAccess =
+    hasPurchasedPortfolio('long-contrarian') || canAccessPremiumStocks();
+  const navigationItems = NAVIGATION_ITEMS.map((item) =>
+    item.href === '/stock' ? { ...item, href: hasPortfolioAccess ? '/portfolio' : item.href } : item,
+  );
+  const isStockInvestingPath =
+    location.pathname === '/stock' ||
+    location.pathname.startsWith('/stock/') ||
+    location.pathname === '/portfolio' ||
+    location.pathname.startsWith('/portfolio/');
+
+  const isNavigationItemActive = (href: string) => {
+    if (href === '/stock' || href === '/portfolio') {
+      return isStockInvestingPath;
+    }
+
+    return location.pathname === href;
+  };
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -58,8 +77,8 @@ export const Navigation: React.FC = () => {
 
             {/* Centered Links */}
             <div className="hidden md:flex flex-1 justify-center gap-8">
-              {NAVIGATION_ITEMS.map((item) => {
-                const isActive = location.pathname === item.href;
+              {navigationItems.map((item) => {
+                const isActive = isNavigationItemActive(item.href);
                 return (
                   <Link
                     key={item.href}
@@ -95,7 +114,7 @@ export const Navigation: React.FC = () => {
 
               {/* Mobile Menu */}
               <MobileNavigation
-                navigationItems={NAVIGATION_ITEMS}
+                navigationItems={navigationItems}
                 isAuthenticated={isAuthenticated}
                 user={user}
                 isMobileMenuOpen={isMobileMenuOpen}

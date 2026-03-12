@@ -13,7 +13,7 @@ import { getStocksForPortfolio } from '@/constants/stockData';
 import { STOCK_PREVIEW_SAMPLE } from '@/constants/stockPreviewSample';
 import { StockCard } from '@/components/stocks/StockCard';
 import { Check } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth, type OfferType } from '@/hooks/useAuth';
 import { AuthModal } from '@/components/ui/auth-modal';
 
 interface StockList {
@@ -24,8 +24,6 @@ interface StockList {
   titleClass: string;
 }
 
-type OfferType = 'tickers' | 'hf';
-
 const STOCK_LIST: StockList = {
   id: 'long-contrarian',
   title: 'Current stock picks',
@@ -35,8 +33,14 @@ const STOCK_LIST: StockList = {
 };
 
 export const Stocks: React.FC = () => {
-  const { isAuthenticated, hasPurchasedPortfolio, canAccessPremiumStocks, login, signup } =
-    useAuth();
+  const {
+    isAuthenticated,
+    hasPurchasedPortfolio,
+    canAccessPremiumStocks,
+    login,
+    signup,
+    purchaseOffer,
+  } = useAuth();
   const navigate = useNavigate();
   const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
@@ -68,6 +72,7 @@ export const Stocks: React.FC = () => {
 
   const handleOfferSelection = (offer: OfferType) => {
     setSelectedOffer(offer);
+    purchaseOffer(offer, STOCK_LIST.id);
     setIsOffersModalOpen(false);
     // TODO(subscription-flow): temporary behavior requested by product.
     // Selecting ANY bundle unlocks immediate access to the unblurred ticker page.

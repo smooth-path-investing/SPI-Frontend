@@ -1,12 +1,9 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import type { User } from '@/types';
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  plan: 'free' | 'pro' | 'elite';
-  isPremium: boolean;
-}
+export type OfferType = 'tickers' | 'hf';
+
+type StoredValuesByUser<T extends string> = Record<string, T[]>;
 
 interface AuthContextType {
   user: User | null;
@@ -17,55 +14,123 @@ interface AuthContextType {
   canAccessPremiumStocks: () => boolean;
   purchasedPortfolios: string[];
   hasPurchasedPortfolio: (portfolioId: string) => boolean;
+  purchaseOffer: (offerId: OfferType, portfolioId: string) => void;
   togglePortfolioPurchase: (portfolioId: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [purchasedPortfolios, setPurchasedPortfolios] = useState<string[]>(() => {
-    const stored = localStorage.getItem('purchasedPortfolios');
-    return stored ? JSON.parse(stored) : [];
-  });
+const STORAGE_KEYS = {
+  user: 'spi-user',
+  purchasedPortfoliosByUser: 'spi-purchased-portfolios-by-user',
+  purchasedOffersByUser: 'spi-purchased-offers-by-user',
+  legacyPurchasedPortfolios: 'purchasedPortfolios',
+} as const;
 
-  const login = (email: string, password: string) => {
-    // Mock login - in real app, this would call your auth API
-    // For demo purposes, let's vary the plan based on email
-    const plan: 'free' | 'pro' | 'elite' = email.includes('pro')
-      ? 'pro'
-      : email.includes('elite')
-      ? 'elite'
-      : 'free';
-    setUser({
-      id: '1',
-      name: 'Demo User',
-      email: email,
-      plan: plan,
-      isPremium: plan === 'pro' || plan === 'elite',
+const readStorage = <T,>(key: string, fallback: T): T => {
+  try {
+    const storedValue = localStorage.getItem(key);
+    return storedValue ? (JSON.parse(storedValue) as T) : fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+const writeStorage = <T,>(key: string, value: T) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+const getUserStorageKey = (user: User | null) => user?.email.trim().toLowerCase() ?? '';
+
+const resolvePlanFromEmail = (email: string): User['plan'] => {
+  if (email.includes('pro')) {
+    return 'pro';
+  }
+  if (email.includes('elite')) {
+    return 'elite';
+  }
+  return 'free';
+};
+
+const buildMockUser = (email: string, name: string, id: string): User => {
+  const plan = resolvePlanFromEmail(email);
+
+  return {
+    id,
+    name,
+    email,
+    plan,
+    isPremium: plan === 'pro' || plan === 'elite',
+  };
+};
+
+const dedupeValues = <T extends string>(values: T[]) => Array.from(new Set(values));
+
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(() =>
+    readStorage<User | null>(STORAGE_KEYS.user, null),
+  );
+  const [legacyPurchasedPortfolios, setLegacyPurchasedPortfolios] = useState<string[]>(() =>
+    readStorage<string[]>(STORAGE_KEYS.legacyPurchasedPortfolios, []),
+  );
+  const [purchasedPortfoliosByUser, setPurchasedPortfoliosByUser] = useState<
+    StoredValuesByUser<string>
+  >(() => readStorage<StoredValuesByUser<string>>(STORAGE_KEYS.purchasedPortfoliosByUser, {}));
+  const [, setPurchasedOffersByUser] = useState<StoredValuesByUser<OfferType>>(() =>
+    readStorage<StoredValuesByUser<OfferType>>(STORAGE_KEYS.purchasedOffersByUser, {}),
+  );
+
+  const userStorageKey = getUserStorageKey(user);
+  const purchasedPortfolios = userStorageKey
+    ? purchasedPortfoliosByUser[userStorageKey] ?? []
+    : [];
+
+  useEffect(() => {
+    if (!userStorageKey || legacyPurchasedPortfolios.length === 0) {
+      return;
+    }
+
+    setPurchasedPortfoliosByUser((previousPurchases) => {
+      if ((previousPurchases[userStorageKey] ?? []).length > 0) {
+        return previousPurchases;
+      }
+
+      const nextPurchases = {
+        ...previousPurchases,
+        [userStorageKey]: dedupeValues(legacyPurchasedPortfolios),
+      };
+
+      writeStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
+      return nextPurchases;
     });
+
+    localStorage.removeItem(STORAGE_KEYS.legacyPurchasedPortfolios);
+    setLegacyPurchasedPortfolios([]);
+  }, [legacyPurchasedPortfolios, userStorageKey]);
+
+  const persistUser = (nextUser: User | null) => {
+    setUser(nextUser);
+
+    if (nextUser) {
+      writeStorage(STORAGE_KEYS.user, nextUser);
+      return;
+    }
+
+    localStorage.removeItem(STORAGE_KEYS.user);
   };
 
-  const signup = (email: string, password: string, firstName: string, lastName: string) => {
+  const login = (email: string, _password: string) => {
+    // Mock login - in real app, this would call your auth API
+    persistUser(buildMockUser(email, 'Demo User', '1'));
+  };
+
+  const signup = (email: string, _password: string, firstName: string, lastName: string) => {
     // Mock signup - in real app, this would call your auth API
-    // For demo purposes, let's vary the plan based on email
-    const plan: 'free' | 'pro' | 'elite' = email.includes('pro')
-      ? 'pro'
-      : email.includes('elite')
-      ? 'elite'
-      : 'free';
-    const fullName = `${firstName} ${lastName}`;
-    setUser({
-      id: Date.now().toString(),
-      name: fullName,
-      email: email,
-      plan: plan,
-      isPremium: plan === 'pro' || plan === 'elite',
-    });
+    persistUser(buildMockUser(email, `${firstName} ${lastName}`, Date.now().toString()));
   };
 
   const logout = () => {
-    setUser(null);
+    persistUser(null);
   };
 
   const isAuthenticated = !!user;
@@ -85,14 +150,67 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return purchasedPortfolios.includes(portfolioId);
   };
 
-  const togglePortfolioPurchase = (portfolioId: string) => {
-    setPurchasedPortfolios((prev) => {
-      const newPurchased = prev.includes(portfolioId)
-        ? prev.filter((id) => id !== portfolioId)
-        : [...prev, portfolioId];
-      localStorage.setItem('purchasedPortfolios', JSON.stringify(newPurchased));
-      return newPurchased;
+  const purchaseOffer = (offerId: OfferType, portfolioId: string) => {
+    if (!userStorageKey) {
+      return;
+    }
+
+    setPurchasedOffersByUser((previousOffers) => {
+      const nextOffers = {
+        ...previousOffers,
+        [userStorageKey]: dedupeValues([...(previousOffers[userStorageKey] ?? []), offerId]),
+      };
+
+      writeStorage(STORAGE_KEYS.purchasedOffersByUser, nextOffers);
+      return nextOffers;
     });
+
+    setPurchasedPortfoliosByUser((previousPurchases) => {
+      const nextPurchases = {
+        ...previousPurchases,
+        [userStorageKey]: dedupeValues([
+          ...(previousPurchases[userStorageKey] ?? []),
+          portfolioId,
+        ]),
+      };
+
+      writeStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
+      return nextPurchases;
+    });
+
+    if (legacyPurchasedPortfolios.length > 0) {
+      localStorage.removeItem(STORAGE_KEYS.legacyPurchasedPortfolios);
+      setLegacyPurchasedPortfolios([]);
+    }
+  };
+
+  const togglePortfolioPurchase = (portfolioId: string) => {
+    if (!userStorageKey) {
+      return;
+    }
+
+    setPurchasedPortfoliosByUser((previousPurchases) => {
+      const currentUserPurchases = previousPurchases[userStorageKey] ?? [];
+      const nextUserPurchases = currentUserPurchases.includes(portfolioId)
+        ? currentUserPurchases.filter((id) => id !== portfolioId)
+        : [...currentUserPurchases, portfolioId];
+      const nextPurchases = {
+        ...previousPurchases,
+        [userStorageKey]: nextUserPurchases,
+      };
+
+      if (nextUserPurchases.length === 0) {
+        delete nextPurchases[userStorageKey];
+      }
+
+      writeStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
+      return nextPurchases;
+    });
+
+    if (legacyPurchasedPortfolios.length > 0) {
+      localStorage.removeItem(STORAGE_KEYS.legacyPurchasedPortfolios);
+      setLegacyPurchasedPortfolios([]);
+    }
   };
 
   return (
@@ -106,6 +224,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         canAccessPremiumStocks,
         purchasedPortfolios,
         hasPurchasedPortfolio,
+        purchaseOffer,
         togglePortfolioPurchase,
       }}
     >

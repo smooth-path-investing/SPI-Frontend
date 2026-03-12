@@ -27,7 +27,8 @@ const PORTFOLIO_DETAIL_TEXT = {
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId?: string }>();
-  const { isAuthenticated, login, signup, hasPurchasedPortfolio } = useAuth();
+  const { isAuthenticated, login, signup, hasPurchasedPortfolio, canAccessPremiumStocks } =
+    useAuth();
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
@@ -45,8 +46,7 @@ export const PortfolioDetail: React.FC = () => {
   }
 
   const isPurchased = isAuthenticated && hasPurchasedPortfolio(portfolio.id);
-  const isPreviewPortfolio = portfolio.id === 'long-contrarian';
-  const canViewPortfolio = isPurchased || isPreviewPortfolio;
+  const canViewPortfolio = isAuthenticated && (isPurchased || canAccessPremiumStocks());
 
   const handleAccessRequest = () => {
     if (!isAuthenticated) {
