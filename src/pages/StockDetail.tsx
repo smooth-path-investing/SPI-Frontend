@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, ArrowUpRight, ArrowDownRight, MessageSquare, X } from 'lucide-react';
+import { ArrowLeft, MessageSquare, X } from 'lucide-react';
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
 import { StockPriceChart } from '@/components/graph/StockPriceChart';
 import { getStockChartForPortfolioTicker, getStocksForPortfolio } from '@/constants/stockData';
@@ -26,6 +26,19 @@ const STOCK_DETAIL_TEXT = {
   aiComingSoon: 'AI Chatbot - Coming Soon',
 };
 
+const formatCoverageDate = (date: string) => {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+    return date;
+  }
+
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+};
+
 export const StockDetail: React.FC = () => {
   const { portfolioId, ticker } = useParams<{ portfolioId?: string; ticker: string }>();
   const navigate = useNavigate();
@@ -33,6 +46,7 @@ export const StockDetail: React.FC = () => {
   const [isChatOpen, setIsChatOpen] = useState(false);
   const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
   const isStockPreviewRoute = location.pathname.startsWith('/stock/');
+  const isPortfolioStockRoute = /^\/portfolio(?:\/[^/]+)?\/stock\/[^/]+$/.test(location.pathname);
   const backPath = isStockPreviewRoute
     ? '/stock'
     : resolvedPortfolioId === 'long-contrarian'
@@ -51,10 +65,18 @@ export const StockDetail: React.FC = () => {
     : ticker
       ? getStockChartForPortfolioTicker(resolvedPortfolioId, ticker)
       : [];
+  const chartStart = stockChartData[0];
+  const chartEnd = stockChartData[stockChartData.length - 1];
+  const pagePaddingTopClass = isPortfolioStockRoute ? 'pt-5 sm:pt-6' : 'pt-24';
+  const chatPanelPositionClass = isPortfolioStockRoute
+    ? 'top-0 h-screen'
+    : 'top-16 h-[calc(100vh-4rem)]';
 
   if (!stock) {
     return (
-      <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] pt-24 px-4">
+      <div
+        className={`min-h-screen bg-[var(--background)] text-[var(--foreground)] px-4 ${pagePaddingTopClass}`}
+      >
         <div className="max-w-7xl mx-auto">
           <p className="text-center text-[var(--muted-text)]">{STOCK_DETAIL_TEXT.notFound}</p>
           <Button
@@ -70,45 +92,38 @@ export const StockDetail: React.FC = () => {
     );
   }
 
-  const isPositive = stock.changePercent >= 0;
-
   return (
-    <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)] pt-24 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-12 pr-4">
+    <div
+      className={`min-h-screen bg-[var(--background)] text-[var(--foreground)] relative ${pagePaddingTopClass}`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12 pr-4">
         {/* Back Button */}
         <Button
           onClick={() => navigate(backPath)}
           variant="outline"
-          className="mb-6 border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
+          className="mb-4 sm:mb-5 rounded-full border-white/15 bg-black/25 px-4 text-[var(--foreground)] hover:border-[var(--accent)]/60 hover:bg-[var(--accent)] hover:text-black"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
           {backLabel}
         </Button>
 
         {/* Stock Header */}
-        <div className="mb-8 rounded-[var(--radius)] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/40 p-5 sm:p-6">
-          <div className="flex items-start justify-between mb-5">
-            <div className="min-w-0">
-              <div className="flex items-center gap-3 mb-2 flex-wrap">
-                <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">{stock.ticker}</h1>
-                <Badge className="border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)]" variant="outline">
-                  {stock.sector}
-                </Badge>
+        <div className="relative mb-8 overflow-hidden rounded-[28px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/40 px-5 py-6 sm:px-7 sm:py-8">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent_42%)]" />
+          <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[24px] border border-[var(--card-border)]/80 bg-black/20 px-3 shadow-[0_18px_34px_rgba(0,0,0,0.16)] sm:h-28 sm:w-28">
+                <span className="text-4xl sm:text-5xl font-semibold tracking-tight leading-none">
+                  {stock.ticker}
+                </span>
               </div>
-              <p className="text-base sm:text-xl text-[var(--muted-text)]">{stock.name}</p>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="rounded-md border border-[var(--card-border)]/80 bg-black/20 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1">Current Value</p>
-              <p className="text-3xl sm:text-4xl font-bold tabular-nums">${stock.price.toFixed(2)}</p>
-            </div>
-            <div className="rounded-md border border-[var(--card-border)]/80 bg-black/20 px-4 py-3">
-              <p className="text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1">Daily Change</p>
-              <div className="flex items-center gap-2 text-xl sm:text-2xl text-[var(--accent)] font-semibold tabular-nums">
-              {isPositive ? <ArrowUpRight className="w-6 h-6" /> : <ArrowDownRight className="w-6 h-6" />}
-              <span>{isPositive ? '+' : ''}{stock.change.toFixed(2)} ({isPositive ? '+' : ''}{stock.changePercent.toFixed(2)}%)</span>
+              <div className="min-w-0">
+                <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[var(--accent)]/90">
+                  Portfolio holding
+                </p>
+                <h1 className="text-3xl font-semibold leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
+                  {stock.name}
+                </h1>
               </div>
             </div>
           </div>
@@ -119,11 +134,26 @@ export const StockDetail: React.FC = () => {
           {/* Left Column - Chart and Description */}
           <div className="space-y-6">
             {/* Chart */}
-            <Card className="bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
-              <CardHeader>
-                <CardTitle>{STOCK_DETAIL_TEXT.priceChart}</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <Card className="overflow-hidden bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
+              <div className="border-b border-[var(--card-border)]/80 px-5 py-5 sm:px-6 sm:py-6">
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--accent)]/90">
+                      {STOCK_DETAIL_TEXT.priceChart}
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                      {stock.ticker} price path
+                    </h2>
+                  </div>
+                  {chartStart && chartEnd && (
+                    <p className="text-sm text-[var(--muted-text)]">
+                      Coverage: {formatCoverageDate(chartStart.date)} to{' '}
+                      {formatCoverageDate(chartEnd.date)}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <CardContent className="p-4 sm:p-6">
                 {stockChartData.length > 0 ? (
                   <StockPriceChart data={stockChartData} ticker={stock.ticker} />
                 ) : (
@@ -186,7 +216,7 @@ export const StockDetail: React.FC = () => {
 
       {/* Chatbot Sidebar */}
       <div
-        className={`fixed top-16 right-0 h-[calc(100vh-4rem)] bg-[var(--card-bg)] border-l border-[var(--card-border)] shadow-xl transition-transform duration-300 ease-in-out z-40 ${
+        className={`fixed right-0 bg-[var(--card-bg)] border-l border-[var(--card-border)] shadow-xl transition-transform duration-300 ease-in-out z-40 ${chatPanelPositionClass} ${
           isChatOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
         style={{ width: '400px' }}
