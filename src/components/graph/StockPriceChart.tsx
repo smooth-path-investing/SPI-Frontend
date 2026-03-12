@@ -91,7 +91,7 @@ export const StockPriceChart: React.FC<StockPriceChartProps> = ({ data, ticker =
   const shadowId = `${ticker.toLowerCase()}-price-shadow`;
 
   return (
-    <div className={`h-[320px] sm:h-[420px] w-full ${className}`}>
+    <div className={`h-[280px] sm:h-[320px] w-full ${className}`}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}

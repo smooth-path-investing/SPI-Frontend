@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, MessageSquare, X } from 'lucide-react';
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
 import { StockPriceChart } from '@/components/graph/StockPriceChart';
+import {
+  CumulativeReturnsChart,
+  IndicatorWeightsChart,
+  NormalizedIndicatorChart,
+} from '@/components/graph/TickerAnalyticsCharts';
 import { getStockChartForPortfolioTicker, getStocksForPortfolio } from '@/constants/stockData';
+import { getTickerAnalytics } from '@/constants/tickerAnalytics';
 import {
   isStockPreviewSampleTicker,
   STOCK_PREVIEW_SAMPLE,
@@ -18,13 +23,17 @@ const STOCK_DETAIL_TEXT = {
   backToStocks: 'Back to Stocks',
   notFound: 'Stock not found',
   priceChart: 'Price Chart',
-  about: 'About',
-  keyFactors: 'Key Predictive Factors',
-  keyFactorsDescription:
-    'Our proprietary algorithm identified these factors as the most significant predictors for this stock:',
   askAiAbout: 'Ask AI About',
   aiComingSoon: 'AI Chatbot - Coming Soon',
 };
+
+const CHART_CARD_CLASS =
+  'h-full overflow-hidden bg-[var(--card-bg)] border border-white/35 text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)] flex flex-col';
+
+const CHART_CARD_HEADER_CLASS =
+  'flex min-h-[130px] sm:min-h-[138px] flex-col justify-between gap-3 px-5 py-5 sm:px-6 sm:py-6';
+
+const CHART_CARD_CONTENT_CLASS = 'flex-1 p-4 sm:p-6';
 
 const formatCoverageDate = (date: string) => {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
@@ -92,6 +101,8 @@ export const StockDetail: React.FC = () => {
     );
   }
 
+  const tickerAnalytics = getTickerAnalytics(stock, stockChartData);
+
   return (
     <div
       className={`min-h-screen bg-[var(--background)] text-[var(--foreground)] relative ${pagePaddingTopClass}`}
@@ -111,31 +122,37 @@ export const StockDetail: React.FC = () => {
         <div className="relative mb-8 overflow-hidden rounded-[28px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/40 px-5 py-6 sm:px-7 sm:py-8">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.14),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.05),transparent_42%)]" />
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-[24px] border border-[var(--card-border)]/80 bg-black/20 px-3 shadow-[0_18px_34px_rgba(0,0,0,0.16)] sm:h-28 sm:w-28">
-                <span className="text-4xl sm:text-5xl font-semibold tracking-tight leading-none">
-                  {stock.ticker}
-                </span>
-              </div>
-              <div className="min-w-0">
-                <p className="mb-3 text-[10px] uppercase tracking-[0.2em] text-[var(--accent)]/90">
-                  Portfolio holding
+            <div className="min-w-0">
+              <h1 className="text-3xl font-semibold leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
+                {stock.name}
+              </h1>
+            </div>
+
+            <div className="grid w-full grid-cols-2 gap-3 lg:w-auto lg:min-w-[360px]">
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[24px] border border-[var(--card-border)]/80 bg-black/20 px-4 py-4 shadow-[0_18px_34px_rgba(0,0,0,0.12)] sm:px-5">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted-text)]">
+                  Type
                 </p>
-                <h1 className="text-3xl font-semibold leading-[0.95] tracking-tight sm:text-5xl lg:text-6xl">
-                  {stock.name}
-                </h1>
+                <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
+                  {stock.sector}
+                </p>
+              </div>
+              <div className="flex min-h-[96px] flex-col justify-between rounded-[24px] border border-[var(--card-border)]/80 bg-black/20 px-4 py-4 shadow-[0_18px_34px_rgba(0,0,0,0.12)] sm:px-5">
+                <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted-text)]">
+                  Current Price
+                </p>
+                <p className="mt-2 text-xl font-semibold tabular-nums text-[var(--foreground)] sm:text-2xl">
+                  ${stock.price.toFixed(2)}
+                </p>
               </div>
             </div>
           </div>
         </div>
 
-        {/* Main Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,2fr)_1px_minmax(0,1fr)] gap-6 lg:gap-8">
-          {/* Left Column - Chart and Description */}
-          <div className="space-y-6">
-            {/* Chart */}
-            <Card className="overflow-hidden bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
-              <div className="border-b border-[var(--card-border)]/80 px-5 py-5 sm:px-6 sm:py-6">
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:auto-rows-fr">
+            <Card className={CHART_CARD_CLASS}>
+              <div className={CHART_CARD_HEADER_CLASS}>
                 <div className="flex flex-col gap-3">
                   <div>
                     <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--accent)]/90">
@@ -153,7 +170,7 @@ export const StockDetail: React.FC = () => {
                   )}
                 </div>
               </div>
-              <CardContent className="p-4 sm:p-6">
+              <CardContent className={CHART_CARD_CONTENT_CLASS}>
                 {stockChartData.length > 0 ? (
                   <StockPriceChart data={stockChartData} ticker={stock.ticker} />
                 ) : (
@@ -162,43 +179,77 @@ export const StockDetail: React.FC = () => {
               </CardContent>
             </Card>
 
-            {/* Company Description */}
-            <Card className="bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)]">
-              <CardHeader>
-                <CardTitle>{STOCK_DETAIL_TEXT.about} {stock.name}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-[var(--muted-text)] leading-relaxed">
-                  {stock.description}
-                </p>
+            <Card className={CHART_CARD_CLASS}>
+              <div className={CHART_CARD_HEADER_CLASS}>
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--accent)]/90">
+                      Benchmark Comparison
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                      Cumulative returns vs IVV
+                    </h2>
+                  </div>
+                  <div className="flex flex-wrap gap-2 text-xs text-[var(--muted-text)]">
+                    <span className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)]/80 bg-black/20 px-3 py-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-white" />
+                      {stock.ticker}
+                    </span>
+                    <span className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)]/80 bg-black/20 px-3 py-1">
+                      <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
+                      IVV
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <CardContent className={CHART_CARD_CONTENT_CLASS}>
+                <CumulativeReturnsChart data={tickerAnalytics.cumulativeReturns} />
               </CardContent>
             </Card>
-          </div>
 
-          <div className="hidden lg:block w-px bg-white/80" />
-
-          {/* Right Column - Key Factors */}
-          <div className="space-y-6 lg:pl-1">
-            {/* Key Factors */}
-            <Card className="bg-[var(--card-bg)] border border-[var(--card-border)] text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)] lg:sticky lg:top-24">
-              <CardHeader>
-                <CardTitle>{STOCK_DETAIL_TEXT.keyFactors}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-[var(--muted-text)] mb-4">
-                  {STOCK_DETAIL_TEXT.keyFactorsDescription}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {stock.factors.map((factor, index) => (
-                    <Badge
-                      key={index}
-                      variant="outline"
-                      className="border-[var(--accent)]/40 bg-[var(--accent)]/10 text-[var(--foreground)]"
-                    >
-                      {factor}
-                    </Badge>
-                  ))}
+            <Card className={CHART_CARD_CLASS}>
+              <div className={CHART_CARD_HEADER_CLASS}>
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--accent)]/90">
+                      Indicator Mix
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                      Indicator weights
+                    </h2>
+                  </div>
+                  <p className="text-sm text-[var(--muted-text)]">
+                    Relative weight assigned to the main drivers behind the current {stock.ticker}{' '}
+                    view.
+                  </p>
                 </div>
+              </div>
+              <CardContent className={CHART_CARD_CONTENT_CLASS}>
+                <IndicatorWeightsChart data={tickerAnalytics.indicatorWeights} />
+              </CardContent>
+            </Card>
+
+            <Card className={CHART_CARD_CLASS}>
+              <div className={CHART_CARD_HEADER_CLASS}>
+                <div className="flex flex-col gap-3">
+                  <div>
+                    <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--accent)]/90">
+                      Relative Performance
+                    </p>
+                    <h2 className="mt-2 text-2xl font-semibold tracking-tight">
+                      Rebased indicator series
+                    </h2>
+                  </div>
+                  <p className="text-sm text-[var(--muted-text)]">
+                    All indicator series rebased to 100 for relative trend comparison.
+                  </p>
+                </div>
+              </div>
+              <CardContent className={CHART_CARD_CONTENT_CLASS}>
+                <NormalizedIndicatorChart
+                  data={tickerAnalytics.normalizedIndicatorSeries}
+                  indicators={tickerAnalytics.indicators}
+                />
               </CardContent>
             </Card>
           </div>
@@ -216,10 +267,9 @@ export const StockDetail: React.FC = () => {
 
       {/* Chatbot Sidebar */}
       <div
-        className={`fixed right-0 bg-[var(--card-bg)] border-l border-[var(--card-border)] shadow-xl transition-transform duration-300 ease-in-out z-40 ${chatPanelPositionClass} ${
+        className={`fixed right-0 w-[min(100vw,400px)] lg:w-[min(1000px,82vw)] bg-[var(--card-bg)] border-l border-[var(--card-border)] shadow-xl transition-transform duration-300 ease-in-out z-40 ${chatPanelPositionClass} ${
           isChatOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
-        style={{ width: '400px' }}
       >
         <div className="flex flex-col h-full">
           <div className="p-4 border-b border-[var(--card-border)]">

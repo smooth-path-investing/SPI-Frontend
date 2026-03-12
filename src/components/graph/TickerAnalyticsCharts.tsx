@@ -1,0 +1,392 @@
+import React from 'react';
+import {
+  Bar,
+  BarChart,
+  CartesianGrid,
+  LabelList,
+  Line,
+  LineChart,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import type {
+  CumulativeReturnComparisonPoint,
+  IndicatorNormalizedPoint,
+  IndicatorWeightPoint,
+  TickerIndicatorMeta,
+} from '@/constants/tickerAnalytics';
+import { INDICATOR_LINE_COLORS } from '@/constants/chartColors';
+
+interface BaseTooltipEntry {
+  color?: string;
+  dataKey?: string;
+  name?: string;
+  value?: number;
+}
+
+interface BaseTooltipProps {
+  active?: boolean;
+  payload?: BaseTooltipEntry[];
+  label?: string;
+}
+
+interface CumulativeReturnsChartProps {
+  data: CumulativeReturnComparisonPoint[];
+  className?: string;
+}
+
+interface IndicatorWeightsChartProps {
+  data: IndicatorWeightPoint[];
+  className?: string;
+}
+
+interface NormalizedIndicatorChartProps {
+  data: IndicatorNormalizedPoint[];
+  indicators: TickerIndicatorMeta[];
+  className?: string;
+}
+
+const isIsoDateLabel = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
+
+const formatShortDate = (date: string) => {
+  if (!isIsoDateLabel(date)) {
+    return date;
+  }
+
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+};
+
+const formatLongDate = (date: string) => {
+  if (!isIsoDateLabel(date)) {
+    return date;
+  }
+
+  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+    timeZone: 'UTC',
+  });
+};
+
+const truncateIndicatorLabel = (label: string) =>
+  label.length > 18 ? `${label.slice(0, 18)}...` : label;
+
+const TooltipShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/95 px-3.5 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.24)] backdrop-blur-md">
+    {children}
+  </div>
+);
+
+const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label }) => {
+  if (!active || !payload?.length || !label) {
+    return null;
+  }
+
+  return (
+    <TooltipShell>
+      <p className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)]">
+        {formatLongDate(label)}
+      </p>
+      <div className="space-y-1.5">
+        {payload.map((entry) => (
+          <div key={entry.dataKey} className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: entry.color ?? '#FFFFFF' }}
+              />
+              <span className="text-xs text-[var(--muted-text)]">{entry.name}</span>
+            </div>
+            <span className="text-sm font-semibold tabular-nums text-[var(--foreground)]">
+              {(entry.value ?? 0) >= 0 ? '+' : ''}
+              {(entry.value ?? 0).toFixed(2)}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </TooltipShell>
+  );
+};
+
+const WeightTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label }) => {
+  if (!active || !payload?.length || !label) {
+    return null;
+  }
+
+  return (
+    <TooltipShell>
+      <p className="mb-1 text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)]">
+        Indicator
+      </p>
+      <p className="text-sm font-medium text-[var(--foreground)]">{label}</p>
+      <p className="mt-2 text-sm font-semibold tabular-nums text-[var(--accent)]">
+        {(payload[0]?.value ?? 0).toFixed(0)}%
+      </p>
+    </TooltipShell>
+  );
+};
+
+const NormalizedTooltip: React.FC<
+  BaseTooltipProps & { indicators: TickerIndicatorMeta[] }
+> = ({ active, payload, label, indicators }) => {
+  if (!active || !payload?.length || !label) {
+    return null;
+  }
+
+  const sortedEntries = indicators
+    .map((indicator) => {
+      const matchingPayload = payload.find((entry) => entry.dataKey === indicator.key);
+      return {
+        color: matchingPayload?.color ?? '#FFFFFF',
+        label: indicator.label,
+        value: matchingPayload?.value ?? 0,
+      };
+    })
+    .filter((entry) => typeof entry.value === 'number');
+
+  return (
+    <TooltipShell>
+      <p className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)]">
+        {formatLongDate(label)}
+      </p>
+      <div className="space-y-1.5">
+        {sortedEntries.map((entry) => (
+          <div key={entry.label} className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span
+                className="h-2.5 w-2.5 rounded-full"
+                style={{ backgroundColor: entry.color }}
+              />
+              <span className="text-xs text-[var(--muted-text)]">{entry.label}</span>
+            </div>
+            <span className="text-sm font-semibold tabular-nums text-[var(--foreground)]">
+              {entry.value.toFixed(2)}
+            </span>
+          </div>
+        ))}
+      </div>
+    </TooltipShell>
+  );
+};
+
+export const CumulativeReturnsChart: React.FC<CumulativeReturnsChartProps> = ({
+  data,
+  className = '',
+}) => {
+  if (data.length === 0) {
+    return null;
+  }
+
+  const values = data.flatMap((row) => [row.stockCum, row.ivvCum]);
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const padding = Math.max((maxValue - minValue) * 0.16, 1.5);
+
+  return (
+    <div className={`h-[280px] sm:h-[320px] w-full ${className}`}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 18, right: 14, left: -8, bottom: 6 }}>
+          <CartesianGrid
+            vertical={false}
+            stroke="rgba(255,255,255,0.08)"
+            strokeDasharray="3 6"
+          />
+          <XAxis
+            dataKey="date"
+            tickFormatter={formatShortDate}
+            minTickGap={30}
+            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            tickLine={false}
+          />
+          <YAxis
+            tickFormatter={(value: number) => `${value.toFixed(0)}%`}
+            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            tickLine={false}
+            width={64}
+            domain={[minValue - padding, maxValue + padding]}
+            tickCount={5}
+          />
+          <Tooltip
+            cursor={{ stroke: 'rgba(250,204,21,0.18)', strokeDasharray: '4 8' }}
+            content={<CumulativeTooltip />}
+          />
+          <ReferenceLine
+            y={0}
+            stroke="rgba(255,255,255,0.2)"
+            strokeDasharray="5 5"
+            ifOverflow="extendDomain"
+          />
+          <Line
+            type="monotoneX"
+            dataKey="stockCum"
+            name="Stock"
+            stroke="#FFFFFF"
+            strokeWidth={2.8}
+            dot={false}
+            activeDot={{ r: 4.5, fill: 'var(--background)', stroke: '#FFFFFF', strokeWidth: 2 }}
+            isAnimationActive={false}
+          />
+          <Line
+            type="monotoneX"
+            dataKey="ivvCum"
+            name="IVV"
+            stroke="var(--accent)"
+            strokeWidth={2.4}
+            dot={false}
+            activeDot={{
+              r: 4.5,
+              fill: 'var(--background)',
+              stroke: 'var(--accent)',
+              strokeWidth: 2,
+            }}
+            isAnimationActive={false}
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export const IndicatorWeightsChart: React.FC<IndicatorWeightsChartProps> = ({
+  data,
+  className = '',
+}) => {
+  if (data.length === 0) {
+    return null;
+  }
+
+  return (
+    <div className={`h-[280px] sm:h-[320px] w-full ${className}`}>
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart
+          data={data}
+          layout="vertical"
+          margin={{ top: 12, right: 26, left: 20, bottom: 6 }}
+          barCategoryGap={16}
+        >
+          <CartesianGrid
+            horizontal={false}
+            stroke="rgba(255,255,255,0.08)"
+            strokeDasharray="3 6"
+          />
+          <XAxis
+            type="number"
+            tickFormatter={(value: number) => `${value.toFixed(0)}%`}
+            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            tickLine={false}
+            domain={[0, 100]}
+            tickCount={5}
+          />
+          <YAxis
+            type="category"
+            dataKey="indicator"
+            tickFormatter={truncateIndicatorLabel}
+            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            tickLine={false}
+            width={130}
+          />
+          <Tooltip
+            cursor={{ fill: 'rgba(250,204,21,0.08)' }}
+            content={<WeightTooltip />}
+          />
+          <Bar dataKey="weight" fill="var(--accent)" radius={[0, 8, 8, 0]} barSize={26}>
+            <LabelList
+              dataKey="weight"
+              position="right"
+              formatter={(value: number) => `${value.toFixed(0)}%`}
+              style={{ fill: '#FFFFFF', fontSize: 11, fontWeight: 600 }}
+            />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export const NormalizedIndicatorChart: React.FC<NormalizedIndicatorChartProps> = ({
+  data,
+  indicators,
+  className = '',
+}) => {
+  if (data.length === 0 || indicators.length === 0) {
+    return null;
+  }
+
+  const values = data.flatMap((row) =>
+    indicators.map((indicator) => Number(row[indicator.key] ?? 100)),
+  );
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+  const padding = Math.max((maxValue - minValue) * 0.16, 2.5);
+
+  return (
+    <div className={`h-[280px] sm:h-[320px] w-full ${className}`}>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart data={data} margin={{ top: 18, right: 14, left: -8, bottom: 6 }}>
+          <CartesianGrid
+            vertical={false}
+            stroke="rgba(255,255,255,0.08)"
+            strokeDasharray="3 6"
+          />
+          <XAxis
+            dataKey="date"
+            tickFormatter={formatShortDate}
+            minTickGap={30}
+            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            tickLine={false}
+          />
+          <YAxis
+            tickFormatter={(value: number) => value.toFixed(0)}
+            tick={{ fill: '#FFFFFF', fontSize: 11 }}
+            axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
+            tickLine={false}
+            width={64}
+            domain={[minValue - padding, maxValue + padding]}
+            tickCount={5}
+          />
+          <Tooltip
+            cursor={{ stroke: 'rgba(250,204,21,0.18)', strokeDasharray: '4 8' }}
+            content={<NormalizedTooltip indicators={indicators} />}
+          />
+          <ReferenceLine
+            y={100}
+            stroke="rgba(255,255,255,0.2)"
+            strokeDasharray="5 5"
+            ifOverflow="extendDomain"
+          />
+          {indicators.map((indicator, index) => (
+            <Line
+              key={indicator.key}
+              type="monotoneX"
+              dataKey={indicator.key}
+              name={indicator.label}
+              stroke={INDICATOR_LINE_COLORS[index % INDICATOR_LINE_COLORS.length]}
+              strokeWidth={index === 0 ? 2.8 : 2.4}
+              dot={false}
+              activeDot={{
+                r: 4.5,
+                fill: 'var(--background)',
+                stroke: INDICATOR_LINE_COLORS[index % INDICATOR_LINE_COLORS.length],
+                strokeWidth: 2,
+              }}
+              isAnimationActive={false}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
