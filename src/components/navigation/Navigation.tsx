@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AuthModal } from '../ui/auth-modal';
-import { Button } from '../ui/button';
-import { ProfileDropdown } from '../ui/profile-dropdown';
-import { useAuth } from '../../hooks/useAuth';
-import { NAVIGATION_ITEMS } from '../../constants';
-import { MobileNavigation } from '../navigation/MobileNavigation';
+import { NAVIGATION_ITEMS } from '@/constants';
+import { AuthModal, useAuth } from '@/features/auth';
+import { isStockInvestingPath } from '@/features/stocks';
+import { MobileNavigation } from '@/components/navigation/MobileNavigation';
+import { ProfileDropdown } from '@/components/ui/profile-dropdown';
+import { Button } from '@/components/ui/button';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
@@ -18,15 +18,11 @@ export const Navigation: React.FC = () => {
   const navigationItems = NAVIGATION_ITEMS.map((item) =>
     item.href === '/stock' ? { ...item, href: hasPortfolioAccess ? '/portfolio' : item.href } : item,
   );
-  const isStockInvestingPath =
-    location.pathname === '/stock' ||
-    location.pathname.startsWith('/stock/') ||
-    location.pathname === '/portfolio' ||
-    location.pathname.startsWith('/portfolio/');
+  const isStockInvestingRoute = isStockInvestingPath(location.pathname);
 
   const isNavigationItemActive = (href: string) => {
     if (href === '/stock' || href === '/portfolio') {
-      return isStockInvestingPath;
+      return isStockInvestingRoute;
     }
 
     return location.pathname === href;

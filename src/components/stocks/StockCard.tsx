@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { StockData } from '@/constants/stockData';
+import type { StockData } from '@/features/stocks';
 
 interface StockCardProps {
   stock: StockData;

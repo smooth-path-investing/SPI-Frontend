@@ -1,33 +1,18 @@
-import type { StockData, StockPricePoint } from './stockData';
+import type { StockData, StockPricePoint } from '@/features/stocks/types';
+import type {
+  CumulativeReturnComparisonPoint,
+  IndicatorNormalizedPoint,
+  TickerAnalytics,
+  TickerIndicatorMeta,
+} from '@/features/stocks/analytics/types';
 
-export interface CumulativeReturnComparisonPoint {
-  date: string;
-  stockCum: number;
-  ivvCum: number;
-}
-
-export interface IndicatorWeightPoint {
-  key: string;
-  indicator: string;
-  weight: number;
-}
-
-export type IndicatorNormalizedPoint = {
-  date: string;
-} & Record<string, string | number>;
-
-export interface TickerIndicatorMeta {
-  key: string;
-  label: string;
-  weight: number;
-}
-
-export interface TickerAnalytics {
-  cumulativeReturns: CumulativeReturnComparisonPoint[];
-  indicatorWeights: IndicatorWeightPoint[];
-  normalizedIndicatorSeries: IndicatorNormalizedPoint[];
-  indicators: TickerIndicatorMeta[];
-}
+export type {
+  CumulativeReturnComparisonPoint,
+  IndicatorNormalizedPoint,
+  IndicatorWeightPoint,
+  TickerAnalytics,
+  TickerIndicatorMeta,
+} from '@/features/stocks/analytics/types';
 
 const getTickerSeed = (ticker: string) =>
   ticker.split('').reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 1), 0);

@@ -1,4 +1,4 @@
-import type { StockData, StockPricePoint } from './stockData';
+import type { StockData, StockPricePoint } from '@/features/stocks/types';
 
 export const STOCK_PREVIEW_SAMPLE: StockData = {
   ticker: 'SPIX',

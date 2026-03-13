@@ -6,12 +6,12 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Lock, ArrowLeft } from 'lucide-react';
-import { AuthModal } from '@/components/ui/auth-modal';
 import { StockCard } from '@/components/stocks/StockCard';
 import { PortfolioMetricCard } from '@/components/portfolio/PortfolioMetricCard';
-import { useAuth } from '@/hooks/useAuth';
 import { TrendingUp, Shield, Calendar, Package } from 'lucide-react';
 import { SectionHeader } from '@/components/sectionHeaders/reusableHeaders/sectionHeader';
+import { AuthModal, useAuth } from '@/features/auth';
+import { buildPortfolioStockDetailPath } from '@/features/stocks';
 
 const PORTFOLIO_DETAIL_TEXT = {
   back: 'Back to Portfolios',
@@ -24,6 +24,12 @@ const PORTFOLIO_DETAIL_TEXT = {
   loginPurchase: 'Login to Purchase',
   currentHoldings: 'Current Holdings',
 };
+
+const RISK_BADGE_CLASS_NAMES = {
+  Low: 'bg-green-500/10 text-green-500 border-green-500/20',
+  Medium: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
+  High: 'bg-red-500/10 text-red-500 border-red-500/20',
+} as const;
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId?: string }>();
@@ -57,18 +63,8 @@ export const PortfolioDetail: React.FC = () => {
     }
   };
 
-  const getRiskColor = (risk: string) => {
-    switch (risk) {
-      case 'Low':
-        return 'bg-green-500/10 text-green-500 border-green-500/20';
-      case 'Medium':
-        return 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20';
-      case 'High':
-        return 'bg-red-500/10 text-red-500 border-red-500/20';
-      default:
-        return 'bg-muted text-muted-foreground';
-    }
-  };
+  const getRiskColor = (risk: keyof typeof RISK_BADGE_CLASS_NAMES) =>
+    RISK_BADGE_CLASS_NAMES[risk] ?? 'bg-muted text-muted-foreground';
 
   if (!canViewPortfolio) {
     return (
@@ -164,13 +160,7 @@ export const PortfolioDetail: React.FC = () => {
                 blurred={false}
                 disableViewAnalysis={shouldLockTickers}
                 tickerClassName="text-[var(--accent)]"
-                onViewDetails={() =>
-                  navigate(
-                    portfolio.id === 'long-contrarian'
-                      ? `/portfolio/stock/${stock.ticker}`
-                      : `/portfolio/${portfolio.id}/stock/${stock.ticker}`,
-                  )
-                }
+                onViewDetails={() => navigate(buildPortfolioStockDetailPath(portfolio.id, stock.ticker))}
               />
             ))}
           </div>

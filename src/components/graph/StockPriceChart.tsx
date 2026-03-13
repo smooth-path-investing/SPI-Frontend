@@ -10,7 +10,12 @@ import {
   XAxis,
   YAxis,
 } from 'recharts';
-import type { StockPricePoint } from '@/constants/stockData';
+import {
+  ChartTooltipShell,
+  formatChartLongDate,
+  formatChartShortDate,
+  type StockPricePoint,
+} from '@/features/stocks';
 
 interface StockPriceChartProps {
   data: StockPricePoint[];
@@ -27,33 +32,6 @@ interface StockChartTooltipProps {
   label?: string;
 }
 
-const isIsoDateLabel = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
-
-const formatShortDate = (date: string) => {
-  if (!isIsoDateLabel(date)) {
-    return date;
-  }
-
-  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-};
-
-const formatLongDate = (date: string) => {
-  if (!isIsoDateLabel(date)) {
-    return date;
-  }
-
-  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
-};
-
 const StockChartTooltip: React.FC<StockChartTooltipProps> = ({
   active,
   payload,
@@ -64,18 +42,22 @@ const StockChartTooltip: React.FC<StockChartTooltipProps> = ({
   const price = payload[0].value;
 
   return (
-    <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/95 px-3.5 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.25)] backdrop-blur-md">
+    <ChartTooltipShell>
       <p className="text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1">
-        {formatLongDate(label)}
+        {formatChartLongDate(label)}
       </p>
       <p className="text-base font-semibold text-[var(--foreground)] tabular-nums">
         ${price.toFixed(2)}
       </p>
-    </div>
+    </ChartTooltipShell>
   );
 };
 
-export const StockPriceChart: React.FC<StockPriceChartProps> = ({ data, ticker = 'stock', className = '' }) => {
+export const StockPriceChart: React.FC<StockPriceChartProps> = ({
+  data,
+  ticker = 'stock',
+  className = '',
+}) => {
   if (data.length === 0) {
     return null;
   }
@@ -125,7 +107,7 @@ export const StockPriceChart: React.FC<StockPriceChartProps> = ({ data, ticker =
 
           <XAxis
             dataKey="date"
-            tickFormatter={formatShortDate}
+            tickFormatter={formatChartShortDate}
             minTickGap={32}
             tick={{ fill: '#FFFFFF', fontSize: 11 }}
             axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}

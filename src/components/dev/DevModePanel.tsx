@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { Settings, ChevronDown, ChevronUp } from 'lucide-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '@/features/auth';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { PORTFOLIOS } from '@/constants/portfolios';
@@ -10,7 +10,8 @@ export const DevModePanel: React.FC = () => {
   const [position, setPosition] = useState({ x: 20, y: 20 });
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number; startY: number } | null>(null);
-  const { user, hasPurchasedPortfolio, togglePortfolioPurchase, login, logout, isAuthenticated } = useAuth();
+  const { user, hasPurchasedPortfolio, togglePortfolioPurchase, login, logout, isAuthenticated } =
+    useAuth();
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest('button:not(.drag-handle)')) return;
@@ -21,18 +22,19 @@ export const DevModePanel: React.FC = () => {
     };
   };
 
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging || !dragRef.current) return;
+  const handleMouseMove = React.useCallback((e: MouseEvent) => {
+    if (!dragRef.current) return;
+
     setPosition({
       x: e.clientX - dragRef.current.startX,
       y: e.clientY - dragRef.current.startY,
     });
-  };
+  }, []);
 
-  const handleMouseUp = () => {
+  const handleMouseUp = React.useCallback(() => {
     setIsDragging(false);
     dragRef.current = null;
-  };
+  }, []);
 
   React.useEffect(() => {
     if (isDragging) {
@@ -43,7 +45,7 @@ export const DevModePanel: React.FC = () => {
         window.removeEventListener('mouseup', handleMouseUp);
       };
     }
-  }, [isDragging]);
+  }, [handleMouseMove, handleMouseUp, isDragging]);
 
   const handlePlanSwitch = (plan: 'free' | 'pro' | 'elite') => {
     if (!isAuthenticated) {

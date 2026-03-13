@@ -3,22 +3,20 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { AuthProvider } from './hooks/useAuth';
-import { Home } from './pages/Home';
-import { Stocks } from './pages/Stocks';
-import { PortfolioDetail } from './pages/PortfolioDetail';
-import { StockDetail } from './pages/StockDetail';
-import NotFound from './pages/NotFound';
-import { Navigation } from './components/navigation/Navigation';
+import { Navigation } from '@/components/navigation/Navigation';
+import { AuthProvider } from '@/features/auth';
+import { isPortfolioStockDetailPath } from '@/features/stocks';
+import { Home } from '@/pages/Home';
+import NotFound from '@/pages/NotFound';
+import { PortfolioDetail } from '@/pages/PortfolioDetail';
+import { StockDetail } from '@/pages/StockDetail';
+import { Stocks } from '@/pages/Stocks';
 
 const queryClient = new QueryClient();
 
-const isPortfolioStockDetailRoute = (pathname: string) =>
-  /^\/portfolio(?:\/[^/]+)?\/stock\/[^/]+$/.test(pathname);
-
 const AppShell = () => {
   const location = useLocation();
-  const hideNavigation = isPortfolioStockDetailRoute(location.pathname);
+  const hideNavigation = isPortfolioStockDetailPath(location.pathname);
 
   return (
     <div className="min-h-screen w-full bg-black overflow-x-hidden">

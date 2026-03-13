@@ -17,7 +17,12 @@ import type {
   IndicatorNormalizedPoint,
   IndicatorWeightPoint,
   TickerIndicatorMeta,
-} from '@/constants/tickerAnalytics';
+} from '@/features/stocks';
+import {
+  ChartTooltipShell,
+  formatChartLongDate,
+  formatChartShortDate,
+} from '@/features/stocks';
 import { INDICATOR_LINE_COLORS } from '@/constants/chartColors';
 
 interface BaseTooltipEntry {
@@ -49,39 +54,6 @@ interface NormalizedIndicatorChartProps {
   className?: string;
 }
 
-const isIsoDateLabel = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date);
-
-const formatShortDate = (date: string) => {
-  if (!isIsoDateLabel(date)) {
-    return date;
-  }
-
-  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
-};
-
-const formatLongDate = (date: string) => {
-  if (!isIsoDateLabel(date)) {
-    return date;
-  }
-
-  return new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
-};
-
-const TooltipShell: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/95 px-3.5 py-3 shadow-[0_18px_40px_rgba(0,0,0,0.24)] backdrop-blur-md">
-    {children}
-  </div>
-);
-
 const EmptyTooltip: React.FC = () => null;
 
 const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label }) => {
@@ -90,9 +62,9 @@ const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label 
   }
 
   return (
-    <TooltipShell>
+    <ChartTooltipShell>
       <p className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)]">
-        {formatLongDate(label)}
+        {formatChartLongDate(label)}
       </p>
       <div className="space-y-1.5">
         {payload.map((entry) => (
@@ -111,7 +83,7 @@ const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label 
           </div>
         ))}
       </div>
-    </TooltipShell>
+    </ChartTooltipShell>
   );
 };
 
@@ -134,9 +106,9 @@ const NormalizedTooltip: React.FC<
     .filter((entry) => typeof entry.value === 'number');
 
   return (
-    <TooltipShell>
+    <ChartTooltipShell>
       <p className="mb-2 text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)]">
-        {formatLongDate(label)}
+        {formatChartLongDate(label)}
       </p>
       <div className="space-y-1.5">
         {sortedEntries.map((entry) => (
@@ -154,7 +126,7 @@ const NormalizedTooltip: React.FC<
           </div>
         ))}
       </div>
-    </TooltipShell>
+    </ChartTooltipShell>
   );
 };
 
@@ -182,7 +154,7 @@ export const CumulativeReturnsChart: React.FC<CumulativeReturnsChartProps> = ({
           />
           <XAxis
             dataKey="date"
-            tickFormatter={formatShortDate}
+            tickFormatter={formatChartShortDate}
             minTickGap={30}
             tick={{ fill: '#FFFFFF', fontSize: 11 }}
             axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}
@@ -342,7 +314,7 @@ export const NormalizedIndicatorChart: React.FC<NormalizedIndicatorChartProps> =
           />
           <XAxis
             dataKey="date"
-            tickFormatter={formatShortDate}
+            tickFormatter={formatChartShortDate}
             minTickGap={30}
             tick={{ fill: '#FFFFFF', fontSize: 11 }}
             axisLine={{ stroke: '#FFFFFF', strokeOpacity: 0.45 }}

@@ -1,26 +1,6 @@
-export interface StockData {
-  ticker: string;
-  name: string;
-  sector: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  description: string;
-  recommendation: 'Strong Buy' | 'Buy' | 'Hold' | 'Sell' | 'Strong Sell';
-  confidence: number; // 0-100
-  keyMetrics: {
-    marketCap: string;
-    peRatio: string;
-    dividend: string;
-    beta: string;
-  };
-  factors: string[];
-}
+import type { StockData, StockPricePoint, StockSeriesProfile } from '@/features/stocks/types';
 
-export interface StockPricePoint {
-  date: string;
-  close: number;
-}
+export type { StockData, StockPricePoint } from '@/features/stocks/types';
 
 export const LONG_CONTRARIAN_STOCKS: StockData[] = [
   {
@@ -387,13 +367,6 @@ export const SHORT_CONTRARIAN_STOCKS: StockData[] = [
     factors: ['Cycle normalization', 'Order momentum slowdown', 'Inventory correction risk'],
   },
 ];
-
-interface StockSeriesProfile {
-  drift: number;
-  amplitude: number;
-  phase: number;
-  cycle: number;
-}
 
 const STOCK_SERIES_PROFILES: Record<string, StockSeriesProfile> = {
   GE: { drift: 0.34, amplitude: 0.05, phase: 1, cycle: 3.1 },

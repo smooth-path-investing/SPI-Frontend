@@ -3,10 +3,12 @@ import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { User } from '../../types';
+import type { User } from '@/features/auth';
+import { isStockInvestingPath } from '@/features/stocks';
+import type { NavigationItem } from '@/types';
 
 interface MobileNavigationProps {
-  navigationItems: { href: string; label: string }[];
+  navigationItems: NavigationItem[];
   isAuthenticated: boolean;
   user: User | null;
   isMobileMenuOpen: boolean;
@@ -27,15 +29,11 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
   onLogout,
 }) => {
   const location = useLocation();
-  const isStockInvestingPath =
-    location.pathname === '/stock' ||
-    location.pathname.startsWith('/stock/') ||
-    location.pathname === '/portfolio' ||
-    location.pathname.startsWith('/portfolio/');
+  const isStockInvestingRoute = isStockInvestingPath(location.pathname);
 
   const isNavigationItemActive = (href: string) => {
     if (href === '/stock' || href === '/portfolio') {
-      return isStockInvestingPath;
+      return isStockInvestingRoute;
     }
 
     return location.pathname === href;
