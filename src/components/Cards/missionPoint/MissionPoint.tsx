@@ -97,29 +97,13 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
   return (
     <Card
       className="
-    mb-6 sm:mb-0
-    bg-[var(--card-bg)]
-    border border-[var(--card-border)]
-    px-5 py-6 sm:p-8 lg:p-12
-    rounded-[var(--radius)]
-    transition-all duration-300
-    sm:hover:-translate-y-0.5
-    hover:border-[var(--accent)]/70
-    hover:shadow-[0_10px_26px_rgba(0,0,0,0.2)]
-    min-h-fit sm:min-h-fit
-    relative
-  "
+        relative mb-6 min-h-fit overflow-hidden rounded-[28px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
+      "
     >
       <div
-        className="
-          absolute top-3 left-4
-          text-[10px] tracking-widest
-          text-white/30
-          font-mono
-        "
-      >
-        SEC. 0{index + 1} // CORE
-      </div>
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.12),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
+      />
 
       <div
         className="
@@ -127,7 +111,7 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
           text-sm sm:text-base md:text-lg
           font-light
           leading-[1.5] sm:leading-[1.65]
-          tracking-wide text-[var(--foreground)]/85 text-center
+          tracking-wide text-[var(--foreground)]/88 text-center
           antialiased
         "
       >

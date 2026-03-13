@@ -65,7 +65,7 @@ export const StockDetail: React.FC = () => {
       <div
         className={`min-h-screen bg-[var(--background)] text-[var(--foreground)] px-4 ${pagePaddingTopClass}`}
       >
-        <div className="max-w-7xl mx-auto">
+        <div className="mx-auto max-w-[88rem]">
           <p className="text-center text-[var(--muted-text)]">{STOCK_DETAIL_TEXT.notFound}</p>
           <Button
             onClick={() => navigate(backPath)}
@@ -86,7 +86,7 @@ export const StockDetail: React.FC = () => {
     <div
       className={`min-h-screen bg-[var(--background)] text-[var(--foreground)] relative ${pagePaddingTopClass}`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 sm:pb-12 pr-4">
+      <div className="mx-auto max-w-[88rem] px-4 pb-10 pr-4 sm:px-6 sm:pb-12 lg:px-8">
         <StockDetailSummary
           stock={stock}
           backLabel={backLabel}

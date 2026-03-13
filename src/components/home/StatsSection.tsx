@@ -15,12 +15,7 @@ export const StatsSection: React.FC = () => {
   return (
     <section
       className="
-        relative
-        overflow-visible
-        py-20 sm:py-24 lg:py-28
-        px-4 sm:px-6 lg:px-8
-        bg-[var(--background)]
-        text-[var(--foreground)]
+        relative overflow-visible py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 bg-[var(--background)] text-[var(--foreground)]
       "
     >
       <div className="max-w-7xl mx-auto stats-content">
@@ -34,12 +29,13 @@ export const StatsSection: React.FC = () => {
                   <article
                     key={index}
                     className="
-                      rounded-[var(--radius)]
-                      border border-[var(--card-border)]
-                      bg-[var(--card-bg)]
-                      px-4 py-3.5
+                      relative overflow-hidden rounded-[24px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-4 py-3.5 shadow-[0_14px_32px_rgba(0,0,0,0.18)]
                     "
                   >
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.12),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
+                    />
                     <div className="flex items-center gap-2.5 mb-2">
                       <Icon className="w-4 h-4 text-[var(--accent)] flex-shrink-0" />
                       <h3 className="font-semibold text-sm tracking-wide text-[var(--foreground)]">
@@ -63,15 +59,7 @@ export const StatsSection: React.FC = () => {
                     <TooltipTrigger asChild>
                       <div
                         className="
-                          flex items-center gap-2
-                          cursor-help
-                          px-5 py-2.5
-                          border border-[var(--card-border)]
-                          rounded-full
-                          bg-[var(--card-bg)]
-                          transition-all duration-300
-                          hover:border-[var(--accent)]
-                          hover:shadow-[0_0_10px_var(--accent)]
+                          flex cursor-help items-center gap-2 rounded-full border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-2.5 shadow-[0_14px_26px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--accent)] hover:shadow-[0_0_18px_rgba(250,204,21,0.18)]
                         "
                       >
                         <div className="flex-shrink-0 flex items-center justify-center">

@@ -24,7 +24,7 @@ export const StockCard: React.FC<StockCardProps> = ({
 
   return (
     <Card
-      className={`border-2 border-white/15 bg-[var(--card-bg)]/95 transition-all duration-300 hover:border-[var(--accent)]/60 hover:shadow-[0_12px_24px_rgba(0,0,0,0.2)] ${
+      className={`relative w-full min-h-[116px] overflow-hidden rounded-[24px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-[var(--accent)]/60 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] ${
         isInteractive
           ? 'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/60 focus-visible:ring-offset-0'
           : ''
@@ -43,7 +43,11 @@ export const StockCard: React.FC<StockCardProps> = ({
       role={isInteractive ? 'button' : undefined}
       tabIndex={isInteractive ? 0 : undefined}
     >
-      <CardContent className="p-4 sm:p-5">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.12),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
+      />
+      <CardContent className="relative p-4 sm:p-5">
         {/* TODO(subscription-flow): this wrapper controls lock-state visuals.
             Keep `blurred` + pointer lock for gated ticker previews. */}
         <div
@@ -64,7 +68,7 @@ export const StockCard: React.FC<StockCardProps> = ({
 
           <Button
             variant="outline"
-            className="shrink-0 h-9 px-3.5 sm:h-10 sm:px-4 border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black disabled:opacity-55 disabled:cursor-not-allowed"
+            className="shrink-0 h-9 rounded-full border-[var(--accent)]/45 bg-black/20 px-3.5 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black sm:h-10 sm:px-4 disabled:cursor-not-allowed disabled:opacity-55"
             onClick={(event) => {
               event.stopPropagation();
               onViewDetails();

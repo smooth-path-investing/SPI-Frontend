@@ -6,15 +6,15 @@ const sectionClassName =
   'relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 z-10 bg-[var(--background)] text-[var(--foreground)]';
 
 const cardClassName =
-  'max-w-5xl mx-auto bg-[var(--card-bg)] border border-[var(--card-border)] p-6 sm:p-8 lg:p-10 rounded-[var(--radius)] transition-colors duration-300 hover:border-[var(--accent)]/70';
+  'relative max-w-5xl mx-auto overflow-hidden rounded-[28px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 p-6 shadow-[0_18px_36px_rgba(0,0,0,0.18)] transition-colors duration-300 hover:border-[var(--accent)]/70 sm:p-8 lg:p-10';
 
 const paragraphClassName =
   'mx-auto max-w-4xl text-center text-sm sm:text-base lg:text-lg leading-8 text-[var(--foreground)]';
 const rulesWrapperClassName =
-  'mx-auto max-w-4xl rounded-[var(--radius)] border border-[var(--card-border)] bg-[linear-gradient(180deg,rgba(250,204,21,0.05),rgba(0,0,0,0.16))] px-5 py-5 sm:px-6 sm:py-6';
+  'mx-auto max-w-4xl rounded-[24px] border border-[var(--card-border)] bg-[linear-gradient(180deg,rgba(250,204,21,0.08),rgba(0,0,0,0.2))] px-5 py-5 shadow-[0_14px_32px_rgba(0,0,0,0.16)] sm:px-6 sm:py-6';
 const rulesGridClassName = 'grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4';
 const ruleCardClassName =
-  'rounded-2xl border border-[var(--card-border)] bg-[var(--card-bg)]/90 px-4 py-4 sm:px-5 sm:py-5 text-left transition-colors duration-300 hover:border-[var(--accent)]/45';
+  'rounded-[22px] border border-[var(--card-border)] bg-[var(--card-bg)]/90 px-4 py-4 text-left shadow-[0_12px_24px_rgba(0,0,0,0.14)] transition-colors duration-300 hover:border-[var(--accent)]/45 sm:px-5 sm:py-5';
 
 export const ApproachSection = () => {
   return (
