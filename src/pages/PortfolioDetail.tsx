@@ -3,19 +3,16 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PORTFOLIOS } from '@/constants/portfolios';
 import { getStocksForPortfolio } from '@/constants/stockData';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Lock, ArrowLeft } from 'lucide-react';
 import { StockCard } from '@/components/stocks/StockCard';
 import { PortfolioMetricCard } from '@/components/portfolio/PortfolioMetricCard';
-import { TrendingUp, Shield, Calendar, Package } from 'lucide-react';
+import { Calendar, Package } from 'lucide-react';
 import { AuthModal, useAuth } from '@/features/auth';
 import { buildPortfolioStockDetailPath } from '@/features/stocks';
 import { AccentPill, FeatureSurface } from '@/components/ui/feature-surface';
 
 const PORTFOLIO_DETAIL_TEXT = {
   back: 'Back to Portfolios',
-  expectedReturn: 'Expected Return',
-  riskLevel: 'Risk Level',
   holdings: 'Total Holdings',
   rebalance: 'Rebalance',
   oneTimeFee: 'One-time access fee',
@@ -23,12 +20,6 @@ const PORTFOLIO_DETAIL_TEXT = {
   loginPurchase: 'Login to Purchase',
   currentHoldings: 'Current Holdings',
 };
-
-const RISK_BADGE_CLASS_NAMES = {
-  Low: 'bg-green-500/10 text-green-500 border-green-500/20',
-  Medium: 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20',
-  High: 'bg-red-500/10 text-red-500 border-red-500/20',
-} as const;
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId?: string }>();
@@ -64,18 +55,15 @@ export const PortfolioDetail: React.FC = () => {
     }
   };
 
-  const getRiskColor = (risk: keyof typeof RISK_BADGE_CLASS_NAMES) =>
-    RISK_BADGE_CLASS_NAMES[risk] ?? 'bg-muted text-muted-foreground';
-
   if (!canViewPortfolio) {
     return (
       <>
-        <div className="relative min-h-screen overflow-hidden bg-background pt-24 text-foreground">
+        <div className="relative min-h-screen overflow-hidden bg-background pt-8 text-foreground sm:pt-24">
           <div
             aria-hidden="true"
             className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
           />
-          <div className="relative mx-auto max-w-[88rem] px-4 py-20 sm:px-6 lg:px-8">
+          <div className="relative mx-auto max-w-[88rem] px-4 pb-20 pt-6 sm:px-6 sm:py-20 lg:px-8">
             <Button
               variant="outline"
               onClick={() => navigate('/stock')}
@@ -105,21 +93,7 @@ export const PortfolioDetail: React.FC = () => {
                       {portfolio.description}
                     </p>
 
-                    <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                      <PortfolioMetricCard
-                        icon={TrendingUp}
-                        label={PORTFOLIO_DETAIL_TEXT.expectedReturn}
-                        value={portfolio.expectedReturn}
-                      />
-                      <PortfolioMetricCard
-                        icon={Shield}
-                        label={PORTFOLIO_DETAIL_TEXT.riskLevel}
-                        value={
-                          <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
-                            {portfolio.riskLevel}
-                          </Badge>
-                        }
-                      />
+                    <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-2">
                       <PortfolioMetricCard
                         icon={Package}
                         label={PORTFOLIO_DETAIL_TEXT.holdings}
@@ -175,13 +149,13 @@ export const PortfolioDetail: React.FC = () => {
   // Current requirement is to show all tickers unblurred after bundle selection.
   const shouldLockTickers = false;
   return (
-    <div className="relative min-h-screen overflow-hidden bg-background pt-20 text-foreground sm:pt-24">
+    <div className="relative min-h-screen overflow-hidden bg-background pt-8 text-foreground sm:pt-24">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
       />
 
-      <div className="relative z-10 mx-auto max-w-[88rem] px-4 py-12 sm:px-6 sm:py-20 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-[88rem] px-4 pb-12 pt-4 sm:px-6 sm:py-20 lg:px-8">
         <FeatureSurface className="mb-8">
           <div className="px-5 py-6 sm:px-7 sm:py-8">
             <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
@@ -196,20 +170,6 @@ export const PortfolioDetail: React.FC = () => {
               </div>
 
               <div className="grid w-full grid-cols-2 gap-3 xl:w-auto xl:min-w-[420px]">
-                <PortfolioMetricCard
-                  icon={TrendingUp}
-                  label={PORTFOLIO_DETAIL_TEXT.expectedReturn}
-                  value={portfolio.expectedReturn}
-                />
-                <PortfolioMetricCard
-                  icon={Shield}
-                  label={PORTFOLIO_DETAIL_TEXT.riskLevel}
-                  value={
-                    <Badge className={getRiskColor(portfolio.riskLevel)} variant="outline">
-                      {portfolio.riskLevel}
-                    </Badge>
-                  }
-                />
                 <PortfolioMetricCard
                   icon={Package}
                   label={PORTFOLIO_DETAIL_TEXT.holdings}
@@ -227,20 +187,30 @@ export const PortfolioDetail: React.FC = () => {
 
         <FeatureSurface>
           <div className="px-5 py-6 sm:px-6 sm:py-7">
-            <div className="grid w-full grid-cols-1 gap-3">
-              {stocks.map((stock) => (
-                <StockCard
-                  key={stock.ticker}
-                  stock={stock}
-                  // TODO(subscription-flow): use `blurred={shouldLockTickers}` when lock returns.
-                  blurred={false}
-                  disableViewAnalysis={shouldLockTickers}
-                  tickerClassName="text-[var(--accent)]"
-                  onViewDetails={() =>
-                    navigate(buildPortfolioStockDetailPath(portfolio.id, stock.ticker))
-                  }
-                />
-              ))}
+            <div className="grid w-full grid-cols-1 gap-3 lg:grid-cols-3 lg:auto-rows-fr lg:gap-4">
+              {stocks.map((stock, index) => {
+                const shouldCenterLastCard = stocks.length % 3 === 1 && index === stocks.length - 1;
+
+                return (
+                  <div
+                    key={stock.ticker}
+                    className={shouldCenterLastCard ? 'lg:col-start-2' : undefined}
+                  >
+                    <StockCard
+                      stock={stock}
+                      // TODO(subscription-flow): use `blurred={shouldLockTickers}` when lock returns.
+                      blurred={false}
+                      disableViewAnalysis={shouldLockTickers}
+                      cardClassName="border-white/35 hover:border-white/70"
+                      tickerClassName="text-[var(--accent)]"
+                      compact
+                      onViewDetails={() =>
+                        navigate(buildPortfolioStockDetailPath(portfolio.id, stock.ticker))
+                      }
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </FeatureSurface>

@@ -8,6 +8,12 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: '::',
     port: 8080,
+    proxy: {
+      '/stock-assets': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+      },
+    },
   },
 
   // Use absolute asset URLs so deep-route reloads (e.g. /portfolio/:id) can load bundles.

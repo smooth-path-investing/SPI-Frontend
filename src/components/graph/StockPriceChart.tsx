@@ -86,7 +86,7 @@ export const StockPriceChart: React.FC<StockPriceChartProps> = ({
         >
           <defs>
             <pattern id={fillId} patternUnits="userSpaceOnUse" width="1" height="1">
-              <rect width="1" height="1" fill="rgba(250,204,21,0.22)" />
+              <rect width="1" height="1" fill="#FACC15" />
             </pattern>
             <filter id={shadowId} x="-20%" y="-20%" width="140%" height="160%">
               <feDropShadow
@@ -94,7 +94,7 @@ export const StockPriceChart: React.FC<StockPriceChartProps> = ({
                 dy="14"
                 stdDeviation="16"
                 floodColor="var(--accent)"
-                floodOpacity="0.16"
+                floodOpacity="1"
               />
             </filter>
           </defs>
@@ -125,13 +125,13 @@ export const StockPriceChart: React.FC<StockPriceChartProps> = ({
           />
 
           <Tooltip
-            cursor={{ stroke: 'rgba(250,204,21,0.22)', strokeDasharray: '4 8' }}
+            cursor={{ stroke: '#FACC15', strokeDasharray: '4 8' }}
             content={<StockChartTooltip />}
           />
 
           <ReferenceLine
             y={firstClose}
-            stroke="rgba(250,204,21,0.16)"
+            stroke="#FACC15"
             strokeDasharray="5 5"
             ifOverflow="extendDomain"
           />

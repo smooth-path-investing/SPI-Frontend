@@ -183,23 +183,23 @@ export const CumulativeReturnsChart: React.FC<CumulativeReturnsChartProps> = ({
             type="monotoneX"
             dataKey="stockCum"
             name="Stock"
-            stroke="#FFFFFF"
+            stroke="var(--accent)"
             strokeWidth={2.8}
             dot={false}
-            activeDot={{ r: 4.5, fill: 'var(--background)', stroke: '#FFFFFF', strokeWidth: 2 }}
+            activeDot={{ r: 4.5, fill: 'var(--background)', stroke: 'var(--accent)', strokeWidth: 2 }}
             isAnimationActive={false}
           />
           <Line
             type="monotoneX"
             dataKey="ivvCum"
             name="IVV"
-            stroke="var(--accent)"
+            stroke="#FFFFFF"
             strokeWidth={2.4}
             dot={false}
             activeDot={{
               r: 4.5,
               fill: 'var(--background)',
-              stroke: 'var(--accent)',
+              stroke: '#FFFFFF',
               strokeWidth: 2,
             }}
             isAnimationActive={false}

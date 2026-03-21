@@ -14,38 +14,6 @@ const keywordBaseClassName =
 const keywordTooltipClassName =
   'max-w-sm sm:max-w-md border-2 border-[var(--accent)]/80 bg-[var(--card-bg)] text-[var(--foreground)] shadow-[0_0_0_1px_rgba(234,179,8,0.25)]';
 
-const FormulaBlock: React.FC = () => {
-  return (
-    <span
-      className="
-        relative z-10 mt-4 sm:mt-6 md:mt-10
-        flex flex-wrap items-center justify-center gap-2 sm:gap-3
-        select-none text-[var(--accent)]
-      "
-    >
-      <span className="text-xl sm:text-2xl md:text-3xl inline-flex items-baseline">
-        <span className="relative inline-block pr-[0.28em] leading-none">
-          <span className="mr-[-0.08em] inline-block">A</span>
-          <span className="absolute left-full top-1/2 ml-0 -translate-y-1/2 inline-flex flex-col items-center leading-none">
-            <sup className="font-bold text-[0.5em] sm:text-[0.58em] md:text-[0.62em] leading-none">
-              2
-            </sup>
-            <sub className="text-[0.5em] sm:text-[0.58em] md:text-[0.62em] leading-none -mt-[0.08em]">
-              z
-            </sub>
-          </span>
-        </span>
-      </span>
-      <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">→</span>
-      <span className="text-xl sm:text-2xl md:text-3xl flex items-baseline">
-        S<sub className="text-[0.55em] sm:text-[0.65em] md:text-[0.7em] ml-0.5">i</sub>
-      </span>
-      <span className="mx-1 sm:mx-2 text-sm sm:text-base md:text-lg font-mono">∈</span>
-      <span className="text-xl sm:text-2xl md:text-3xl font-bold">P</span>
-    </span>
-  );
-};
-
 const KeywordTooltip = ({ keyword, children }: { keyword: string; children: ReactNode }) => {
   const keywordInfo = KEYWORD_DATA[keyword.toLowerCase()];
 
@@ -81,7 +49,9 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
     const parts = text.split(regex);
 
     return parts.map((part, partIndex) => {
-      const originalKeyword = KEYWORDS.find((keyword) => keyword.toLowerCase() === part.toLowerCase());
+      const originalKeyword = KEYWORDS.find(
+        (keyword) => keyword.toLowerCase() === part.toLowerCase(),
+      );
       if (originalKeyword) {
         return (
           <KeywordTooltip key={`${index}-${partIndex}`} keyword={originalKeyword}>
@@ -97,7 +67,7 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
   return (
     <Card
       className="
-        relative mb-6 min-h-fit overflow-hidden rounded-[28px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
+        relative mb-6 min-h-fit overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
       "
     >
       <div
@@ -117,14 +87,6 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
       >
         {renderTextWithInteractions(point)}
       </div>
-
-      {index === 3 && (
-        <div className="flex justify-center">
-          <KeywordTooltip keyword="Az2→Sp∈P">
-            <FormulaBlock />
-          </KeywordTooltip>
-        </div>
-      )}
     </Card>
   );
 };
