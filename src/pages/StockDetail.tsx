@@ -10,6 +10,8 @@ import {
   NormalizedIndicatorChart,
 } from '@/components/graph/TickerAnalyticsCharts';
 import { fetchStockAssetChartSeries, type StockAssetChartSeries } from '@/API/fetchStockAssets';
+import { fetchStockIndicatorWeights } from '@/API/fetchStockFactorCoefvec';
+import { fetchStockFundamentalChartSeries } from '@/API/fetchStockFundamental';
 import { getStockChartForPortfolioTicker, getStocksForPortfolio } from '@/constants/stockData';
 import { getTickerAnalytics } from '@/constants/tickerAnalytics';
 import {
@@ -17,7 +19,12 @@ import {
   STOCK_PREVIEW_SAMPLE,
   STOCK_PREVIEW_SAMPLE_CHART,
 } from '@/constants/stockPreviewSample';
-import type { CumulativeReturnComparisonPoint } from '@/features/stocks/analytics/types';
+import type {
+  CumulativeReturnComparisonPoint,
+  IndicatorNormalizedPoint,
+  IndicatorWeightPoint,
+  TickerIndicatorMeta,
+} from '@/features/stocks/analytics/types';
 import {
   ChartCard,
   DEFAULT_PORTFOLIO_ID,
@@ -26,6 +33,7 @@ import {
   getStockDetailBackPath,
   isPortfolioStockDetailPath,
   isStockPreviewDetailPath,
+  type StockPricePoint,
   StockChatSidebar,
   StockDetailSummary,
 } from '@/features/stocks';
@@ -37,7 +45,14 @@ const STOCK_DETAIL_TEXT = {
   priceHistoryUnavailable: 'Price history is unavailable for this ticker.',
   loadingBenchmarkComparison: 'Loading cumulative return comparison...',
   benchmarkComparisonUnavailable: 'Benchmark comparison is unavailable for this ticker.',
+  loadingIndicatorWeights: 'Loading indicator weights...',
+  indicatorWeightsUnavailable: 'Indicator weights are unavailable for this ticker.',
+  loadingRebasedIndicators: 'Loading rebased indicator series...',
+  rebasedIndicatorsUnavailable: 'Rebased indicator series are unavailable for this ticker.',
 };
+
+const REBASED_PRICE_SERIES_KEY = 'stock_price';
+const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 const buildCumulativeReturnsFromSeries = (
   stockAssetSeries: StockAssetChartSeries | null,
@@ -87,6 +102,104 @@ const buildCumulativeReturnsFromSeries = (
   }));
 };
 
+const getSeriesAlignmentKey = (date: string): string => {
+  const normalizedDate = date.trim();
+
+  if (!ISO_DATE_PATTERN.test(normalizedDate)) {
+    return normalizedDate;
+  }
+
+  const parsedDate = new Date(`${normalizedDate}T00:00:00Z`);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return normalizedDate;
+  }
+
+  const quarter = Math.floor(parsedDate.getUTCMonth() / 3) + 1;
+
+  return `${parsedDate.getUTCFullYear()}-Q${quarter}`;
+};
+
+const mergeNormalizedSeriesWithPrice = (
+  normalizedSeries: IndicatorNormalizedPoint[],
+  indicators: TickerIndicatorMeta[],
+  priceSeries: StockPricePoint[],
+  tickerSymbol: string,
+): {
+  data: IndicatorNormalizedPoint[];
+  indicators: TickerIndicatorMeta[];
+} => {
+  if (normalizedSeries.length === 0 || indicators.length === 0 || priceSeries.length === 0) {
+    return {
+      data: normalizedSeries,
+      indicators,
+    };
+  }
+
+  const exactPriceByDate = new Map<string, number>();
+  const alignedPriceByPeriod = new Map<string, number>();
+
+  priceSeries.forEach((point) => {
+    if (!point.date || typeof point.close !== 'number' || !Number.isFinite(point.close) || point.close <= 0) {
+      return;
+    }
+
+    exactPriceByDate.set(point.date, point.close);
+    alignedPriceByPeriod.set(getSeriesAlignmentKey(point.date), point.close);
+  });
+
+  const matchedRows = normalizedSeries.flatMap((row) => {
+    const exactPrice = exactPriceByDate.get(row.date);
+    const alignedPrice = alignedPriceByPeriod.get(getSeriesAlignmentKey(row.date));
+    const close = exactPrice ?? alignedPrice;
+
+    if (typeof close !== 'number' || !Number.isFinite(close) || close <= 0) {
+      return [];
+    }
+
+    return [
+      {
+        close,
+        row,
+      },
+    ];
+  });
+
+  const rebasingBasis = matchedRows[0]?.close;
+
+  if (typeof rebasingBasis !== 'number' || !Number.isFinite(rebasingBasis) || rebasingBasis <= 0) {
+    return {
+      data: normalizedSeries,
+      indicators,
+    };
+  }
+
+  const mergedData = matchedRows.map(({ close, row }) => ({
+    ...row,
+    [REBASED_PRICE_SERIES_KEY]: Number(((close / rebasingBasis) * 100).toFixed(2)),
+  }));
+
+  if (mergedData.length === 0) {
+    return {
+      data: normalizedSeries,
+      indicators,
+    };
+  }
+
+  return {
+    data: mergedData,
+    indicators: [
+      {
+        key: REBASED_PRICE_SERIES_KEY,
+        label: `${tickerSymbol} price`,
+        weight: 0,
+        seriesType: 'stock',
+      },
+      ...indicators.filter((indicator) => indicator.key !== REBASED_PRICE_SERIES_KEY),
+    ],
+  };
+};
+
 const ChartStatusMessage: React.FC<{ message: string }> = ({ message }) => (
   <div className="flex h-[280px] w-full items-center justify-center rounded-lg border border-[var(--card-border)]/60 bg-black/10 px-6 text-center text-sm text-[var(--muted-text)] sm:h-[320px]">
     {message}
@@ -97,9 +210,17 @@ export const StockDetail: React.FC = () => {
   const { portfolioId, ticker } = useParams<{ portfolioId?: string; ticker: string }>();
   const navigate = useNavigate();
   const location = useLocation();
+  const normalizedRouteTicker = ticker?.trim().toUpperCase() ?? '';
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [stockAssetSeries, setStockAssetSeries] = useState<StockAssetChartSeries | null>(null);
   const [isLoadingStockAssetSeries, setIsLoadingStockAssetSeries] = useState(false);
+  const [indicatorWeights, setIndicatorWeights] = useState<IndicatorWeightPoint[]>([]);
+  const [isLoadingIndicatorWeights, setIsLoadingIndicatorWeights] = useState(false);
+  const [normalizedIndicatorSeries, setNormalizedIndicatorSeries] = useState<
+    IndicatorNormalizedPoint[]
+  >([]);
+  const [normalizedIndicators, setNormalizedIndicators] = useState<TickerIndicatorMeta[]>([]);
+  const [isLoadingNormalizedIndicators, setIsLoadingNormalizedIndicators] = useState(false);
   const resolvedPortfolioId = portfolioId ?? DEFAULT_PORTFOLIO_ID;
   const isStockPreviewRoute = isStockPreviewDetailPath(location.pathname);
   const isPortfolioStockRoute = isPortfolioStockDetailPath(location.pathname);
@@ -108,16 +229,17 @@ export const StockDetail: React.FC = () => {
 
   const stocks = getStocksForPortfolio(resolvedPortfolioId);
   const stock = isStockPreviewRoute
-    ? isStockPreviewSampleTicker(ticker)
+    ? isStockPreviewSampleTicker(normalizedRouteTicker)
       ? STOCK_PREVIEW_SAMPLE
       : undefined
-    : stocks.find((item) => item.ticker === ticker);
+    : stocks.find((item) => item.ticker.trim().toUpperCase() === normalizedRouteTicker);
+  const resolvedTicker = stock?.ticker?.trim().toUpperCase() ?? normalizedRouteTicker;
   const localStockChartData = isStockPreviewRoute
-    ? isStockPreviewSampleTicker(ticker)
+    ? isStockPreviewSampleTicker(resolvedTicker)
       ? STOCK_PREVIEW_SAMPLE_CHART
       : []
-    : ticker
-      ? getStockChartForPortfolioTicker(resolvedPortfolioId, ticker)
+    : resolvedTicker
+      ? getStockChartForPortfolioTicker(resolvedPortfolioId, resolvedTicker)
       : [];
   const pagePaddingTopClass = isPortfolioStockRoute ? 'pt-5 sm:pt-6' : 'pt-24';
   const chatPanelPositionClass = isPortfolioStockRoute
@@ -125,7 +247,7 @@ export const StockDetail: React.FC = () => {
     : 'top-16 h-[calc(100vh-4rem)]';
 
   useEffect(() => {
-    if (!ticker || isStockPreviewRoute) {
+    if (!resolvedTicker || isStockPreviewRoute) {
       setStockAssetSeries(null);
       setIsLoadingStockAssetSeries(false);
       return;
@@ -137,13 +259,13 @@ export const StockDetail: React.FC = () => {
       setIsLoadingStockAssetSeries(true);
 
       try {
-        const nextStockAssetSeries = await fetchStockAssetChartSeries(ticker);
+        const nextStockAssetSeries = await fetchStockAssetChartSeries(resolvedTicker);
 
         if (!isCancelled) {
           setStockAssetSeries(nextStockAssetSeries);
         }
       } catch (error) {
-        console.error(`Failed to load stock asset data for ${ticker}:`, error);
+        console.error(`Failed to load stock asset data for ${resolvedTicker}:`, error);
 
         if (!isCancelled) {
           setStockAssetSeries(null);
@@ -160,7 +282,86 @@ export const StockDetail: React.FC = () => {
     return () => {
       isCancelled = true;
     };
-  }, [isStockPreviewRoute, ticker]);
+  }, [isStockPreviewRoute, resolvedTicker]);
+
+  useEffect(() => {
+    if (!resolvedTicker || isStockPreviewRoute) {
+      setIndicatorWeights([]);
+      setIsLoadingIndicatorWeights(false);
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadIndicatorWeights = async () => {
+      setIsLoadingIndicatorWeights(true);
+
+      try {
+        const nextIndicatorWeights = await fetchStockIndicatorWeights(resolvedTicker);
+
+        if (!isCancelled) {
+          setIndicatorWeights(nextIndicatorWeights ?? []);
+        }
+      } catch (error) {
+        console.error(`Failed to load indicator weights for ${resolvedTicker}:`, error);
+
+        if (!isCancelled) {
+          setIndicatorWeights([]);
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingIndicatorWeights(false);
+        }
+      }
+    };
+
+    void loadIndicatorWeights();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [isStockPreviewRoute, resolvedTicker]);
+
+  useEffect(() => {
+    if (!resolvedTicker || isStockPreviewRoute) {
+      setNormalizedIndicatorSeries([]);
+      setNormalizedIndicators([]);
+      setIsLoadingNormalizedIndicators(false);
+      return;
+    }
+
+    let isCancelled = false;
+
+    const loadNormalizedIndicatorSeries = async () => {
+      setIsLoadingNormalizedIndicators(true);
+
+      try {
+        const nextNormalizedIndicatorSeries = await fetchStockFundamentalChartSeries(resolvedTicker);
+
+        if (!isCancelled) {
+          setNormalizedIndicatorSeries(nextNormalizedIndicatorSeries?.data ?? []);
+          setNormalizedIndicators(nextNormalizedIndicatorSeries?.indicators ?? []);
+        }
+      } catch (error) {
+        console.error(`Failed to load rebased indicator series for ${resolvedTicker}:`, error);
+
+        if (!isCancelled) {
+          setNormalizedIndicatorSeries([]);
+          setNormalizedIndicators([]);
+        }
+      } finally {
+        if (!isCancelled) {
+          setIsLoadingNormalizedIndicators(false);
+        }
+      }
+    };
+
+    void loadNormalizedIndicatorSeries();
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [isStockPreviewRoute, resolvedTicker]);
 
   if (!stock) {
     return (
@@ -187,6 +388,19 @@ export const StockDetail: React.FC = () => {
   const cumulativeReturnsData = isStockPreviewRoute
     ? tickerAnalytics.cumulativeReturns
     : buildCumulativeReturnsFromSeries(stockAssetSeries);
+  const indicatorWeightsData = isStockPreviewRoute ? tickerAnalytics.indicatorWeights : indicatorWeights;
+  const normalizedIndicatorSeriesData = isStockPreviewRoute
+    ? tickerAnalytics.normalizedIndicatorSeries
+    : normalizedIndicatorSeries;
+  const normalizedIndicatorMeta = isStockPreviewRoute
+    ? tickerAnalytics.indicators
+    : normalizedIndicators;
+  const normalizedIndicatorChart = mergeNormalizedSeriesWithPrice(
+    normalizedIndicatorSeriesData,
+    normalizedIndicatorMeta,
+    priceChartData,
+    stock.ticker,
+  );
   const chartStart = priceChartData[0];
   const chartEnd = priceChartData[priceChartData.length - 1];
 
@@ -293,7 +507,17 @@ export const StockDetail: React.FC = () => {
                 </div>
               }
             >
-              <IndicatorWeightsChart data={tickerAnalytics.indicatorWeights} />
+              {indicatorWeightsData.length > 0 ? (
+                <IndicatorWeightsChart data={indicatorWeightsData} />
+              ) : (
+                <ChartStatusMessage
+                  message={
+                    isLoadingIndicatorWeights
+                      ? STOCK_DETAIL_TEXT.loadingIndicatorWeights
+                      : STOCK_DETAIL_TEXT.indicatorWeightsUnavailable
+                  }
+                />
+              )}
             </ChartCard>
 
             <ChartCard
@@ -308,15 +532,26 @@ export const StockDetail: React.FC = () => {
                     </h2>
                   </div>
                   <p className="text-sm text-[var(--muted-text)]">
-                    All indicator series rebased to 100 for relative trend comparison.
+                    Ticker price and indicator series rebased to 100 for relative trend comparison.
                   </p>
                 </div>
               }
             >
-              <NormalizedIndicatorChart
-                data={tickerAnalytics.normalizedIndicatorSeries}
-                indicators={tickerAnalytics.indicators}
-              />
+              {normalizedIndicatorChart.data.length > 0 &&
+              normalizedIndicatorChart.indicators.length > 0 ? (
+                <NormalizedIndicatorChart
+                  data={normalizedIndicatorChart.data}
+                  indicators={normalizedIndicatorChart.indicators}
+                />
+              ) : (
+                <ChartStatusMessage
+                  message={
+                    isLoadingNormalizedIndicators
+                      ? STOCK_DETAIL_TEXT.loadingRebasedIndicators
+                      : STOCK_DETAIL_TEXT.rebasedIndicatorsUnavailable
+                  }
+                />
+              )}
             </ChartCard>
           </div>
         </div>

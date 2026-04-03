@@ -3,4 +3,6 @@ export const INDICATOR_LINE_COLORS = [
   'var(--accent)',
   'rgba(255,255,255,0.66)',
   'rgba(250,204,21,0.58)',
+  '#7DD3FC',
+  '#FCA5A5',
 ] as const;

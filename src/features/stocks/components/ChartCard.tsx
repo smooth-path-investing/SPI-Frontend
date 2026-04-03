@@ -1,29 +1,33 @@
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
+import { cn } from '@/lib/utils';
+import { FeatureSurface } from '@/components/ui/feature-surface';
 
 interface ChartCardProps {
   header: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
+  headerClassName?: string;
   contentClassName?: string;
 }
 
-const CHART_CARD_CLASS =
-  'h-full overflow-hidden bg-[var(--card-bg)] border border-white/35 text-[var(--foreground)] shadow-[0_8px_20px_rgba(0,0,0,0.15)] flex flex-col';
+const CHART_CARD_CLASS = 'h-full';
 
 const CHART_CARD_HEADER_CLASS =
-  'flex min-h-[130px] sm:min-h-[138px] flex-col justify-between gap-3 px-5 py-5 sm:px-6 sm:py-6';
+  'flex min-h-[138px] flex-col justify-between gap-4 border-b border-white/10 px-5 py-5 sm:min-h-[146px] sm:px-6 sm:py-6';
 
-const CHART_CARD_CONTENT_CLASS = 'flex-1 p-4 sm:p-6';
+const CHART_CARD_CONTENT_CLASS = 'flex-1 px-4 pb-4 pt-4 sm:px-6 sm:pb-6 sm:pt-5';
 
 export const ChartCard: React.FC<ChartCardProps> = ({
   header,
   children,
+  className,
+  headerClassName,
   contentClassName = CHART_CARD_CONTENT_CLASS,
 }) => {
   return (
-    <Card className={CHART_CARD_CLASS}>
-      <div className={CHART_CARD_HEADER_CLASS}>{header}</div>
-      <CardContent className={contentClassName}>{children}</CardContent>
-    </Card>
+    <FeatureSurface className={cn(CHART_CARD_CLASS, className)} contentClassName="flex h-full flex-col">
+      <div className={cn(CHART_CARD_HEADER_CLASS, headerClassName)}>{header}</div>
+      <div className={cn(contentClassName)}>{children}</div>
+    </FeatureSurface>
   );
 };

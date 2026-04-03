@@ -160,13 +160,9 @@ export const PortfolioDetail: React.FC = () => {
           <div className="px-5 py-6 sm:px-7 sm:py-8">
             <div className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
               <div className="max-w-3xl">
-                <AccentPill className="mb-4">SPI Portfolio</AccentPill>
                 <h1 className="text-3xl font-semibold leading-[0.96] tracking-tight text-white sm:text-5xl lg:text-6xl">
                   {portfolioDisplayName}
                 </h1>
-                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted-text)] sm:text-base">
-                  {portfolio.description}
-                </p>
               </div>
 
               <div className="grid w-full grid-cols-2 gap-3 xl:w-auto xl:min-w-[420px]">

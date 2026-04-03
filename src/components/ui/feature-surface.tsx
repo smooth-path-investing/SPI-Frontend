@@ -6,7 +6,7 @@ interface FeatureSurfaceProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const FEATURE_SURFACE_CLASS_NAME =
-  'relative w-full overflow-hidden rounded-[28px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/40 shadow-[0_18px_36px_rgba(0,0,0,0.22)]';
+  'relative w-full overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/40 shadow-[0_20px_42px_rgba(0,0,0,0.24)]';
 
 export const FeatureSurface = React.forwardRef<HTMLDivElement, FeatureSurfaceProps>(
   ({ className, contentClassName, children, ...props }, ref) => {

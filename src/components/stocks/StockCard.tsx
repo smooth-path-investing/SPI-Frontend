@@ -30,7 +30,7 @@ export const StockCard: React.FC<StockCardProps> = ({
   return (
     <Card
       className={cn(
-        'relative w-full min-h-[116px] overflow-hidden rounded-[24px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-[var(--accent)]/60 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)]',
+        'relative w-full min-h-[116px] overflow-hidden rounded-[24px] border border-white/20 bg-gradient-to-b from-[var(--card-bg)] to-black/35 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 hover:border-[var(--accent)]/60 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)]',
         isInteractive &&
           'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/60 focus-visible:ring-offset-0',
         compact && 'min-h-[94px] lg:min-h-[98px]',

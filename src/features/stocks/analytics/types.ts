@@ -18,6 +18,7 @@ export interface TickerIndicatorMeta {
   key: string;
   label: string;
   weight: number;
+  seriesType?: 'stock' | 'indicator';
 }
 
 export interface TickerAnalytics {

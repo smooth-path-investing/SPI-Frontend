@@ -44,6 +44,7 @@ const buildIndicatorWeights = (stock: StockData, seed: number): TickerIndicatorM
     key: toIndicatorKey(index),
     label: factor,
     weight: weights[index] ?? 0,
+    seriesType: 'indicator',
   }));
 };
 

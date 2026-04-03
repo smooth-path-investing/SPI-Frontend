@@ -13,6 +13,14 @@ export default defineConfig(({ mode }) => ({
         target: 'http://127.0.0.1:3000',
         changeOrigin: true,
       },
+      '/stock-factor-coefvec': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+      },
+      '/stock-fundamental': {
+        target: 'http://127.0.0.1:3000',
+        changeOrigin: true,
+      },
     },
   },
 

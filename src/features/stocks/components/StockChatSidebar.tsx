@@ -19,7 +19,7 @@ export const StockChatSidebar: React.FC<StockChatSidebarProps> = ({
     <>
       <Button
         onClick={onToggle}
-        className="fixed bottom-5 right-5 sm:bottom-8 sm:right-8 z-50 rounded-full w-12 h-12 sm:w-14 sm:h-14 shadow-lg bg-[var(--accent)] text-black border border-[var(--accent)] hover:bg-[var(--accent-light)]"
+        className="fixed bottom-5 right-5 z-50 h-12 w-12 rounded-full border border-white/20 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] text-[var(--foreground)] shadow-[0_18px_40px_rgba(0,0,0,0.24)] backdrop-blur-xl hover:border-[var(--accent)]/60 hover:bg-[var(--accent)] hover:text-black sm:bottom-8 sm:right-8 sm:h-14 sm:w-14"
         size="icon"
       >
         {isOpen ? (
@@ -30,12 +30,12 @@ export const StockChatSidebar: React.FC<StockChatSidebarProps> = ({
       </Button>
 
       <div
-        className={`fixed right-0 w-[min(100vw,400px)] lg:w-[min(1000px,82vw)] bg-[var(--card-bg)] border-l border-[var(--card-border)] shadow-xl transition-transform duration-300 ease-in-out z-40 ${panelPositionClass} ${
+        className={`fixed right-0 z-40 w-[min(100vw,400px)] border-l border-white/12 bg-[linear-gradient(180deg,rgba(17,24,39,0.98),rgba(8,11,18,0.96))] shadow-[0_26px_52px_rgba(0,0,0,0.3)] backdrop-blur-xl transition-transform duration-300 ease-in-out lg:w-[min(1000px,82vw)] ${panelPositionClass} ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-[var(--card-border)]">
+          <div className="border-b border-white/10 p-4">
             <h3 className="text-lg font-semibold text-[var(--foreground)]">Ask AI About {ticker}</h3>
           </div>
           <div className="flex-1 p-4 flex items-center justify-center">
