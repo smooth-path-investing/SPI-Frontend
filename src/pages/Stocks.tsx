@@ -1,137 +1,180 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { SectionHeader } from '@/components/sectionHeaders/reusableHeaders/sectionHeader';
-import { CalendarClock, Package, Target, TrendingDown, TrendingUp, type LucideIcon } from 'lucide-react';
-
-interface StockList {
-  id: string;
-  title: string;
-  target: string;
-  cadence: string;
-  holdings: string;
-  lastUpdated: string;
-  accentLineClass: string;
-  badgeClass: string;
-  headerKickerClass: string;
-  titleClass: string;
-  icon: LucideIcon;
-}
-
-const STOCK_LISTS: StockList[] = [
-  {
-    id: 'long-contrarian',
-    title: 'Long Stocks List',
-    target: 'S&P 500 plus/minus 15%',
-    cadence: 'Quarterly',
-    holdings: '10 stocks',
-    lastUpdated: 'February 20, 2026',
-    accentLineClass: 'from-white via-white/85 to-transparent',
-    badgeClass: 'border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)]',
-    headerKickerClass: 'text-[var(--accent)]',
-    titleClass: 'text-[var(--foreground)]',
-    icon: TrendingUp,
-  },
-  {
-    id: 'short-contrarian',
-    title: 'Short Stocks List',
-    target: 'S&P 500 plus/minus 15%',
-    cadence: 'Quarterly',
-    holdings: '10 stocks',
-    lastUpdated: 'February 20, 2026',
-    accentLineClass: 'from-white via-white/85 to-transparent',
-    badgeClass: 'border-[var(--accent)]/50 bg-[var(--accent)]/15 text-[var(--accent)]',
-    headerKickerClass: 'text-[var(--accent)]',
-    titleClass: 'text-[var(--foreground)]',
-    icon: TrendingDown,
-  },
-];
+import { getStocksForPortfolio } from '@/constants/stockData';
+import { STOCK_PREVIEW_SAMPLE } from '@/constants/stockPreviewSample';
+import { StockCard } from '@/components/stocks/StockCard';
+import { AuthModal, type OfferType, useAuth } from '@/features/auth';
+import { DEFAULT_PORTFOLIO_ID, StockOffersDialog } from '@/features/stocks';
+import { AccentPill, FeatureSurface } from '@/components/ui/feature-surface';
 
 export const Stocks: React.FC = () => {
+  const {
+    isAuthenticated,
+    hasPurchasedPortfolio,
+    canAccessPremiumStocks,
+    login,
+    signup,
+    purchaseOffer,
+  } = useAuth();
   const navigate = useNavigate();
+  const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
+  const stockPreview = useMemo(
+    () =>
+      getStocksForPortfolio(DEFAULT_PORTFOLIO_ID).filter(
+        (stock) => stock.ticker !== STOCK_PREVIEW_SAMPLE.ticker,
+      ),
+    [],
+  );
+  const isSubscribed = hasPurchasedPortfolio(DEFAULT_PORTFOLIO_ID) || canAccessPremiumStocks();
+
+  const handlePrimaryAction = () => {
+    if (!isAuthenticated) {
+      setIsAuthModalOpen(true);
+      return;
+    }
+
+    if (isSubscribed) {
+      // TODO(subscription-flow): keep this direct navigation while payment is pending.
+      // Later, replace with your real entitlement check (backend) before routing.
+      navigate('/portfolio');
+      return;
+    }
+
+    setIsOffersModalOpen(true);
+  };
+
+  const handleOfferSelection = (offer: OfferType) => {
+    setSelectedOffer(offer);
+    purchaseOffer(offer, DEFAULT_PORTFOLIO_ID);
+    setIsOffersModalOpen(false);
+    // TODO(subscription-flow): temporary behavior requested by product.
+    // Selecting ANY bundle unlocks immediate access to the unblurred ticker page.
+    // Replace this with payment + plan activation once backend is ready.
+    navigate('/portfolio');
+  };
+
+  const primaryButtonText = !isAuthenticated
+    ? 'Login to Continue'
+    : isSubscribed
+      ? 'View Stock List'
+      : 'View Offers';
 
   return (
-    <div className="min-h-screen bg-background text-foreground pt-24">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20">
-        <SectionHeader
-          mainText="SPI Stock Selection"
-          subText="build your portfolio with our 10 recommended stocks every quarter"
-        />
+    <div className="relative min-h-screen overflow-hidden bg-background pt-24 text-foreground">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(250,204,21,0.08),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
+      />
 
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6 md:gap-8">
-          {STOCK_LISTS.map((list) => {
-            const ListIcon = list.icon;
-
-            return (
-              <div key={list.id} className="relative mx-auto w-full max-w-xl md:max-w-none">
-                <header className="mb-3 sm:mb-4">
-                  <p className={`hidden sm:block text-xs uppercase tracking-[0.14em] mb-1 ${list.headerKickerClass}`}>
-                    Stock Profile
-                  </p>
-                  <h2 className={`text-2xl sm:text-3xl font-semibold tracking-tight ${list.titleClass}`}>
-                    {list.title}
-                  </h2>
-                </header>
-
-                <article className="rounded-[var(--radius)] border-2 border-white/20 bg-gradient-to-b from-[var(--card-bg)] to-black/70 p-4 sm:p-7 shadow-[0_10px_22px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--card-hover)]/70 hover:shadow-[0_18px_32px_rgba(0,0,0,0.26)]">
-                  <div className={`h-[2px] w-full mb-5 sm:mb-6 rounded-full bg-gradient-to-r ${list.accentLineClass}`} />
-
-                  <div className="flex items-center gap-2.5 sm:gap-3 mb-4 sm:mb-6">
-                    <div className={`inline-flex items-center justify-center rounded-md border p-1.5 sm:p-2 ${list.badgeClass}`}>
-                      <ListIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                    </div>
-                    <p className="text-sm sm:text-base font-medium text-[var(--muted-text)]">
-                      Quarterly Recommendation Set
-                    </p>
-                  </div>
-
-                  <div className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-7">
-                    <div className="rounded-md border border-white/15 bg-black/15 p-2.5 sm:p-3">
-                      <p className="text-[10px] sm:text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1 flex items-center gap-1.5">
-                        <Target className="w-3.5 h-3.5" />
-                        Target
-                      </p>
-                      <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">{list.target}</p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
-                      <div className="rounded-md border border-white/15 bg-black/15 p-2.5 sm:p-3">
-                        <p className="text-[10px] sm:text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1 flex items-center gap-1.5">
-                          <CalendarClock className="w-3.5 h-3.5" />
-                          Rebalance
-                        </p>
-                        <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">{list.cadence}</p>
-                      </div>
-                      <div className="rounded-md border border-white/15 bg-black/15 p-2.5 sm:p-3">
-                        <p className="text-[10px] sm:text-xs uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1 flex items-center gap-1.5">
-                          <Package className="w-3.5 h-3.5" />
-                          Holdings
-                        </p>
-                        <p className="text-sm sm:text-base font-semibold text-[var(--foreground)]">{list.holdings}</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] sm:text-xs text-[var(--muted-text)] mb-3">Last Updated: {list.lastUpdated}</p>
-
-                  <Button
-                    onClick={() => navigate(`/portfolio/${list.id}`)}
-                    className="w-full h-10 sm:h-11 bg-[var(--accent)] text-black border border-[var(--accent)] hover:bg-[var(--accent-light)] font-semibold"
-                  >
-                    View List
-                  </Button>
-                </article>
-
-                {list.id === 'long-contrarian' ? (
-                  <div className="hidden md:block absolute top-0 -right-4 h-full w-px bg-white/80" />
-                ) : null}
-                {list.id === 'long-contrarian' ? (
-                  <div className="md:hidden mt-5 h-px w-full bg-white/80" />
-                ) : null}
+      <div className="relative mx-auto max-w-[88rem] px-4 py-14 sm:px-6 sm:py-20 lg:px-8">
+        <FeatureSurface className="mb-8">
+          <div className="px-5 py-6 sm:px-7 sm:py-8">
+            <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+              <div className="max-w-3xl">
+                <AccentPill className="mb-4">SPI Stock Access</AccentPill>
+                <h1 className="text-3xl font-semibold leading-[0.95] tracking-tight text-white sm:text-5xl lg:text-6xl">
+                  Current Stock Picks
+                </h1>
+                <p className="mt-4 max-w-2xl text-sm leading-relaxed text-[var(--muted-text)] sm:text-base">
+                  Build your portfolio with our 10 recommended stocks every quarter.
+                </p>
               </div>
-            );
-          })}
+
+              <div className="grid w-full grid-cols-2 gap-3 lg:w-auto lg:min-w-[340px]">
+                <div className="flex min-h-[96px] flex-col justify-between rounded-[24px] border border-[var(--card-border)]/80 bg-black/20 px-4 py-4 shadow-[0_18px_34px_rgba(0,0,0,0.12)] sm:px-5">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted-text)]">
+                    Open Sample
+                  </p>
+                  <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
+                    1 ticker
+                  </p>
+                </div>
+                <div className="flex min-h-[96px] flex-col justify-between rounded-[24px] border border-[var(--card-border)]/80 bg-black/20 px-4 py-4 shadow-[0_18px_34px_rgba(0,0,0,0.12)] sm:px-5">
+                  <p className="text-[10px] uppercase tracking-[0.16em] text-[var(--muted-text)]">
+                    Locked Picks
+                  </p>
+                  <p className="mt-2 text-xl font-semibold text-[var(--foreground)] sm:text-2xl">
+                    {stockPreview.length} tickers
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </FeatureSurface>
+
+        <section className="grid w-full grid-cols-1 gap-6 sm:gap-7">
+          <FeatureSurface>
+            <div className="px-5 py-5 sm:px-6 sm:py-6">
+              <div className="mb-4 sm:mb-5">
+                <AccentPill className="mb-3">Open Sample</AccentPill>
+                <p className="text-sm sm:text-base text-[var(--muted-text)]">
+                  Open one sample analysis now.
+                </p>
+              </div>
+
+              <StockCard
+                stock={STOCK_PREVIEW_SAMPLE}
+                onViewDetails={() => navigate(`/stock/${STOCK_PREVIEW_SAMPLE.ticker}`)}
+                clickable
+              />
+            </div>
+          </FeatureSurface>
+
+          <FeatureSurface>
+            <div className="px-5 py-5 sm:px-6 sm:py-6">
+              <div className="mb-4 sm:mb-5">
+                <AccentPill className="mb-3">Locked Tickers</AccentPill>
+                <p className="text-sm sm:text-base text-[var(--muted-text)]">
+                  The remaining SPI picks stay locked until purchase.
+                </p>
+              </div>
+
+              <div className="grid w-full grid-cols-1 gap-3">
+                {stockPreview.map((stock) => (
+                  <StockCard
+                    key={stock.ticker}
+                    stock={stock}
+                    onViewDetails={() => {}}
+                    blurred
+                    disableViewAnalysis
+                  />
+                ))}
+              </div>
+            </div>
+          </FeatureSurface>
+
+          <div className="mx-auto w-full max-w-sm">
+            <Button
+              onClick={handlePrimaryAction}
+              className="h-11 w-full border border-[var(--accent)] bg-[var(--accent)] text-black font-semibold hover:bg-[var(--accent-light)] sm:h-12"
+            >
+              {primaryButtonText}
+            </Button>
+          </div>
         </section>
       </div>
+
+      <StockOffersDialog
+        isOpen={isOffersModalOpen}
+        selectedOffer={selectedOffer}
+        onOpenChange={(open) => {
+          setIsOffersModalOpen(open);
+          if (!open) {
+            setSelectedOffer(null);
+          }
+        }}
+        onSelectOffer={handleOfferSelection}
+      />
+
+      <AuthModal
+        isOpen={isAuthModalOpen}
+        onClose={() => setIsAuthModalOpen(false)}
+        onLogin={login}
+        onSignup={signup}
+      />
     </div>
   );
 };

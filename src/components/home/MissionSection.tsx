@@ -12,7 +12,7 @@ export const MissionSection: React.FC = () => {
         className="py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 text-[var(--foreground)]"
         triggerClass="mission-content"
       >
-        <div className="max-w-6xl mx-auto mission-content">
+        <div className="mx-auto max-w-7xl mission-content">
           <TooltipProvider delayDuration={140} skipDelayDuration={80}>
             <SectionHeader mainText="Wall Street Horsepower for Main Street." subText="" />
 

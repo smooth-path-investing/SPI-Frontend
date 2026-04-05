@@ -1,207 +1,187 @@
-export interface StockData {
-  ticker: string;
-  name: string;
-  sector: string;
-  price: number;
-  change: number;
-  changePercent: number;
-  description: string;
-  recommendation: 'Strong Buy' | 'Buy' | 'Hold' | 'Sell' | 'Strong Sell';
-  confidence: number; // 0-100
-  keyMetrics: {
-    marketCap: string;
-    peRatio: string;
-    dividend: string;
-    beta: string;
-  };
-  factors: string[];
-}
+import type { StockData, StockPricePoint, StockSeriesProfile } from '@/features/stocks/types';
 
-export interface StockPricePoint {
-  date: string;
-  close: number;
-}
+export type { StockData, StockPricePoint } from '@/features/stocks/types';
 
 export const LONG_CONTRARIAN_STOCKS: StockData[] = [
   {
-    ticker: 'GE',
-    name: 'General Electric Aerospace',
-    sector: 'Industrials',
-    price: 188.42,
-    change: 2.31,
-    changePercent: 1.24,
-    description: 'Aerospace and industrial technology company with improving margins and strong free cash flow.',
-    recommendation: 'Buy',
-    confidence: 82,
-    keyMetrics: {
-      marketCap: '$205B',
-      peRatio: '34.1',
-      dividend: '0.61%',
-      beta: '1.20',
-    },
-    factors: ['Cash flow expansion', 'Order backlog strength', 'Margin improvement'],
-  },
-  {
-    ticker: 'IBM',
-    name: 'International Business Machines',
+    ticker: 'AAPL',
+    name: 'Apple Inc.',
     sector: 'Technology',
-    price: 212.67,
-    change: 1.88,
-    changePercent: 0.89,
-    description: 'Enterprise technology platform focused on hybrid cloud, automation, and mission-critical services.',
+    price: 214.38,
+    change: 2.14,
+    changePercent: 1.01,
+    description: 'Consumer technology platform with durable ecosystem revenue, pricing power, and high-return capital allocation.',
     recommendation: 'Buy',
-    confidence: 79,
+    confidence: 83,
     keyMetrics: {
-      marketCap: '$198B',
-      peRatio: '23.4',
-      dividend: '3.08%',
-      beta: '0.71',
+      marketCap: '$3.3T',
+      peRatio: '31.2',
+      dividend: '0.44%',
+      beta: '1.18',
     },
-    factors: ['Recurring software revenue', 'AI enterprise demand', 'Operating leverage'],
+    factors: ['Services mix expansion', 'Installed base monetization', 'Margin resilience'],
   },
   {
-    ticker: 'APA',
-    name: 'APA Corporation',
-    sector: 'Energy',
-    price: 34.11,
-    change: 0.66,
-    changePercent: 1.97,
-    description: 'Independent exploration and production company with diversified onshore and offshore assets.',
+    ticker: 'MSFT',
+    name: 'Microsoft Corporation',
+    sector: 'Technology',
+    price: 428.65,
+    change: 3.52,
+    changePercent: 0.83,
+    description: 'Enterprise software and cloud leader benefiting from recurring revenue, platform scale, and AI-driven demand.',
     recommendation: 'Buy',
-    confidence: 74,
+    confidence: 86,
     keyMetrics: {
-      marketCap: '$12.6B',
-      peRatio: '8.9',
-      dividend: '2.95%',
-      beta: '2.52',
+      marketCap: '$3.2T',
+      peRatio: '36.8',
+      dividend: '0.68%',
+      beta: '0.94',
     },
-    factors: ['Commodity sensitivity', 'Cost discipline', 'Reserve replacement'],
+    factors: ['Cloud operating leverage', 'AI monetization', 'Recurring enterprise spend'],
   },
   {
-    ticker: 'NOV',
-    name: 'NOV Inc.',
-    sector: 'Energy',
-    price: 21.74,
-    change: 0.27,
-    changePercent: 1.26,
-    description: 'Oilfield equipment and services provider positioned for capex recovery in global energy markets.',
-    recommendation: 'Buy',
-    confidence: 73,
-    keyMetrics: {
-      marketCap: '$8.2B',
-      peRatio: '15.7',
-      dividend: '1.31%',
-      beta: '1.69',
-    },
-    factors: ['Cycle recovery', 'Backlog growth', 'Margin normalization'],
-  },
-  {
-    ticker: 'WY',
-    name: 'Weyerhaeuser Company',
-    sector: 'Real Estate',
-    price: 34.58,
-    change: 0.39,
-    changePercent: 1.14,
-    description: 'Timberland REIT with exposure to housing demand, lumber pricing, and long-duration real assets.',
-    recommendation: 'Buy',
-    confidence: 71,
-    keyMetrics: {
-      marketCap: '$24.9B',
-      peRatio: '31.8',
-      dividend: '2.35%',
-      beta: '1.40',
-    },
-    factors: ['Housing cycle', 'Asset quality', 'Pricing optionality'],
-  },
-  {
-    ticker: 'C',
-    name: 'Citigroup Inc.',
-    sector: 'Financials',
-    price: 71.93,
-    change: 0.84,
-    changePercent: 1.18,
-    description: 'Global bank undergoing restructuring with improving capital efficiency and expense discipline.',
-    recommendation: 'Buy',
-    confidence: 78,
-    keyMetrics: {
-      marketCap: '$134B',
-      peRatio: '12.3',
-      dividend: '3.19%',
-      beta: '1.42',
-    },
-    factors: ['Capital return', 'Cost transformation', 'Credit normalization'],
-  },
-  {
-    ticker: 'BLK',
-    name: 'BlackRock, Inc.',
-    sector: 'Financials',
-    price: 931.47,
-    change: 7.24,
-    changePercent: 0.78,
-    description: 'Global asset manager with scale advantages across ETFs, fixed income, and institutional mandates.',
+    ticker: 'AMZN',
+    name: 'Amazon.com, Inc.',
+    sector: 'Consumer Discretionary',
+    price: 182.14,
+    change: 2.41,
+    changePercent: 1.34,
+    description: 'Global commerce and cloud platform with expanding margins across retail, logistics, and AWS.',
     recommendation: 'Buy',
     confidence: 81,
     keyMetrics: {
-      marketCap: '$140B',
-      peRatio: '22.1',
-      dividend: '2.54%',
-      beta: '1.29',
+      marketCap: '$1.9T',
+      peRatio: '41.7',
+      dividend: '0.00%',
+      beta: '1.22',
     },
-    factors: ['AUM growth', 'Fee resilience', 'Platform scale'],
+    factors: ['AWS profitability', 'Retail efficiency gains', 'Ad business scale'],
   },
   {
-    ticker: 'COG',
-    name: 'Cabot Oil & Gas (legacy ticker)',
-    sector: 'Energy',
-    price: 28.64,
-    change: 0.21,
-    changePercent: 0.74,
-    description: 'Natural gas-focused operator used here as a placeholder legacy ticker for interim data mapping.',
-    recommendation: 'Buy',
-    confidence: 69,
-    keyMetrics: {
-      marketCap: '$8.9B',
-      peRatio: '10.8',
-      dividend: '2.11%',
-      beta: '1.08',
-    },
-    factors: ['Gas pricing', 'Production efficiency', 'Capital discipline'],
-  },
-  {
-    ticker: 'VZ',
-    name: 'Verizon Communications',
+    ticker: 'GOOGL',
+    name: 'Alphabet Inc. Class A',
     sector: 'Communication Services',
-    price: 41.22,
-    change: 0.36,
-    changePercent: 0.88,
-    description: 'Telecom operator with stable cash generation, deleveraging path, and large subscriber base.',
+    price: 176.83,
+    change: 1.76,
+    changePercent: 1.01,
+    description: 'Search, cloud, and digital advertising franchise with strong cash generation and multiple AI monetization paths.',
     recommendation: 'Buy',
-    confidence: 72,
+    confidence: 82,
     keyMetrics: {
-      marketCap: '$173B',
-      peRatio: '9.7',
-      dividend: '6.43%',
-      beta: '0.40',
+      marketCap: '$2.2T',
+      peRatio: '27.5',
+      dividend: '0.00%',
+      beta: '1.06',
     },
-    factors: ['Cash flow stability', 'Debt reduction', 'Subscriber retention'],
+    factors: ['Search monetization durability', 'Cloud margin expansion', 'AI product adoption'],
   },
   {
-    ticker: 'BMY',
-    name: 'Bristol Myers Squibb',
-    sector: 'Healthcare',
-    price: 55.84,
-    change: 0.59,
-    changePercent: 1.07,
-    description: 'Large-cap biopharma with diversified pipeline and resilient cash generation from core franchises.',
+    ticker: 'NVDA',
+    name: 'NVIDIA Corporation',
+    sector: 'Technology',
+    price: 912.57,
+    change: 11.84,
+    changePercent: 1.31,
+    description: 'Accelerated computing leader with dominant AI infrastructure positioning and exceptional revenue momentum.',
     recommendation: 'Buy',
-    confidence: 76,
+    confidence: 88,
     keyMetrics: {
-      marketCap: '$113B',
-      peRatio: '13.6',
-      dividend: '4.28%',
-      beta: '0.45',
+      marketCap: '$2.3T',
+      peRatio: '54.6',
+      dividend: '0.02%',
+      beta: '1.68',
     },
-    factors: ['Pipeline execution', 'Patent cycle management', 'Valuation support'],
+    factors: ['AI datacenter demand', 'Platform lock-in', 'Gross margin strength'],
+  },
+  {
+    ticker: 'NFLX',
+    name: 'Netflix, Inc.',
+    sector: 'Communication Services',
+    price: 617.92,
+    change: 6.42,
+    changePercent: 1.05,
+    description: 'Global streaming platform with improving monetization through scale, pricing, and ad-supported growth.',
+    recommendation: 'Buy',
+    confidence: 77,
+    keyMetrics: {
+      marketCap: '$265B',
+      peRatio: '39.4',
+      dividend: '0.00%',
+      beta: '1.20',
+    },
+    factors: ['Subscriber monetization', 'Advertising ramp', 'Content efficiency'],
+  },
+  {
+    ticker: 'DIS',
+    name: 'The Walt Disney Company',
+    sector: 'Communication Services',
+    price: 112.34,
+    change: 1.18,
+    changePercent: 1.06,
+    description: 'Diversified media and experiences company with earnings leverage from streaming discipline and parks demand.',
+    recommendation: 'Buy',
+    confidence: 74,
+    keyMetrics: {
+      marketCap: '$205B',
+      peRatio: '26.3',
+      dividend: '0.82%',
+      beta: '1.25',
+    },
+    factors: ['Streaming margin recovery', 'Parks cash generation', 'Brand asset depth'],
+  },
+  {
+    ticker: 'UNH',
+    name: 'UnitedHealth Group Incorporated',
+    sector: 'Healthcare',
+    price: 521.49,
+    change: 4.22,
+    changePercent: 0.82,
+    description: 'Managed care and healthcare services leader with diversified earnings streams and scale advantages.',
+    recommendation: 'Buy',
+    confidence: 79,
+    keyMetrics: {
+      marketCap: '$480B',
+      peRatio: '23.1',
+      dividend: '1.39%',
+      beta: '0.71',
+    },
+    factors: ['Care delivery scale', 'Membership retention', 'Cash flow consistency'],
+  },
+  {
+    ticker: 'XOM',
+    name: 'Exxon Mobil Corporation',
+    sector: 'Energy',
+    price: 118.77,
+    change: 1.09,
+    changePercent: 0.93,
+    description: 'Integrated energy major with high-quality upstream assets, downstream resilience, and disciplined capital returns.',
+    recommendation: 'Buy',
+    confidence: 75,
+    keyMetrics: {
+      marketCap: '$515B',
+      peRatio: '14.2',
+      dividend: '3.25%',
+      beta: '0.91',
+    },
+    factors: ['Capital discipline', 'Production efficiency', 'Shareholder returns'],
+  },
+  {
+    ticker: 'JPM',
+    name: 'JPMorgan Chase & Co.',
+    sector: 'Financials',
+    price: 198.56,
+    change: 1.94,
+    changePercent: 0.99,
+    description: 'Large-cap diversified bank with best-in-class profitability, funding depth, and operating scale.',
+    recommendation: 'Buy',
+    confidence: 80,
+    keyMetrics: {
+      marketCap: '$575B',
+      peRatio: '13.5',
+      dividend: '2.17%',
+      beta: '1.09',
+    },
+    factors: ['Net interest income durability', 'Capital strength', 'Fee business diversification'],
   },
 ];
 
@@ -282,188 +262,182 @@ export const SHORT_CONTRARIAN_STOCKS: StockData[] = [
     ticker: 'PBCT',
     name: "People's United Financial (legacy ticker)",
     sector: 'Financials',
-    price: 17.46,
-    change: -0.19,
-    changePercent: -1.08,
-    description: 'Legacy regional-bank mapping placeholder representing regional-credit and funding stress exposure.',
+    price: 18.46,
+    change: -0.12,
+    changePercent: -0.65,
+    description: 'Regional-bank placeholder data point representing rate-sensitive financial exposure and integration risk.',
     recommendation: 'Sell',
-    confidence: 66,
+    confidence: 63,
     keyMetrics: {
-      marketCap: '$7.4B',
-      peRatio: '11.2',
-      dividend: '3.34%',
-      beta: '0.92',
+      marketCap: '$8.7B',
+      peRatio: '13.9',
+      dividend: '4.10%',
+      beta: '0.96',
     },
-    factors: ['Regional credit risk', 'Net interest margin compression', 'Funding pressure'],
+    factors: ['Deposit pricing pressure', 'Legacy franchise risk', 'Rate sensitivity'],
   },
   {
     ticker: 'BLL',
     name: 'Ball Corporation',
     sector: 'Materials',
-    price: 60.83,
-    change: -0.74,
-    changePercent: -1.20,
-    description: 'Packaging manufacturer with input-cost sensitivity and demand variability across end markets.',
+    price: 65.73,
+    change: -0.54,
+    changePercent: -0.81,
+    description: 'Packaging manufacturer facing cyclical volume normalization and margin pressure from input costs.',
     recommendation: 'Sell',
     confidence: 68,
     keyMetrics: {
-      marketCap: '$18.5B',
-      peRatio: '22.9',
-      dividend: '1.38%',
-      beta: '0.97',
+      marketCap: '$20.4B',
+      peRatio: '21.6',
+      dividend: '1.25%',
+      beta: '0.87',
     },
-    factors: ['Demand slowdown risk', 'Cost pass-through limits', 'Operating leverage'],
+    factors: ['Volume normalization', 'Input cost pressure', 'Industrial demand softness'],
   },
   {
     ticker: 'INTC',
     name: 'Intel Corporation',
     sector: 'Technology',
-    price: 44.18,
-    change: -0.52,
-    changePercent: -1.16,
-    description: 'Semiconductor turnaround story with execution risk and heavy capex burden.',
+    price: 30.84,
+    change: -0.42,
+    changePercent: -1.34,
+    description: 'Semiconductor manufacturer balancing turnaround execution, capital intensity, and competitive share pressure.',
     recommendation: 'Sell',
-    confidence: 75,
+    confidence: 73,
     keyMetrics: {
-      marketCap: '$188B',
-      peRatio: '31.6',
-      dividend: '1.13%',
-      beta: '1.05',
+      marketCap: '$131B',
+      peRatio: 'N/M',
+      dividend: '1.61%',
+      beta: '1.11',
     },
-    factors: ['Execution uncertainty', 'Capex intensity', 'Competitive pressure'],
+    factors: ['Execution risk', 'Margin compression', 'Competitive intensity'],
   },
   {
     ticker: 'ROL',
     name: 'Rollins, Inc.',
     sector: 'Industrials',
-    price: 45.74,
-    change: -0.39,
-    changePercent: -0.85,
-    description: 'Defensive services name where premium valuation may face de-rating in risk-off rotations.',
+    price: 47.62,
+    change: -0.31,
+    changePercent: -0.65,
+    description: 'Defensive services name with premium valuation vulnerable to any deceleration in organic growth.',
     recommendation: 'Sell',
-    confidence: 65,
+    confidence: 64,
     keyMetrics: {
-      marketCap: '$22.1B',
-      peRatio: '48.1',
-      dividend: '1.07%',
-      beta: '0.73',
+      marketCap: '$23.1B',
+      peRatio: '51.2',
+      dividend: '1.26%',
+      beta: '0.71',
     },
-    factors: ['Valuation stretch', 'Multiple compression', 'Growth deceleration'],
+    factors: ['Premium multiple risk', 'Growth normalization', 'Operating leverage limits'],
   },
   {
     ticker: 'AMAT',
     name: 'Applied Materials, Inc.',
     sector: 'Technology',
-    price: 201.35,
-    change: -2.63,
-    changePercent: -1.29,
-    description: 'Semicap supplier vulnerable to cyclicality in wafer-fab equipment spending.',
+    price: 208.35,
+    change: -1.77,
+    changePercent: -0.84,
+    description: 'Semiconductor equipment leader with cyclical exposure to fab spending and memory-capex volatility.',
     recommendation: 'Sell',
-    confidence: 73,
+    confidence: 67,
     keyMetrics: {
-      marketCap: '$166B',
-      peRatio: '23.2',
-      dividend: '0.77%',
-      beta: '1.56',
+      marketCap: '$172B',
+      peRatio: '25.8',
+      dividend: '0.78%',
+      beta: '1.58',
     },
-    factors: ['Cycle peak risk', 'Capex pullback risk', 'Order volatility'],
+    factors: ['Capex cyclicality', 'Memory spending swings', 'Order volatility'],
   },
   {
     ticker: 'DE',
     name: 'Deere & Company',
     sector: 'Industrials',
-    price: 401.92,
-    change: -3.57,
-    changePercent: -0.88,
-    description: 'Capital equipment leader with cyclical demand risk tied to farm income and financing costs.',
+    price: 376.91,
+    change: -3.68,
+    changePercent: -0.97,
+    description: 'Agriculture and construction equipment manufacturer exposed to farm-income normalization and dealer inventory pressure.',
     recommendation: 'Sell',
-    confidence: 72,
+    confidence: 70,
     keyMetrics: {
-      marketCap: '$110B',
-      peRatio: '14.3',
-      dividend: '1.33%',
-      beta: '1.09',
+      marketCap: '$103B',
+      peRatio: '13.9',
+      dividend: '1.42%',
+      beta: '1.08',
     },
-    factors: ['Cycle normalization', 'Order momentum slowdown', 'Inventory correction risk'],
+    factors: ['Farm cycle downside', 'Dealer destocking', 'Margin normalization'],
   },
 ];
 
-interface StockSeriesProfile {
-  drift: number;
-  amplitude: number;
-  phase: number;
-  cycle: number;
-}
+const CHART_DATES = [
+  '2023-07-31',
+  '2023-08-31',
+  '2023-09-30',
+  '2023-10-31',
+  '2023-11-30',
+  '2023-12-31',
+  '2024-01-31',
+  '2024-02-29',
+  '2024-03-31',
+  '2024-04-30',
+  '2024-05-31',
+  '2024-06-30',
+];
 
 const STOCK_SERIES_PROFILES: Record<string, StockSeriesProfile> = {
-  GE: { drift: 0.34, amplitude: 0.05, phase: 1, cycle: 3.1 },
-  IBM: { drift: 0.22, amplitude: 0.035, phase: 2, cycle: 3.6 },
-  APA: { drift: 0.28, amplitude: 0.07, phase: 5, cycle: 2.7 },
-  NOV: { drift: 0.26, amplitude: 0.065, phase: 3, cycle: 2.9 },
-  WY: { drift: 0.19, amplitude: 0.04, phase: 4, cycle: 3.8 },
-  C: { drift: 0.24, amplitude: 0.045, phase: 2, cycle: 3.4 },
-  BLK: { drift: 0.31, amplitude: 0.055, phase: 1, cycle: 3.2 },
-  COG: { drift: 0.21, amplitude: 0.06, phase: 6, cycle: 2.8 },
-  VZ: { drift: 0.15, amplitude: 0.03, phase: 0, cycle: 4.1 },
-  BMY: { drift: 0.18, amplitude: 0.038, phase: 3, cycle: 3.7 },
-  CRM: { drift: -0.22, amplitude: 0.055, phase: 2, cycle: 3.3 },
-  WFC: { drift: -0.18, amplitude: 0.045, phase: 5, cycle: 3.7 },
-  TSCO: { drift: -0.15, amplitude: 0.04, phase: 1, cycle: 4.0 },
-  LEN: { drift: -0.24, amplitude: 0.06, phase: 4, cycle: 3.0 },
-  PBCT: { drift: -0.19, amplitude: 0.05, phase: 3, cycle: 3.4 },
-  BLL: { drift: -0.17, amplitude: 0.045, phase: 0, cycle: 3.9 },
-  INTC: { drift: -0.23, amplitude: 0.06, phase: 6, cycle: 2.8 },
-  ROL: { drift: -0.14, amplitude: 0.035, phase: 2, cycle: 4.2 },
-  AMAT: { drift: -0.25, amplitude: 0.065, phase: 1, cycle: 2.9 },
-  DE: { drift: -0.2, amplitude: 0.052, phase: 5, cycle: 3.2 },
+  GE: { drift: 0.011, amplitude: 0.031, phase: 0.2, cycle: 1.3 },
+  IBM: { drift: 0.009, amplitude: 0.024, phase: 0.8, cycle: 1.5 },
+  APA: { drift: 0.013, amplitude: 0.036, phase: 1.4, cycle: 1.1 },
+  NOV: { drift: 0.012, amplitude: 0.028, phase: 0.5, cycle: 1.4 },
+  WY: { drift: 0.008, amplitude: 0.022, phase: 1.8, cycle: 1.6 },
+  C: { drift: 0.01, amplitude: 0.027, phase: 0.9, cycle: 1.5 },
+  BLK: { drift: 0.012, amplitude: 0.021, phase: 0.3, cycle: 1.7 },
+  COG: { drift: 0.009, amplitude: 0.032, phase: 1.2, cycle: 1.2 },
+  VZ: { drift: 0.006, amplitude: 0.017, phase: 0.7, cycle: 1.8 },
+  BMY: { drift: 0.007, amplitude: 0.019, phase: 1.1, cycle: 1.6 },
+  CRM: { drift: -0.008, amplitude: 0.026, phase: 0.4, cycle: 1.4 },
+  WFC: { drift: -0.007, amplitude: 0.024, phase: 0.9, cycle: 1.6 },
+  TSCO: { drift: -0.006, amplitude: 0.022, phase: 1.3, cycle: 1.5 },
+  LEN: { drift: -0.009, amplitude: 0.03, phase: 0.6, cycle: 1.3 },
+  PBCT: { drift: -0.005, amplitude: 0.02, phase: 1.5, cycle: 1.7 },
+  BLL: { drift: -0.006, amplitude: 0.021, phase: 0.8, cycle: 1.6 },
+  INTC: { drift: -0.007, amplitude: 0.028, phase: 1.1, cycle: 1.4 },
+  ROL: { drift: -0.004, amplitude: 0.016, phase: 1.7, cycle: 1.8 },
+  AMAT: { drift: -0.008, amplitude: 0.029, phase: 0.2, cycle: 1.3 },
+  DE: { drift: -0.007, amplitude: 0.023, phase: 1.4, cycle: 1.5 },
 };
 
 const DEFAULT_SERIES_PROFILE: StockSeriesProfile = {
-  drift: 0.2,
-  amplitude: 0.04,
+  drift: 0.008,
+  amplitude: 0.022,
   phase: 0,
-  cycle: 3.5,
+  cycle: 1.5,
 };
-
-const createWeeklyDatePoints = (count: number): string[] => {
-  const start = new Date(Date.UTC(2025, 0, 3));
-  return Array.from({ length: count }, (_, index) => {
-    const current = new Date(start);
-    current.setUTCDate(start.getUTCDate() + index * 7);
-    return current.toISOString().slice(0, 10);
-  });
-};
-
-const CHART_DATES = createWeeklyDatePoints(36);
 
 const generateDummySeries = (
-  finalPrice: number,
+  startPrice: number,
   profile: StockSeriesProfile,
   dates: string[],
 ): StockPricePoint[] => {
-  const raw = dates.map((date, index) => {
-    const progress = index / Math.max(dates.length - 1, 1);
-    const trend = 1 + profile.drift * progress;
-    const wave =
-      Math.sin((index + profile.phase) / profile.cycle) * profile.amplitude +
-      Math.cos((index + profile.phase) * 0.7) * (profile.amplitude * 0.33);
+  let currentPrice = startPrice;
+
+  return dates.map((date, index) => {
+    const seasonalSwing =
+      Math.sin((index + profile.phase) * profile.cycle) * profile.amplitude * startPrice;
+    const driftComponent = currentPrice * profile.drift;
+    const shock = Math.cos((index + 1) * 0.9 + profile.phase) * startPrice * 0.004;
+
+    if (index > 0) {
+      currentPrice = Math.max(currentPrice + driftComponent + seasonalSwing * 0.18 + shock, 5);
+    }
 
     return {
       date,
-      value: Math.max(trend + wave, 0.2),
+      close: Number(currentPrice.toFixed(2)),
     };
   });
-
-  const finalRawValue = raw[raw.length - 1]?.value ?? 1;
-  const scale = finalPrice / finalRawValue;
-
-  return raw.map((point) => ({
-    date: point.date,
-    close: Number((point.value * scale).toFixed(2)),
-  }));
 };
 
-export const LONG_CONTRARIAN_STOCK_CHARTS: Record<string, StockPricePoint[]> =
+const LONG_CONTRARIAN_STOCK_CHARTS: Record<string, StockPricePoint[]> =
   LONG_CONTRARIAN_STOCKS.reduce(
     (acc, stock) => {
       const profile = STOCK_SERIES_PROFILES[stock.ticker] ?? DEFAULT_SERIES_PROFILE;
@@ -473,7 +447,7 @@ export const LONG_CONTRARIAN_STOCK_CHARTS: Record<string, StockPricePoint[]> =
     {} as Record<string, StockPricePoint[]>,
   );
 
-export const SHORT_CONTRARIAN_STOCK_CHARTS: Record<string, StockPricePoint[]> =
+const SHORT_CONTRARIAN_STOCK_CHARTS: Record<string, StockPricePoint[]> =
   SHORT_CONTRARIAN_STOCKS.reduce(
     (acc, stock) => {
       const profile = STOCK_SERIES_PROFILES[stock.ticker] ?? DEFAULT_SERIES_PROFILE;
@@ -487,6 +461,7 @@ export const getStocksForPortfolio = (portfolioId: string): StockData[] => {
   if (portfolioId === 'long-contrarian') {
     return LONG_CONTRARIAN_STOCKS;
   }
+
   if (portfolioId === 'short-contrarian') {
     return SHORT_CONTRARIAN_STOCKS;
   }
@@ -501,6 +476,7 @@ export const getStockChartForPortfolioTicker = (
   if (portfolioId === 'long-contrarian') {
     return LONG_CONTRARIAN_STOCK_CHARTS[ticker] ?? [];
   }
+
   if (portfolioId === 'short-contrarian') {
     return SHORT_CONTRARIAN_STOCK_CHARTS[ticker] ?? [];
   }

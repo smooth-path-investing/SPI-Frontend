@@ -27,7 +27,7 @@ export const KeywordModal: React.FC<KeywordModalProps> = ({ keyword, isOpen, onC
           px-4 sm:px-6 lg:px-8
           py-6 sm:py-8
           bg-[var(--card-bg)]
-          border border-[var(--card-border)]
+          border-2 border-[var(--accent)]/55
           rounded-xl
         "
       >

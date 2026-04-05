@@ -1,7 +1,6 @@
-import { INavItem } from '../types';
+import type { NavigationItem } from '@/types';
 
-export const NAVIGATION_ITEMS: INavItem[] = [
+export const NAVIGATION_ITEMS: NavigationItem[] = [
   { label: 'Smooth Path Investing', href: '/' },
-  { label: 'Stock Subscription', href: '/stock' },
-  { label: 'HF Subscription', href: '/hf' },
+  { label: 'Stock Investing', href: '/stock' },
 ];

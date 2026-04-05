@@ -1,17 +1,32 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { AuthModal } from '../ui/auth-modal';
-import { Button } from '../ui/button';
-import { ProfileDropdown } from '../ui/profile-dropdown';
-import { useAuth } from '../../hooks/useAuth';
-import { NAVIGATION_ITEMS } from '../../constants';
-import { MobileNavigation } from '../navigation/MobileNavigation';
+import { NAVIGATION_ITEMS } from '@/constants';
+import { AuthModal, useAuth } from '@/features/auth';
+import { isStockInvestingPath } from '@/features/stocks';
+import { MobileNavigation } from '@/components/navigation/MobileNavigation';
+import { ProfileDropdown } from '@/components/ui/profile-dropdown';
+import { Button } from '@/components/ui/button';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
-  const { user, login, signup, logout, isAuthenticated } = useAuth();
+  const { user, login, signup, logout, isAuthenticated, hasPurchasedPortfolio, canAccessPremiumStocks } =
+    useAuth();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const hasPortfolioAccess =
+    hasPurchasedPortfolio('long-contrarian') || canAccessPremiumStocks();
+  const navigationItems = NAVIGATION_ITEMS.map((item) =>
+    item.href === '/stock' ? { ...item, href: hasPortfolioAccess ? '/portfolio' : item.href } : item,
+  );
+  const isStockInvestingRoute = isStockInvestingPath(location.pathname);
+
+  const isNavigationItemActive = (href: string) => {
+    if (href === '/stock' || href === '/portfolio') {
+      return isStockInvestingRoute;
+    }
+
+    return location.pathname === href;
+  };
 
   // Close mobile menu on route change
   useEffect(() => {
@@ -20,9 +35,26 @@ export const Navigation: React.FC = () => {
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = isMobileMenuOpen ? 'hidden' : 'unset';
+    const html = document.documentElement;
+    const body = document.body;
+
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousBodyTouchAction = body.style.touchAction;
+    const previousBodyOverscrollBehavior = body.style.overscrollBehavior;
+
+    if (isMobileMenuOpen) {
+      html.style.overflow = 'hidden';
+      body.style.overflow = 'hidden';
+      body.style.touchAction = 'none';
+      body.style.overscrollBehavior = 'none';
+    }
+
     return () => {
-      document.body.style.overflow = 'unset';
+      html.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
+      body.style.touchAction = previousBodyTouchAction;
+      body.style.overscrollBehavior = previousBodyOverscrollBehavior;
     };
   }, [isMobileMenuOpen]);
 
@@ -41,8 +73,8 @@ export const Navigation: React.FC = () => {
 
             {/* Centered Links */}
             <div className="hidden md:flex flex-1 justify-center gap-8">
-              {NAVIGATION_ITEMS.map((item) => {
-                const isActive = location.pathname === item.href;
+              {navigationItems.map((item) => {
+                const isActive = isNavigationItemActive(item.href);
                 return (
                   <Link
                     key={item.href}
@@ -78,7 +110,7 @@ export const Navigation: React.FC = () => {
 
               {/* Mobile Menu */}
               <MobileNavigation
-                navigationItems={NAVIGATION_ITEMS}
+                navigationItems={navigationItems}
                 isAuthenticated={isAuthenticated}
                 user={user}
                 isMobileMenuOpen={isMobileMenuOpen}

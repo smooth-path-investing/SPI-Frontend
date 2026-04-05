@@ -1,6 +1,22 @@
 import React from 'react';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
-import type { StockPricePoint } from '@/constants/stockData';
+import {
+  Area,
+  AreaChart,
+  CartesianGrid,
+  Line,
+  ReferenceLine,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import {
+  ChartTooltipShell,
+  formatChartLongDate,
+  formatChartShortDate,
+  type StockPricePoint,
+} from '@/features/stocks';
+import { cn } from '@/lib/utils';
 
 interface StockPriceChartProps {
   data: StockPricePoint[];
@@ -17,94 +33,144 @@ interface StockChartTooltipProps {
   label?: string;
 }
 
-const formatShortDate = (date: string) =>
-  new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    timeZone: 'UTC',
-  });
+const CHART_FRAME_CLASS =
+  'h-[280px] w-full overflow-hidden rounded-[22px] border border-white/10 bg-[linear-gradient(180deg,rgba(255,255,255,0.025),rgba(0,0,0,0.14))] p-2 sm:h-[320px] sm:p-3';
+const DEFAULT_AXIS_TICK = { fill: '#FFFFFF', fontSize: 11 };
+const DEFAULT_AXIS_LINE = { stroke: '#FFFFFF', strokeOpacity: 0.55 };
 
-const formatLongDate = (date: string) =>
-  new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-    timeZone: 'UTC',
-  });
-
-const StockChartTooltip: React.FC<StockChartTooltipProps> = ({ active, payload, label }) => {
+const StockChartTooltip: React.FC<StockChartTooltipProps> = ({
+  active,
+  payload,
+  label,
+}) => {
   if (!active || !payload?.length || !label) return null;
 
+  const price = payload[0].value;
+
   return (
-    <div className="bg-[var(--card-bg)]/95 backdrop-blur-md border border-[var(--card-border)] rounded-[var(--radius)] px-3 py-2 shadow-lg">
-      <p className="text-[10px] uppercase tracking-[0.1em] text-[var(--muted-text)] mb-1">
-        {formatLongDate(label)}
+    <ChartTooltipShell>
+      <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--accent)]/90">
+        Closing Price
       </p>
-      <p className="text-sm font-semibold text-[var(--foreground)] tabular-nums">
-        ${payload[0].value.toFixed(2)}
-      </p>
-    </div>
+      <div className="mt-2 flex items-end justify-between gap-4">
+        <p className="text-base font-semibold tabular-nums text-[var(--foreground)]">
+          ${price.toFixed(2)}
+        </p>
+        <p className="text-[11px] text-[var(--muted-text)]">{formatChartLongDate(label)}</p>
+      </div>
+    </ChartTooltipShell>
   );
 };
 
-export const StockPriceChart: React.FC<StockPriceChartProps> = ({ data, ticker = 'stock', className = '' }) => {
+export const StockPriceChart: React.FC<StockPriceChartProps> = ({
+  data,
+  ticker = 'stock',
+  className = '',
+}) => {
+  if (data.length === 0) {
+    return null;
+  }
+
   const prices = data.map((row) => row.close);
   const minValue = Math.min(...prices);
   const maxValue = Math.max(...prices);
   const padding = Math.max((maxValue - minValue) * 0.12, 1);
-
+  const firstClose = data[0]?.close ?? 0;
   const lowerBound = Number((minValue - padding).toFixed(2));
   const upperBound = Number((maxValue + padding).toFixed(2));
-  const gradientId = `${ticker.toLowerCase()}-price-gradient`;
+  const fillId = `${ticker.toLowerCase()}-price-fill`;
+  const shadowId = `${ticker.toLowerCase()}-price-shadow`;
 
   return (
-    <div className={`h-96 w-full ${className}`}>
+    <div className={cn(CHART_FRAME_CLASS, className)}>
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart
           data={data}
           margin={{
-            top: 12,
-            right: 12,
-            left: 0,
-            bottom: 0,
+            top: 16,
+            right: 10,
+            left: -18,
+            bottom: 2,
           }}
         >
           <defs>
-            <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-              <stop offset="5%" stopColor="var(--accent)" stopOpacity={0.35} />
-              <stop offset="95%" stopColor="var(--accent)" stopOpacity={0.04} />
+            <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#FACC15" stopOpacity={0.32} />
+              <stop offset="70%" stopColor="#FACC15" stopOpacity={0.08} />
+              <stop offset="100%" stopColor="#FACC15" stopOpacity={0} />
             </linearGradient>
+            <filter id={shadowId} x="-20%" y="-20%" width="140%" height="160%">
+              <feDropShadow
+                dx="0"
+                dy="14"
+                stdDeviation="16"
+                floodColor="var(--accent)"
+                floodOpacity="0.4"
+              />
+            </filter>
           </defs>
 
-          <CartesianGrid stroke="var(--card-border)" strokeDasharray="3 3" opacity={0.35} />
+          <CartesianGrid
+            vertical={false}
+            stroke="rgba(255,255,255,0.06)"
+            strokeDasharray="4 8"
+          />
 
           <XAxis
             dataKey="date"
-            tickFormatter={formatShortDate}
+            tickFormatter={formatChartShortDate}
             minTickGap={32}
-            tick={{ fill: '#FFFFFF', fontSize: 11 }}
-            axisLine={{ stroke: '#FFFFFF' }}
-            tickLine={{ stroke: '#FFFFFF' }}
+            tick={DEFAULT_AXIS_TICK}
+            axisLine={DEFAULT_AXIS_LINE}
+            tickLine={false}
           />
 
           <YAxis
             tickFormatter={(value: number) => `$${value.toFixed(0)}`}
-            tick={{ fill: '#FFFFFF', fontSize: 11 }}
-            axisLine={{ stroke: '#FFFFFF' }}
-            tickLine={{ stroke: '#FFFFFF' }}
-            width={50}
+            tick={DEFAULT_AXIS_TICK}
+            axisLine={DEFAULT_AXIS_LINE}
+            tickLine={false}
+            width={64}
             domain={[lowerBound, upperBound]}
+            tickCount={5}
           />
 
-          <Tooltip content={<StockChartTooltip />} />
+          <Tooltip
+            cursor={{ stroke: 'rgba(250,204,21,0.3)', strokeDasharray: '4 8' }}
+            content={<StockChartTooltip />}
+          />
+
+          <ReferenceLine
+            y={firstClose}
+            stroke="rgba(255,255,255,0.16)"
+            strokeDasharray="5 5"
+            ifOverflow="extendDomain"
+          />
 
           <Area
-            type="monotone"
+            type="monotoneX"
             dataKey="close"
-            stroke="var(--accent)"
-            strokeWidth={2.5}
-            fill={`url(#${gradientId})`}
+            stroke="rgba(250,204,21,0.4)"
+            strokeWidth={1.4}
+            fill={`url(#${fillId})`}
             name="Close"
+            isAnimationActive={false}
+          />
+
+          <Line
+            type="monotoneX"
+            dataKey="close"
+            stroke="#FFFFFF"
+            strokeWidth={2.6}
+            dot={false}
+            activeDot={{
+              r: 5,
+              fill: '#0B0F19',
+              stroke: '#FACC15',
+              strokeWidth: 2,
+            }}
+            filter={`url(#${shadowId})`}
+            isAnimationActive={false}
           />
         </AreaChart>
       </ResponsiveContainer>

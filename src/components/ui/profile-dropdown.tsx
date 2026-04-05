@@ -1,15 +1,10 @@
-
 import React, { useState } from 'react';
 import { User, LogOut } from 'lucide-react';
+import type { User as AuthUser } from '@/features/auth';
 import { Button } from './button';
 
 interface ProfileDropdownProps {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    plan: 'free' | 'pro' | 'elite';
-  };
+  user: Pick<AuthUser, 'id' | 'name' | 'email' | 'plan'>;
   onLogout: () => void;
 }
 
