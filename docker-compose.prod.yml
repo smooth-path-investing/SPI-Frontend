@@ -1,0 +1,14 @@
+services:
+  frontend-prod:
+    build:
+      context: .
+      target: production
+      args:
+        VITE_STOCK_ASSETS_API_BASE_URL: ${VITE_STOCK_ASSETS_API_BASE_URL:-}
+        VITE_STOCK_FACTOR_COEFVEC_API_BASE_URL: ${VITE_STOCK_FACTOR_COEFVEC_API_BASE_URL:-}
+        VITE_STOCK_FUNDAMENTAL_API_BASE_URL: ${VITE_STOCK_FUNDAMENTAL_API_BASE_URL:-}
+        VITE_LOCAL_BACKEND_SERVER: ${VITE_LOCAL_BACKEND_SERVER:-}
+    container_name: spi-frontend-prod
+    ports:
+      - "${FRONTEND_PROD_PORT:-4173}:80"
+    restart: unless-stopped

@@ -12,10 +12,12 @@ import { PortfolioDetail } from '@/pages/PortfolioDetail';
 import { StockDetail } from '@/pages/StockDetail';
 import { Stocks } from '@/pages/Stocks';
 
+// Keep one React Query client for the lifetime of the SPA.
 const queryClient = new QueryClient();
 
 const AppShell = () => {
   const location = useLocation();
+  // Portfolio stock detail pages intentionally render full-bleed without the global nav.
   const hideNavigation = isPortfolioStockDetailPath(location.pathname);
 
   return (

@@ -1,5 +1,6 @@
 export const DEFAULT_PORTFOLIO_ID = 'long-contrarian';
 
+// Supports both `/portfolio/stock/:ticker` and `/portfolio/:portfolioId/stock/:ticker`.
 const PORTFOLIO_STOCK_DETAIL_PATTERN = /^\/portfolio(?:\/[^/]+)?\/stock\/[^/]+$/;
 
 export const isPortfolioStockDetailPath = (pathname: string) =>

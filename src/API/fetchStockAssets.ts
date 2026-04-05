@@ -1,7 +1,5 @@
 import type { StockPricePoint } from '@/features/stocks/types';
-
-const STOCK_ASSETS_API_BASE_URL =
-  import.meta.env.VITE_STOCK_ASSETS_API_BASE_URL?.trim() ?? '';
+import { buildApiUrl, RUNTIME_CONFIG } from '@/lib/runtimeConfig';
 
 export interface StockAssetChartSeries {
   ticker: string;
@@ -22,9 +20,7 @@ export async function fetchStockAssetChartSeries(
   }
 
   const requestPath = `/stock-assets/${normalizedTicker}`;
-  const requestUrl = STOCK_ASSETS_API_BASE_URL
-    ? `${STOCK_ASSETS_API_BASE_URL}${requestPath}`
-    : requestPath;
+  const requestUrl = buildApiUrl(requestPath, RUNTIME_CONFIG.stockAssetsApiBaseUrl);
 
   const response = await fetch(requestUrl);
 

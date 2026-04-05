@@ -61,6 +61,7 @@ const buildCumulativeReturnsFromSeries = (
     return [];
   }
 
+  // The API returns separate ticker + IVV series, so we first align them on shared dates.
   const tickerPriceByDate = new Map(
     stockAssetSeries.ticker_points.map((point) => [point.date, point.close]),
   );
@@ -117,6 +118,7 @@ const getSeriesAlignmentKey = (date: string): string => {
 
   const quarter = Math.floor(parsedDate.getUTCMonth() / 3) + 1;
 
+  // Fundamentals are quarterly while prices can be daily/quarterly, so we align by quarter when needed.
   return `${parsedDate.getUTCFullYear()}-Q${quarter}`;
 };
 
@@ -189,6 +191,7 @@ const mergeNormalizedSeriesWithPrice = (
   return {
     data: mergedData,
     indicators: [
+      // Add price as another normalized line so the chart can compare it against fundamentals.
       {
         key: REBASED_PRICE_SERIES_KEY,
         label: `${tickerSymbol} price`,
@@ -247,6 +250,7 @@ export const StockDetail: React.FC = () => {
     : 'top-16 h-[calc(100vh-4rem)]';
 
   useEffect(() => {
+    // Preview routes are fully seeded from local constants; purchased routes call the backend.
     if (!resolvedTicker || isStockPreviewRoute) {
       setStockAssetSeries(null);
       setIsLoadingStockAssetSeries(false);
@@ -384,6 +388,7 @@ export const StockDetail: React.FC = () => {
   }
 
   const tickerAnalytics = getTickerAnalytics(stock, localStockChartData);
+  // Preview mode uses seeded demo analytics, while portfolio mode prefers live API responses.
   const priceChartData = isStockPreviewRoute ? localStockChartData : (stockAssetSeries?.ticker_points ?? []);
   const cumulativeReturnsData = isStockPreviewRoute
     ? tickerAnalytics.cumulativeReturns
@@ -477,7 +482,7 @@ export const StockDetail: React.FC = () => {
               }
             >
               {cumulativeReturnsData.length > 0 ? (
-                <CumulativeReturnsChart data={cumulativeReturnsData} />
+                <CumulativeReturnsChart data={cumulativeReturnsData} ticker={stock.ticker} />
               ) : (
                 <ChartStatusMessage
                   message={

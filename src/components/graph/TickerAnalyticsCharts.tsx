@@ -41,6 +41,7 @@ interface BaseTooltipProps {
 
 interface CumulativeReturnsChartProps {
   data: CumulativeReturnComparisonPoint[];
+  ticker: string;
   className?: string;
 }
 
@@ -90,10 +91,11 @@ const DEFAULT_AXIS_LINE = { stroke: '#FFFFFF', strokeOpacity: 0.55 };
 const POSITIVE_WEIGHT_FILL = 'var(--accent)';
 const NEGATIVE_WEIGHT_FILL = 'rgba(255,255,255,0.72)';
 
-const EmptyTooltip: React.FC = () => null;
-
 const formatSignedPercentage = (value: number, fractionDigits = 1) =>
   `${value > 0 ? '+' : ''}${value.toFixed(fractionDigits)}%`;
+
+const formatCumulativeReturnDisplay = (value: number, fractionDigits = 2) =>
+  `${value / 100 >= 0 ? '+' : ''}${(value / 100).toFixed(fractionDigits)}%`;
 
 const NORMALIZED_INDICATOR_SERIES_STYLES: NormalizedSeriesLineStyle[] = [
   {
@@ -206,8 +208,7 @@ const CumulativeTooltip: React.FC<BaseTooltipProps> = ({ active, payload, label 
               <span className="text-xs text-[var(--muted-text)]">{entry.name}</span>
             </div>
             <span className="text-sm font-semibold tabular-nums text-[var(--foreground)]">
-              {(entry.value ?? 0) >= 0 ? '+' : ''}
-              {(entry.value ?? 0).toFixed(2)}%
+              {formatCumulativeReturnDisplay(entry.value ?? 0)}
             </span>
           </div>
         ))}
@@ -375,6 +376,7 @@ const IndicatorWeightLabel: React.FC<IndicatorWeightLabelProps> = ({
 
 export const CumulativeReturnsChart: React.FC<CumulativeReturnsChartProps> = ({
   data,
+  ticker,
   className = '',
 }) => {
   if (data.length === 0) {
@@ -404,7 +406,7 @@ export const CumulativeReturnsChart: React.FC<CumulativeReturnsChartProps> = ({
             tickLine={false}
           />
           <YAxis
-            tickFormatter={(value: number) => `${value.toFixed(0)}%`}
+            tickFormatter={(value: number) => formatCumulativeReturnDisplay(value, 0)}
             tick={DEFAULT_AXIS_TICK}
             axisLine={DEFAULT_AXIS_LINE}
             tickLine={false}
@@ -425,7 +427,7 @@ export const CumulativeReturnsChart: React.FC<CumulativeReturnsChartProps> = ({
           <Line
             type="monotoneX"
             dataKey="stockCum"
-            name="Stock"
+            name={ticker}
             stroke="var(--accent)"
             strokeWidth={2.8}
             dot={false}
@@ -619,6 +621,7 @@ export const NormalizedIndicatorChart: React.FC<NormalizedIndicatorChartProps> =
               type="monotoneX"
               dataKey={indicator.key}
               name={indicator.label}
+              connectNulls
               stroke={indicator.lineStyle.stroke}
               strokeWidth={indicator.lineStyle.strokeWidth}
               strokeDasharray={indicator.lineStyle.strokeDasharray}

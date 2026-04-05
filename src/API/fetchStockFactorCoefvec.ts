@@ -1,4 +1,5 @@
 import type { IndicatorWeightPoint } from '@/features/stocks';
+import { buildApiUrl, RUNTIME_CONFIG } from '@/lib/runtimeConfig';
 
 interface StockFactorBarValue {
   factor_name: string;
@@ -12,8 +13,6 @@ interface StockFactorBarGraphResponse {
   bars: StockFactorBarValue[];
 }
 
-const STOCK_FACTOR_COEFVEC_API_BASE_URL =
-  import.meta.env.VITE_STOCK_FACTOR_COEFVEC_API_BASE_URL?.trim() ?? '';
 const MAX_INDICATOR_WEIGHTS = 5;
 
 const buildIndicatorWeightKey = (ticker: string, factorName: string) =>
@@ -29,9 +28,7 @@ export async function fetchStockIndicatorWeights(
   }
 
   const requestPath = `/stock-factor-coefvec/${normalizedTicker}/bar-graph`;
-  const requestUrl = STOCK_FACTOR_COEFVEC_API_BASE_URL
-    ? `${STOCK_FACTOR_COEFVEC_API_BASE_URL}${requestPath}`
-    : requestPath;
+  const requestUrl = buildApiUrl(requestPath, RUNTIME_CONFIG.stockFactorCoefvecApiBaseUrl);
   const response = await fetch(requestUrl);
 
   if (response.status === 404) {

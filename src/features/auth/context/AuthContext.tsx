@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { AuthContextValue, AuthProviderProps, OfferType, User } from '../types';
 
+// Purchases are stored per user email so switching demo accounts preserves separate state.
 type StoredValuesByUser<T extends string> = Record<string, T[]>;
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
@@ -28,6 +29,7 @@ const writeStorage = <T,>(key: string, value: T) => {
 
 const getUserStorageKey = (user: User | null) => user?.email.trim().toLowerCase() ?? '';
 
+// Temporary mock plan resolution until auth/entitlements come from a backend.
 const resolvePlanFromEmail = (email: string): User['plan'] => {
   if (email.includes('pro')) {
     return 'pro';
@@ -70,6 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const purchasedPortfolios = userStorageKey ? purchasedPortfoliosByUser[userStorageKey] ?? [] : [];
 
   useEffect(() => {
+    // Migrate legacy shared purchases into the newer per-user map the first time a user logs in.
     if (!userStorageKey || legacyPurchasedPortfolios.length === 0) {
       return;
     }
@@ -122,6 +125,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return false;
     }
 
+    // Product/dev escape hatch that unlocks premium routes without changing the seeded user record.
     const showPremiumStocks = localStorage.getItem('showPremiumStocks') === 'true';
     const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
 
@@ -137,6 +141,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return;
     }
 
+    // The current mock purchase flow records both the selected offer and the unlocked portfolio.
     setPurchasedOffersByUser((previousOffers) => {
       const nextOffers = {
         ...previousOffers,

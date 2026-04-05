@@ -2,6 +2,7 @@ import type {
   IndicatorNormalizedPoint,
   TickerIndicatorMeta,
 } from '@/features/stocks';
+import { buildApiUrl, RUNTIME_CONFIG } from '@/lib/runtimeConfig';
 
 interface StockFundamentalSeriesPoint {
   date: string;
@@ -9,7 +10,9 @@ interface StockFundamentalSeriesPoint {
 }
 
 interface StockFundamentalSeries {
-  variable: string;
+  variable?: string;
+  factor?: string;
+  factor_name?: string;
   series: StockFundamentalSeriesPoint[];
 }
 
@@ -25,8 +28,6 @@ export interface StockFundamentalChartSeries {
   indicators: TickerIndicatorMeta[];
 }
 
-const STOCK_FUNDAMENTAL_API_BASE_URL =
-  import.meta.env.VITE_STOCK_FUNDAMENTAL_API_BASE_URL?.trim() ?? '';
 const VARIABLE_LABELS: Record<string, string> = {
   marketcap: 'Market cap',
   pb: 'P/B',
@@ -39,6 +40,9 @@ const buildIndicatorSeriesKey = (variable: string, index: number) =>
 const formatVariableLabel = (variable: string) =>
   VARIABLE_LABELS[variable.toLowerCase()] ?? variable;
 
+const getSeriesLabel = (series: StockFundamentalSeries) =>
+  series.variable?.trim() || series.factor?.trim() || series.factor_name?.trim() || '';
+
 export async function fetchStockFundamentalChartSeries(
   ticker: string,
 ): Promise<StockFundamentalChartSeries | null> {
@@ -49,9 +53,7 @@ export async function fetchStockFundamentalChartSeries(
   }
 
   const requestPath = `/stock-fundamental/${normalizedTicker}/rebased-series`;
-  const requestUrl = STOCK_FUNDAMENTAL_API_BASE_URL
-    ? `${STOCK_FUNDAMENTAL_API_BASE_URL}${requestPath}`
-    : requestPath;
+  const requestUrl = buildApiUrl(requestPath, RUNTIME_CONFIG.stockFundamentalApiBaseUrl);
   const response = await fetch(requestUrl);
 
   if (response.status === 404) {
@@ -64,12 +66,24 @@ export async function fetchStockFundamentalChartSeries(
 
   const data = (await response.json()) as StockFundamentalRebasedResponse;
   const includedSeries = Array.isArray(data.series)
-    ? data.series.filter(
-        (series) =>
-          series.variable &&
-          Array.isArray(series.series) &&
-          series.series.length > 0,
-      )
+    ? data.series
+        .map((series) => {
+          const label = getSeriesLabel(series);
+          const validPoints = Array.isArray(series.series)
+            ? series.series.filter(
+                (point) =>
+                  point.date &&
+                  typeof point.value === 'number' &&
+                  Number.isFinite(point.value),
+              )
+            : [];
+
+          return {
+            label,
+            validPoints,
+          };
+        })
+        .filter((series) => series.label)
     : [];
 
   if (includedSeries.length === 0) {
@@ -79,50 +93,42 @@ export async function fetchStockFundamentalChartSeries(
     };
   }
 
-  const validDateSets = includedSeries.map(
-    (series) =>
-      new Set(
-        series.series
-          .filter(
-            (point) =>
-              point.date &&
-              typeof point.value === 'number' &&
-              Number.isFinite(point.value),
-          )
-          .map((point) => point.date),
-      ),
-  );
-  const sharedDates = Array.from(validDateSets[0] ?? [])
-    .filter((date) => validDateSets.every((dateSet) => dateSet.has(date)))
-    .sort((left, right) => left.localeCompare(right));
+  const chartableSeries = includedSeries.filter((series) => series.validPoints.length > 0);
 
-  if (sharedDates.length === 0) {
+  if (chartableSeries.length === 0) {
     return {
       data: [],
       indicators: [],
     };
   }
 
-  const indicators = includedSeries.map((series, index) => ({
-    key: buildIndicatorSeriesKey(series.variable, index),
-    label: formatVariableLabel(series.variable),
+  // The rebased-series API can now return factors from multiple source tables with different
+  // date coverage, so we keep the union of dates and let the chart render sparse lines.
+  const allDates = Array.from(
+    new Set(chartableSeries.flatMap((series) => series.validPoints.map((point) => point.date))),
+  )
+    .sort((left, right) => left.localeCompare(right));
+
+  if (allDates.length === 0) {
+    return {
+      data: [],
+      indicators: [],
+    };
+  }
+
+  const indicators = chartableSeries.map((series, index) => ({
+    key: buildIndicatorSeriesKey(series.label, index),
+    label: formatVariableLabel(series.label),
     weight: 0,
     seriesType: 'indicator' as const,
   }));
-  const seriesValueMaps = includedSeries.map(
+  const seriesValueMaps = chartableSeries.map(
     (series) =>
       new Map(
-        series.series
-          .filter(
-            (point) =>
-              point.date &&
-              typeof point.value === 'number' &&
-              Number.isFinite(point.value),
-          )
-          .map((point) => [point.date, point.value] as const),
+        series.validPoints.map((point) => [point.date, point.value] as const),
       ),
   );
-  const normalizedSeries = sharedDates.map<IndicatorNormalizedPoint>((date) => {
+  const normalizedSeries = allDates.map<IndicatorNormalizedPoint>((date) => {
     const row: IndicatorNormalizedPoint = { date };
 
     indicators.forEach((indicator, indicatorIndex) => {
