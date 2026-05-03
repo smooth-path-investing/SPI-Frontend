@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import type { User } from '@/features/auth';
 import { isStockInvestingPath } from '@/features/stocks';
-import type { NavigationItem } from '@/types';
+import type { NavigationItem } from '@/types/navigation';
 
 interface MobileNavigationProps {
   navigationItems: NavigationItem[];
@@ -92,13 +92,13 @@ export const MobileNavigation: React.FC<MobileNavigationProps> = ({
                   <div className="flex items-center space-x-3">
                     <div className="w-10 h-10 bg-[var(--accent)] rounded-md flex items-center justify-center shrink-0">
                       <span className="text-[var(--background)] text-sm font-medium">
-                        {user.email?.[0].toUpperCase() || '?'}
+                        {user.name?.[0].toUpperCase() || user.email?.[0].toUpperCase() || '?'}
                       </span>
                     </div>
                     <div className="min-w-0">
-                      <p className="text-white font-medium truncate">{user.email}</p>
+                      <p className="text-white font-medium truncate">{user.name}</p>
                       <p className="text-white/65 text-sm leading-tight">
-                        {user.isPremium ? 'Premium Member' : 'Free Member'}
+                        {user.email}
                       </p>
                     </div>
                   </div>

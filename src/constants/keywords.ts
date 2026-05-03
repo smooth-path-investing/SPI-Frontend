@@ -1,4 +1,4 @@
-export interface KeywordInfo {
+interface KeywordInfo {
   title: string;
   description: string;
 }

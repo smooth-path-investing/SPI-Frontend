@@ -45,10 +45,7 @@ export interface LoginFormValues {
 }
 
 export interface SignupFormValues {
-  firstName: string;
-  lastName: string;
+  fullName: string;
   email: string;
   password: string;
-  confirmPassword: string;
-  agreedToTerms: boolean;
 }

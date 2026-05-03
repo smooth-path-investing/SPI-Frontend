@@ -6,14 +6,6 @@ import type {
   TickerIndicatorMeta,
 } from '@/features/stocks/analytics/types';
 
-export type {
-  CumulativeReturnComparisonPoint,
-  IndicatorNormalizedPoint,
-  IndicatorWeightPoint,
-  TickerAnalytics,
-  TickerIndicatorMeta,
-} from '@/features/stocks/analytics/types';
-
 const getTickerSeed = (ticker: string) =>
   ticker.split('').reduce((sum, char, index) => sum + char.charCodeAt(0) * (index + 1), 0);
 

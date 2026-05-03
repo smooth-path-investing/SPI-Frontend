@@ -3,12 +3,17 @@ export { ChartTooltipShell } from './components/ChartTooltipShell';
 export { StockChatSidebar } from './components/StockChatSidebar';
 export { StockDetailSummary } from './components/StockDetailSummary';
 export { StockOffersDialog } from './components/StockOffersDialog';
-export type { StockData, StockKeyMetrics, StockPricePoint, StockRecommendation } from './types';
+export {
+  fetchStockAssetChartSeries,
+  fetchStockFundamentalChartSeries,
+  fetchStockIndicatorWeights,
+} from './api/stockAnalyticsApi';
+export type { StockAssetChartSeries } from './api/types';
+export type { StockData, StockPricePoint } from './types';
 export type {
   CumulativeReturnComparisonPoint,
   IndicatorNormalizedPoint,
   IndicatorWeightPoint,
-  TickerAnalytics,
   TickerIndicatorMeta,
 } from './analytics/types';
 export {
@@ -20,4 +25,8 @@ export {
   isStockInvestingPath,
   isStockPreviewDetailPath,
 } from './utils/routes';
+export {
+  buildCumulativeReturnsFromSeries,
+  mergeNormalizedSeriesWithPrice,
+} from './utils/stockDetailChartTransforms';
 export { formatChartLongDate, formatChartShortDate, formatCoverageDate } from './utils/date';

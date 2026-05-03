@@ -1,5 +1,4 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { LucideIcon } from 'lucide-react';
 
 interface PortfolioMetricCardProps {
@@ -29,30 +28,5 @@ export const PortfolioMetricCard: React.FC<PortfolioMetricCardProps> = ({
         <div className="flex justify-center">{value}</div>
       )}
     </div>
-  );
-};
-
-interface PortfolioStatCardProps {
-  label: string;
-  value: string;
-  className?: string;
-}
-
-export const PortfolioStatCard: React.FC<PortfolioStatCardProps> = ({
-  label,
-  value,
-  className = '',
-}) => {
-  return (
-    <Card
-      className={`overflow-hidden rounded-[24px] border border-[var(--card-border)] bg-gradient-to-b from-[var(--card-bg)] to-black/35 shadow-[0_14px_32px_rgba(0,0,0,0.18)] ${className}`}
-    >
-      <CardHeader>
-        <CardTitle className="text-sm text-muted-foreground">{label}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <p className="text-2xl font-bold">{value}</p>
-      </CardContent>
-    </Card>
   );
 };

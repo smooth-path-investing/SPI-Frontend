@@ -1,5 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import {
+  readJsonStorage,
+  readStorageItem,
+  removeStorageItem,
+  writeJsonStorage,
+} from '@/lib/storage';
+import { getDisplayNameFromEmail, normalizeEmail } from '../validation';
 import type { AuthContextValue, AuthProviderProps, OfferType, User } from '../types';
 
 // Purchases are stored per user email so switching demo accounts preserves separate state.
@@ -13,19 +20,6 @@ const STORAGE_KEYS = {
   purchasedOffersByUser: 'spi-purchased-offers-by-user',
   legacyPurchasedPortfolios: 'purchasedPortfolios',
 } as const;
-
-const readStorage = <T,>(key: string, fallback: T): T => {
-  try {
-    const storedValue = localStorage.getItem(key);
-    return storedValue ? (JSON.parse(storedValue) as T) : fallback;
-  } catch {
-    return fallback;
-  }
-};
-
-const writeStorage = <T,>(key: string, value: T) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
 
 const getUserStorageKey = (user: User | null) => user?.email.trim().toLowerCase() ?? '';
 
@@ -54,18 +48,33 @@ const buildMockUser = (email: string, name: string, id: string): User => {
 
 const dedupeValues = <T extends string>(values: T[]) => Array.from(new Set(values));
 
+const normalizeStoredUser = (storedUser: User | null): User | null => {
+  if (!storedUser) {
+    return null;
+  }
+
+  if (storedUser.name && storedUser.name !== 'Demo User') {
+    return storedUser;
+  }
+
+  return {
+    ...storedUser,
+    name: getDisplayNameFromEmail(storedUser.email),
+  };
+};
+
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() =>
-    readStorage<User | null>(STORAGE_KEYS.user, null),
+    normalizeStoredUser(readJsonStorage<User | null>(STORAGE_KEYS.user, null)),
   );
   const [legacyPurchasedPortfolios, setLegacyPurchasedPortfolios] = useState<string[]>(() =>
-    readStorage<string[]>(STORAGE_KEYS.legacyPurchasedPortfolios, []),
+    readJsonStorage<string[]>(STORAGE_KEYS.legacyPurchasedPortfolios, []),
   );
   const [purchasedPortfoliosByUser, setPurchasedPortfoliosByUser] = useState<
     StoredValuesByUser<string>
-  >(() => readStorage<StoredValuesByUser<string>>(STORAGE_KEYS.purchasedPortfoliosByUser, {}));
+  >(() => readJsonStorage<StoredValuesByUser<string>>(STORAGE_KEYS.purchasedPortfoliosByUser, {}));
   const [, setPurchasedOffersByUser] = useState<StoredValuesByUser<OfferType>>(() =>
-    readStorage<StoredValuesByUser<OfferType>>(STORAGE_KEYS.purchasedOffersByUser, {}),
+    readJsonStorage<StoredValuesByUser<OfferType>>(STORAGE_KEYS.purchasedOffersByUser, {}),
   );
 
   const userStorageKey = getUserStorageKey(user);
@@ -87,11 +96,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         [userStorageKey]: dedupeValues(legacyPurchasedPortfolios),
       };
 
-      writeStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
+      writeJsonStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
       return nextPurchases;
     });
 
-    localStorage.removeItem(STORAGE_KEYS.legacyPurchasedPortfolios);
+    removeStorageItem(STORAGE_KEYS.legacyPurchasedPortfolios);
     setLegacyPurchasedPortfolios([]);
   }, [legacyPurchasedPortfolios, userStorageKey]);
 
@@ -99,19 +108,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setUser(nextUser);
 
     if (nextUser) {
-      writeStorage(STORAGE_KEYS.user, nextUser);
+      writeJsonStorage(STORAGE_KEYS.user, nextUser);
       return;
     }
 
-    localStorage.removeItem(STORAGE_KEYS.user);
+    removeStorageItem(STORAGE_KEYS.user);
   };
 
   const login = (email: string, _password: string) => {
-    persistUser(buildMockUser(email, 'Demo User', '1'));
+    const normalizedEmail = normalizeEmail(email);
+
+    persistUser(buildMockUser(normalizedEmail, getDisplayNameFromEmail(normalizedEmail), '1'));
   };
 
   const signup = (email: string, _password: string, firstName: string, lastName: string) => {
-    persistUser(buildMockUser(email, `${firstName} ${lastName}`, Date.now().toString()));
+    persistUser(
+      buildMockUser(
+        normalizeEmail(email),
+        `${firstName.trim()} ${lastName.trim()}`.trim(),
+        Date.now().toString(),
+      ),
+    );
   };
 
   const logout = () => {
@@ -126,7 +143,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     // Product/dev escape hatch that unlocks premium routes without changing the seeded user record.
-    const showPremiumStocks = localStorage.getItem('showPremiumStocks') === 'true';
+    const showPremiumStocks = readStorageItem('showPremiumStocks') === 'true';
     const isPremiumUser = user?.plan === 'pro' || user?.plan === 'elite';
 
     return isPremiumUser || showPremiumStocks;
@@ -148,7 +165,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         [userStorageKey]: dedupeValues([...(previousOffers[userStorageKey] ?? []), offerId]),
       };
 
-      writeStorage(STORAGE_KEYS.purchasedOffersByUser, nextOffers);
+      writeJsonStorage(STORAGE_KEYS.purchasedOffersByUser, nextOffers);
       return nextOffers;
     });
 
@@ -158,12 +175,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         [userStorageKey]: dedupeValues([...(previousPurchases[userStorageKey] ?? []), portfolioId]),
       };
 
-      writeStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
+      writeJsonStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
       return nextPurchases;
     });
 
     if (legacyPurchasedPortfolios.length > 0) {
-      localStorage.removeItem(STORAGE_KEYS.legacyPurchasedPortfolios);
+      removeStorageItem(STORAGE_KEYS.legacyPurchasedPortfolios);
       setLegacyPurchasedPortfolios([]);
     }
   };
@@ -187,12 +204,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         delete nextPurchases[userStorageKey];
       }
 
-      writeStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
+      writeJsonStorage(STORAGE_KEYS.purchasedPortfoliosByUser, nextPurchases);
       return nextPurchases;
     });
 
     if (legacyPurchasedPortfolios.length > 0) {
-      localStorage.removeItem(STORAGE_KEYS.legacyPurchasedPortfolios);
+      removeStorageItem(STORAGE_KEYS.legacyPurchasedPortfolios);
       setLegacyPurchasedPortfolios([]);
     }
   };

@@ -1,6 +1,6 @@
 export type FooterStatIconKey = 'settings' | 'shield' | 'users' | 'search' | 'smartphone';
 
-export interface FooterStatItem {
+interface FooterStatItem {
   title: string;
   description: string;
   icon: FooterStatIconKey;
