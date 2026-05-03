@@ -11,8 +11,6 @@ const formatUtcDate = (date: string, options: Intl.DateTimeFormatOptions) => {
   });
 };
 
-export const isIsoDateLabel = (date: string) => ISO_DATE_PATTERN.test(date);
-
 export const formatChartShortDate = (date: string) =>
   formatUtcDate(date, {
     month: 'short',
@@ -26,4 +24,4 @@ export const formatChartLongDate = (date: string) =>
     year: 'numeric',
   });
 
-export const formatCoverageDate = formatChartLongDate;
+export const formatCoverageDate = (date: string) => formatChartLongDate(date);

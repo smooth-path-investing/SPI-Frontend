@@ -6,6 +6,7 @@ import { isStockInvestingPath } from '@/features/stocks';
 import { MobileNavigation } from '@/components/navigation/MobileNavigation';
 import { ProfileDropdown } from '@/components/ui/profile-dropdown';
 import { Button } from '@/components/ui/button';
+import { lockDocumentScroll, unlockDocumentScroll } from '@/lib/scrollLock';
 
 export const Navigation: React.FC = () => {
   const location = useLocation();
@@ -33,28 +34,16 @@ export const Navigation: React.FC = () => {
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
-  // Prevent body scroll when mobile menu is open
+  // Keep mobile menu scroll locking in sync with other overlays like the auth modal.
   useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-
-    const previousHtmlOverflow = html.style.overflow;
-    const previousBodyOverflow = body.style.overflow;
-    const previousBodyTouchAction = body.style.touchAction;
-    const previousBodyOverscrollBehavior = body.style.overscrollBehavior;
-
-    if (isMobileMenuOpen) {
-      html.style.overflow = 'hidden';
-      body.style.overflow = 'hidden';
-      body.style.touchAction = 'none';
-      body.style.overscrollBehavior = 'none';
+    if (!isMobileMenuOpen) {
+      return;
     }
 
+    lockDocumentScroll();
+
     return () => {
-      html.style.overflow = previousHtmlOverflow;
-      body.style.overflow = previousBodyOverflow;
-      body.style.touchAction = previousBodyTouchAction;
-      body.style.overscrollBehavior = previousBodyOverscrollBehavior;
+      unlockDocumentScroll();
     };
   }, [isMobileMenuOpen]);
 

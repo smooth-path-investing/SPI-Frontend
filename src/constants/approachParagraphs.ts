@@ -1,4 +1,4 @@
-export type ApproachContentBlock =
+type ApproachContentBlock =
   | {
       id: string;
       type: 'paragraph';

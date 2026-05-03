@@ -1,8 +1,6 @@
 import type { StockData, StockPricePoint, StockSeriesProfile } from '@/features/stocks/types';
 
-export type { StockData, StockPricePoint } from '@/features/stocks/types';
-
-export const LONG_CONTRARIAN_STOCKS: StockData[] = [
+const LONG_CONTRARIAN_STOCKS: StockData[] = [
   {
     ticker: 'AAPL',
     name: 'Apple Inc.',
@@ -185,7 +183,7 @@ export const LONG_CONTRARIAN_STOCKS: StockData[] = [
   },
 ];
 
-export const SHORT_CONTRARIAN_STOCKS: StockData[] = [
+const SHORT_CONTRARIAN_STOCKS: StockData[] = [
   {
     ticker: 'CRM',
     name: 'Salesforce, Inc.',

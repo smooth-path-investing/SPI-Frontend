@@ -16,30 +16,28 @@
 
   html {
     min-height: 100%;
-    background-color: hsl(var(--background));
-    overflow-y: auto;
+    background-color: #000;
+    background-color: var(--background, #000);
     overflow-x: hidden;
-    overscroll-behavior: none;
   }
 
   body {
     min-height: 100vh;
-    background-color: hsl(var(--background));
-    overflow-y: auto;
+    background-color: #000;
+    background-color: var(--background, #000);
     overflow-x: hidden;
-    overscroll-behavior: none;
   }
 
   #root {
     width: 100%;
     min-height: 100vh;
     max-width: 100%;
-    background-color: hsl(var(--background));
+    background-color: #000;
+    background-color: var(--background, #000);
   }
 
   body {
     @apply bg-background text-foreground;
-    overscroll-behavior: none;
   }
 
   * {

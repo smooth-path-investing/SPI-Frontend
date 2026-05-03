@@ -7,8 +7,8 @@ import { Lock, ArrowLeft } from 'lucide-react';
 import { StockCard } from '@/components/stocks/StockCard';
 import { PortfolioMetricCard } from '@/components/portfolio/PortfolioMetricCard';
 import { Calendar, Package } from 'lucide-react';
-import { AuthModal, useAuth } from '@/features/auth';
-import { buildPortfolioStockDetailPath } from '@/features/stocks';
+import { AuthModal, type OfferType, useAuth } from '@/features/auth';
+import { buildPortfolioStockDetailPath, StockOffersDialog } from '@/features/stocks';
 import { AccentPill, FeatureSurface } from '@/components/ui/feature-surface';
 
 const PORTFOLIO_DETAIL_TEXT = {
@@ -23,10 +23,18 @@ const PORTFOLIO_DETAIL_TEXT = {
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId?: string }>();
-  const { isAuthenticated, login, signup, hasPurchasedPortfolio, canAccessPremiumStocks } =
-    useAuth();
+  const {
+    isAuthenticated,
+    login,
+    signup,
+    hasPurchasedPortfolio,
+    canAccessPremiumStocks,
+    purchaseOffer,
+  } = useAuth();
   const navigate = useNavigate();
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
+  const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
   const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
 
   const portfolio = PORTFOLIOS.find((p) => p.id === resolvedPortfolioId);
@@ -50,9 +58,14 @@ export const PortfolioDetail: React.FC = () => {
     if (!isAuthenticated) {
       setShowAuthModal(true);
     } else if (!isPurchased) {
-      // Show purchase flow (to be implemented later)
-      alert(`Purchase flow for ${portfolioDisplayName} - Price: $${portfolio.price}`);
+      setIsOffersModalOpen(true);
     }
+  };
+
+  const handleOfferSelection = (offer: OfferType) => {
+    setSelectedOffer(offer);
+    purchaseOffer(offer, portfolio.id);
+    setIsOffersModalOpen(false);
   };
 
   if (!canViewPortfolio) {
@@ -138,6 +151,18 @@ export const PortfolioDetail: React.FC = () => {
           onClose={() => setShowAuthModal(false)}
           onLogin={login}
           onSignup={signup}
+        />
+
+        <StockOffersDialog
+          isOpen={isOffersModalOpen}
+          selectedOffer={selectedOffer}
+          onOpenChange={(open) => {
+            setIsOffersModalOpen(open);
+            if (!open) {
+              setSelectedOffer(null);
+            }
+          }}
+          onSelectOffer={handleOfferSelection}
         />
       </>
     );

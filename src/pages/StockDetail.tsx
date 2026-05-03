@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -9,9 +9,6 @@ import {
   IndicatorWeightsChart,
   NormalizedIndicatorChart,
 } from '@/components/graph/TickerAnalyticsCharts';
-import { fetchStockAssetChartSeries, type StockAssetChartSeries } from '@/API/fetchStockAssets';
-import { fetchStockIndicatorWeights } from '@/API/fetchStockFactorCoefvec';
-import { fetchStockFundamentalChartSeries } from '@/API/fetchStockFundamental';
 import { getStockChartForPortfolioTicker, getStocksForPortfolio } from '@/constants/stockData';
 import { getTickerAnalytics } from '@/constants/tickerAnalytics';
 import {
@@ -20,20 +17,24 @@ import {
   STOCK_PREVIEW_SAMPLE_CHART,
 } from '@/constants/stockPreviewSample';
 import type {
-  CumulativeReturnComparisonPoint,
   IndicatorNormalizedPoint,
   IndicatorWeightPoint,
   TickerIndicatorMeta,
 } from '@/features/stocks/analytics/types';
 import {
+  buildCumulativeReturnsFromSeries,
   ChartCard,
   DEFAULT_PORTFOLIO_ID,
+  fetchStockAssetChartSeries,
+  fetchStockFundamentalChartSeries,
+  fetchStockIndicatorWeights,
   formatCoverageDate,
   getStockDetailBackLabel,
   getStockDetailBackPath,
   isPortfolioStockDetailPath,
   isStockPreviewDetailPath,
-  type StockPricePoint,
+  mergeNormalizedSeriesWithPrice,
+  type StockAssetChartSeries,
   StockChatSidebar,
   StockDetailSummary,
 } from '@/features/stocks';
@@ -49,158 +50,6 @@ const STOCK_DETAIL_TEXT = {
   indicatorWeightsUnavailable: 'Indicator weights are unavailable for this ticker.',
   loadingRebasedIndicators: 'Loading rebased indicator series...',
   rebasedIndicatorsUnavailable: 'Rebased indicator series are unavailable for this ticker.',
-};
-
-const REBASED_PRICE_SERIES_KEY = 'stock_price';
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
-
-const buildCumulativeReturnsFromSeries = (
-  stockAssetSeries: StockAssetChartSeries | null,
-): CumulativeReturnComparisonPoint[] => {
-  if (!stockAssetSeries) {
-    return [];
-  }
-
-  // The API returns separate ticker + IVV series, so we first align them on shared dates.
-  const tickerPriceByDate = new Map(
-    stockAssetSeries.ticker_points.map((point) => [point.date, point.close]),
-  );
-  const ivvPriceByDate = new Map(
-    stockAssetSeries.ivv_points.map((point) => [point.date, point.close]),
-  );
-  const sharedDates = Array.from(
-    new Set(
-      stockAssetSeries.ticker_points
-        .map((point) => point.date)
-        .filter((date) => ivvPriceByDate.has(date)),
-    ),
-  ).sort((left, right) => left.localeCompare(right));
-
-  if (sharedDates.length === 0) {
-    return [];
-  }
-
-  const startingTickerPrice = tickerPriceByDate.get(sharedDates[0]);
-  const startingIvvPrice = ivvPriceByDate.get(sharedDates[0]);
-
-  if (
-    startingTickerPrice == null ||
-    startingIvvPrice == null ||
-    startingTickerPrice === 0 ||
-    startingIvvPrice === 0
-  ) {
-    return [];
-  }
-
-  return sharedDates.map((date) => ({
-    date,
-    stockCum: Number(
-      ((((tickerPriceByDate.get(date) ?? startingTickerPrice) / startingTickerPrice) - 1) * 100).toFixed(2),
-    ),
-    ivvCum: Number(
-      ((((ivvPriceByDate.get(date) ?? startingIvvPrice) / startingIvvPrice) - 1) * 100).toFixed(2),
-    ),
-  }));
-};
-
-const getSeriesAlignmentKey = (date: string): string => {
-  const normalizedDate = date.trim();
-
-  if (!ISO_DATE_PATTERN.test(normalizedDate)) {
-    return normalizedDate;
-  }
-
-  const parsedDate = new Date(`${normalizedDate}T00:00:00Z`);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return normalizedDate;
-  }
-
-  const quarter = Math.floor(parsedDate.getUTCMonth() / 3) + 1;
-
-  // Fundamentals are quarterly while prices can be daily/quarterly, so we align by quarter when needed.
-  return `${parsedDate.getUTCFullYear()}-Q${quarter}`;
-};
-
-const mergeNormalizedSeriesWithPrice = (
-  normalizedSeries: IndicatorNormalizedPoint[],
-  indicators: TickerIndicatorMeta[],
-  priceSeries: StockPricePoint[],
-  tickerSymbol: string,
-): {
-  data: IndicatorNormalizedPoint[];
-  indicators: TickerIndicatorMeta[];
-} => {
-  if (normalizedSeries.length === 0 || indicators.length === 0 || priceSeries.length === 0) {
-    return {
-      data: normalizedSeries,
-      indicators,
-    };
-  }
-
-  const exactPriceByDate = new Map<string, number>();
-  const alignedPriceByPeriod = new Map<string, number>();
-
-  priceSeries.forEach((point) => {
-    if (!point.date || typeof point.close !== 'number' || !Number.isFinite(point.close) || point.close <= 0) {
-      return;
-    }
-
-    exactPriceByDate.set(point.date, point.close);
-    alignedPriceByPeriod.set(getSeriesAlignmentKey(point.date), point.close);
-  });
-
-  const matchedRows = normalizedSeries.flatMap((row) => {
-    const exactPrice = exactPriceByDate.get(row.date);
-    const alignedPrice = alignedPriceByPeriod.get(getSeriesAlignmentKey(row.date));
-    const close = exactPrice ?? alignedPrice;
-
-    if (typeof close !== 'number' || !Number.isFinite(close) || close <= 0) {
-      return [];
-    }
-
-    return [
-      {
-        close,
-        row,
-      },
-    ];
-  });
-
-  const rebasingBasis = matchedRows[0]?.close;
-
-  if (typeof rebasingBasis !== 'number' || !Number.isFinite(rebasingBasis) || rebasingBasis <= 0) {
-    return {
-      data: normalizedSeries,
-      indicators,
-    };
-  }
-
-  const mergedData = matchedRows.map(({ close, row }) => ({
-    ...row,
-    [REBASED_PRICE_SERIES_KEY]: Number(((close / rebasingBasis) * 100).toFixed(2)),
-  }));
-
-  if (mergedData.length === 0) {
-    return {
-      data: normalizedSeries,
-      indicators,
-    };
-  }
-
-  return {
-    data: mergedData,
-    indicators: [
-      // Add price as another normalized line so the chart can compare it against fundamentals.
-      {
-        key: REBASED_PRICE_SERIES_KEY,
-        label: `${tickerSymbol} price`,
-        weight: 0,
-        seriesType: 'stock',
-      },
-      ...indicators.filter((indicator) => indicator.key !== REBASED_PRICE_SERIES_KEY),
-    ],
-  };
 };
 
 const ChartStatusMessage: React.FC<{ message: string }> = ({ message }) => (
@@ -230,24 +79,80 @@ export const StockDetail: React.FC = () => {
   const backPath = getStockDetailBackPath(location.pathname, resolvedPortfolioId);
   const backLabel = getStockDetailBackLabel(location.pathname);
 
-  const stocks = getStocksForPortfolio(resolvedPortfolioId);
-  const stock = isStockPreviewRoute
-    ? isStockPreviewSampleTicker(normalizedRouteTicker)
-      ? STOCK_PREVIEW_SAMPLE
-      : undefined
-    : stocks.find((item) => item.ticker.trim().toUpperCase() === normalizedRouteTicker);
+  const stocks = useMemo(() => getStocksForPortfolio(resolvedPortfolioId), [resolvedPortfolioId]);
+  const stock = useMemo(
+    () =>
+      isStockPreviewRoute
+        ? isStockPreviewSampleTicker(normalizedRouteTicker)
+          ? STOCK_PREVIEW_SAMPLE
+          : undefined
+        : stocks.find((item) => item.ticker.trim().toUpperCase() === normalizedRouteTicker),
+    [isStockPreviewRoute, normalizedRouteTicker, stocks],
+  );
   const resolvedTicker = stock?.ticker?.trim().toUpperCase() ?? normalizedRouteTicker;
-  const localStockChartData = isStockPreviewRoute
-    ? isStockPreviewSampleTicker(resolvedTicker)
-      ? STOCK_PREVIEW_SAMPLE_CHART
-      : []
-    : resolvedTicker
-      ? getStockChartForPortfolioTicker(resolvedPortfolioId, resolvedTicker)
-      : [];
+  const localStockChartData = useMemo(
+    () =>
+      isStockPreviewRoute
+        ? isStockPreviewSampleTicker(resolvedTicker)
+          ? STOCK_PREVIEW_SAMPLE_CHART
+          : []
+        : resolvedTicker
+          ? getStockChartForPortfolioTicker(resolvedPortfolioId, resolvedTicker)
+          : [],
+    [isStockPreviewRoute, resolvedPortfolioId, resolvedTicker],
+  );
   const pagePaddingTopClass = isPortfolioStockRoute ? 'pt-5 sm:pt-6' : 'pt-24';
   const chatPanelPositionClass = isPortfolioStockRoute
     ? 'top-0 h-screen'
     : 'top-16 h-[calc(100vh-4rem)]';
+  const tickerAnalytics = useMemo(
+    () => (stock ? getTickerAnalytics(stock, localStockChartData) : null),
+    [localStockChartData, stock],
+  );
+  const priceChartData = useMemo(
+    () => (isStockPreviewRoute ? localStockChartData : (stockAssetSeries?.tickerPoints ?? [])),
+    [isStockPreviewRoute, localStockChartData, stockAssetSeries?.tickerPoints],
+  );
+  const cumulativeReturnsData = useMemo(
+    () =>
+      isStockPreviewRoute
+        ? (tickerAnalytics?.cumulativeReturns ?? [])
+        : buildCumulativeReturnsFromSeries(stockAssetSeries),
+    [isStockPreviewRoute, stockAssetSeries, tickerAnalytics?.cumulativeReturns],
+  );
+  const indicatorWeightsData = useMemo(
+    () => (isStockPreviewRoute ? (tickerAnalytics?.indicatorWeights ?? []) : indicatorWeights),
+    [indicatorWeights, isStockPreviewRoute, tickerAnalytics?.indicatorWeights],
+  );
+  const normalizedIndicatorSeriesData = useMemo(
+    () =>
+      isStockPreviewRoute
+        ? (tickerAnalytics?.normalizedIndicatorSeries ?? [])
+        : normalizedIndicatorSeries,
+    [isStockPreviewRoute, normalizedIndicatorSeries, tickerAnalytics?.normalizedIndicatorSeries],
+  );
+  const normalizedIndicatorMeta = useMemo(
+    () => (isStockPreviewRoute ? (tickerAnalytics?.indicators ?? []) : normalizedIndicators),
+    [isStockPreviewRoute, normalizedIndicators, tickerAnalytics?.indicators],
+  );
+  const normalizedIndicatorChart = useMemo(
+    () =>
+      mergeNormalizedSeriesWithPrice(
+        normalizedIndicatorSeriesData,
+        normalizedIndicatorMeta,
+        priceChartData,
+        stock?.ticker ?? resolvedTicker,
+      ),
+    [
+      normalizedIndicatorMeta,
+      normalizedIndicatorSeriesData,
+      priceChartData,
+      resolvedTicker,
+      stock?.ticker,
+    ],
+  );
+  const chartStart = priceChartData[0];
+  const chartEnd = priceChartData[priceChartData.length - 1];
 
   useEffect(() => {
     // Preview routes are fully seeded from local constants; purchased routes call the backend.
@@ -386,28 +291,6 @@ export const StockDetail: React.FC = () => {
       </div>
     );
   }
-
-  const tickerAnalytics = getTickerAnalytics(stock, localStockChartData);
-  // Preview mode uses seeded demo analytics, while portfolio mode prefers live API responses.
-  const priceChartData = isStockPreviewRoute ? localStockChartData : (stockAssetSeries?.ticker_points ?? []);
-  const cumulativeReturnsData = isStockPreviewRoute
-    ? tickerAnalytics.cumulativeReturns
-    : buildCumulativeReturnsFromSeries(stockAssetSeries);
-  const indicatorWeightsData = isStockPreviewRoute ? tickerAnalytics.indicatorWeights : indicatorWeights;
-  const normalizedIndicatorSeriesData = isStockPreviewRoute
-    ? tickerAnalytics.normalizedIndicatorSeries
-    : normalizedIndicatorSeries;
-  const normalizedIndicatorMeta = isStockPreviewRoute
-    ? tickerAnalytics.indicators
-    : normalizedIndicators;
-  const normalizedIndicatorChart = mergeNormalizedSeriesWithPrice(
-    normalizedIndicatorSeriesData,
-    normalizedIndicatorMeta,
-    priceChartData,
-    stock.ticker,
-  );
-  const chartStart = priceChartData[0];
-  const chartEnd = priceChartData[priceChartData.length - 1];
 
   return (
     <div

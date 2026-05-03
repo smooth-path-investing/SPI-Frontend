@@ -73,7 +73,6 @@ Supporting libraries:
 - `lucide-react` for icons
 - `clsx` + `tailwind-merge` + local `cn()` utility for class composition
 - `validator` for form validation helpers
-- `axios` for one legacy API helper
 - `gsap` for animation support
 
 ## Release Modes
@@ -100,7 +99,7 @@ Mode-aware runtime configuration is centralized in `src/lib/runtimeConfig.ts`. N
 - Node.js 18+ is the safest baseline for Vite 7.
 - `npm` is the expected package manager because the repo includes `package-lock.json`.
 
-There is also a `bun.lockb` in the repo. Treat `npm` as the source of truth unless the team explicitly decides to standardize on Bun later.
+Use the committed `package-lock.json` as the source of truth for dependency installs.
 
 ### Install dependencies
 
@@ -172,6 +171,24 @@ npm run lint
 ```
 
 Runs ESLint against the project.
+
+```bash
+npm run typecheck
+```
+
+Runs TypeScript verification for the app and Vite config without emitting files.
+
+```bash
+npm run test
+```
+
+Compiles focused TypeScript unit tests and runs them with Node's built-in test runner.
+
+```bash
+npm run check
+```
+
+Runs the full local quality gate: lint, typecheck, tests, and production build.
 
 ```bash
 npm run docker:dev
@@ -302,7 +319,6 @@ Supported variables:
 | `VITE_STOCK_ASSETS_API_BASE_URL` | Overrides the base URL for the price/benchmark chart API. | Leave blank to use the Vite proxy. |
 | `VITE_STOCK_FACTOR_COEFVEC_API_BASE_URL` | Overrides the base URL for the indicator weights API. | Leave blank to use the Vite proxy. |
 | `VITE_STOCK_FUNDAMENTAL_API_BASE_URL` | Overrides the base URL for the rebased fundamental series API. | Leave blank to use the Vite proxy. |
-| `VITE_LOCAL_BACKEND_SERVER` | Legacy base URL used by `src/API/fetchPerformance.ts`. | `http://localhost:5050` if needed locally. |
 
 Important rule:
 
@@ -323,17 +339,16 @@ High-level structure:
 
 ```text
 src/
-  API/                  Network helpers for backend requests
   components/           Shared presentational building blocks
   constants/            Seeded content, portfolio metadata, mock stock data
   features/
     auth/               Auth modal, forms, provider, types
-    stocks/             Stock-detail utilities, analytics types, shared components
-  hooks/                Thin re-exports / local hooks
-  lib/                  Utilities and runtime config
+    stocks/             Stock APIs, stock-detail utilities, analytics types, shared components
+  lib/                  Utilities, runtime config, storage, HTTP helpers
   pages/                Route-level page components
   styles/               Sass tokens, theme variables, global styles
-  types/                Shared type exports used across older modules
+  types/                Small shared cross-feature types
+tests/                  Focused unit tests for critical pure logic
 ```
 
 Current folder map:
@@ -347,9 +362,9 @@ Current folder map:
 - `src/components/graph`
 - `src/components/ui`
 - `src/constants`
-- `src/API`
 - `src/lib`
 - `src/styles`
+- `tests`
 
 ## Folder Ownership Rules
 
@@ -405,17 +420,18 @@ Use for static data, seeded content, labels, and configuration-like arrays or ob
 
 Do not put logic-heavy transformations here.
 
-### `src/API`
+### Feature API Modules
 
-Use for typed backend request wrappers.
+Use feature-owned API folders, such as `src/features/stocks/api`, for typed backend request wrappers.
 
 Rules for API helpers:
 
 - one file per endpoint family or resource
 - normalize request URLs in one place
 - return typed data
+- validate external response shapes before returning data to UI code
 - treat expected missing states consistently, for example `404 -> null`
-- keep fetch/axios details out of pages when possible
+- keep low-level request details out of pages when possible
 
 ### `src/lib`
 
@@ -674,8 +690,9 @@ Guideline moving forward:
 
 ### API wrapper rules
 
-- Keep request-building logic inside `src/API`.
+- Keep request-building logic inside the owning feature API module.
 - Return predictable output shapes.
+- Validate API responses from `unknown` before using them in charts or UI state.
 - Normalize edge cases consistently.
 - Avoid direct `fetch()` calls from page components unless there is a very strong reason.
 
@@ -976,9 +993,9 @@ localStorage.removeItem('showPremiumStocks');
 
 ### Add a new API endpoint
 
-1. Create or extend a file in `src/API`.
+1. Create or extend a file in the owning feature API folder, for example `src/features/stocks/api`.
 2. Return a typed response shape.
-3. Normalize empty or missing states consistently.
+3. Validate the raw response shape before returning data.
 4. Consume the helper from the owning feature or page.
 5. If environment-specific behavior is needed, wire it through `src/lib/runtimeConfig.ts`.
 
@@ -994,10 +1011,11 @@ Start in:
 
 Start in this order:
 
-1. `src/pages/StockDetail.tsx`
-2. `src/API/*`
-3. `src/features/stocks/analytics/types.ts`
-4. `src/components/graph/*`
+1. `src/features/stocks/utils/stockDetailChartTransforms.ts`
+2. `src/pages/StockDetail.tsx`
+3. `src/features/stocks/api/stockAnalyticsApi.ts`
+4. `src/features/stocks/analytics/types.ts`
+5. `src/components/graph/*`
 
 ## Definition of Done
 
@@ -1049,10 +1067,8 @@ These are useful realities for future developers:
 - Auth is mocked and does not talk to a backend.
 - Purchase flow is mocked and partially represented by `TODO(subscription-flow)` comments.
 - `src/features/stocks/components/StockChatSidebar.tsx` is a UI shell only.
-- `src/API/fetchPerformance.ts` appears to be legacy and may not be actively used by visible routes.
 - TypeScript strictness is currently relaxed in `tsconfig.app.json`.
-- The repo still contains some legacy structure and naming inconsistencies.
-- There is not yet a real automated test suite.
+- The automated tests focus on critical pure logic; UI integration and browser tests are still future work.
 
 Because of those realities, small focused PRs are preferred over sweeping rewrites.
 

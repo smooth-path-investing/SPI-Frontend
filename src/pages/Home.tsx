@@ -14,8 +14,8 @@ export const Home: React.FC = () => {
       />
       <div className="relative">
         <HeroSection />
-        {/* <MissionSection /> */}
-        {/* <MethodologySection /> */}
+        <MissionSection />
+        <MethodologySection />
         <ApproachSection />
         <SuccessStories />
         <StatsSection />

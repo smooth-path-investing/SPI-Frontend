@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": false,
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "noEmit": false,
+    "outDir": ".tmp-tests",
+    "rootDir": ".",
+    "target": "ES2022",
+    "types": ["node"]
+  },
+  "include": [
+    "src/features/stocks/api/types.ts",
+    "src/features/stocks/analytics/types.ts",
+    "src/features/stocks/types.ts",
+    "src/features/stocks/utils/date.ts",
+    "src/features/stocks/utils/routes.ts",
+    "src/features/stocks/utils/stockDetailChartTransforms.ts",
+    "tests/**/*.test.ts"
+  ]
+}

@@ -1,4 +1,4 @@
-export interface StoryCardItem {
+interface StoryCardItem {
   title: string;
   subtitle: string;
 }

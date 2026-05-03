@@ -1,6 +1,6 @@
 export type MethodologyIconKey = 'cpu' | 'trending-up' | 'brain';
 
-export interface MethodologyCardItem {
+interface MethodologyCardItem {
   icon: MethodologyIconKey;
   title: string;
   description: string;
