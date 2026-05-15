@@ -4,18 +4,18 @@ $color-foreground: hsl(0 0% 100%);
 
 $color-card-bg: hsl(0 0% 1%);
 $color-card-border: hsl(0 0% 5%);
-$color-card-hover: hsl(42 90% 50%);
+$color-card-hover: hsl(0 90% 50%);
 
 $color-muted-text: hsl(0 0% 65%);
-$color-accent: hsl(42 88% 65%);
-$color-accent-light: hsl(42 92% 70%);
+$color-accent: hsl(0 88% 60%);
+$color-accent-light: hsl(0 92% 70%);
 
 // Legacy Sass tokens retained for compatibility with src/styles/theme.scss
 $color-hero-overlay: rgba(0, 0, 0, 0.5);
 $color-hero-overlay-sm: rgba(0, 0, 0, 0.7);
-$color-blob-primary: hsl(42 88% 65%);
-$color-blob-secondary: hsl(38 85% 58%);
-$color-blob-accent: hsl(48 82% 70%);
+$color-blob-primary: hsl(0 88% 60%);
+$color-blob-secondary: hsl(355 85% 50%);
+$color-blob-accent: hsl(10 82% 65%);
 
 $color-border: hsl(0 0% 20%);
 $color-input: hsl(0 0% 20%);
@@ -50,10 +50,10 @@ $border-radius: 0.5rem;
   --popover-foreground: #{$color-foreground};
 
   --primary: #{$color-accent};
-  --primary-foreground: hsl(0 0% 0%);
+  --primary-foreground: hsl(0 0% 100%);
   --secondary: hsl(0 0% 14%);
   --secondary-foreground: #{$color-foreground};
-  --accent-foreground: hsl(0 0% 0%);
+  --accent-foreground: hsl(0 0% 100%);
 
   --muted: hsl(0 0% 12%);
   --muted-foreground: #{$color-muted-text};
