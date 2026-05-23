@@ -9,7 +9,7 @@ const cardClassName =
   'group relative mx-auto max-w-6xl overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 p-6 shadow-[0_18px_36px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/75 hover:shadow-[0_24px_48px_rgba(0,0,0,0.24)] sm:p-8 lg:p-10';
 
 const paragraphClassName =
-  'mx-auto max-w-5xl text-center text-sm leading-8 text-[var(--foreground)] sm:text-base lg:text-lg';
+  'mx-auto max-w-5xl text-left text-sm leading-8 text-[var(--foreground)] sm:text-base lg:text-lg';
 const rulesWrapperClassName =
   'mx-auto max-w-5xl rounded-[24px] border border-white/25 bg-[linear-gradient(180deg,rgba(250,204,21,0.08),rgba(0,0,0,0.2))] px-5 py-5 shadow-[0_14px_32px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--accent)]/55 hover:shadow-[0_18px_40px_rgba(0,0,0,0.2)] sm:px-6 sm:py-6';
 const rulesGridClassName = 'grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4';

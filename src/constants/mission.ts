@@ -1,6 +1,6 @@
 export const MISSION_POINTS = [
-  'Turn publicly traded companies into your personal compounding machine',
-  'Bring institutional knowledge and discipline into your hands',
-  'Blend common sense, rigorous math, risk budget, and decades of battle-tested market experience',
-  'Put A-to-Z stock investing in your pocket — from signal to portfolio: ',
+  'Build a focused 10–12 stock portfolio where every position earns its place',
+  'Access the same quantitative signals institutional desks use — no minimum investment required',
+  'Every recommendation blends rigorous math, risk budget discipline, and decades of real-money market experience',
+  'From signal to sized position: know exactly what to buy, when to enter, and how much to hold — before the market moves',
 ] as const;

@@ -20,10 +20,10 @@ export const FOOTER_STATS: FooterStatItem[] = [
     icon: 'shield',
   },
   {
-    title: 'Independence & Acceptance',
+    title: ‘Conviction-Driven’,
     description:
-      'Proprietary SigGA model built in-house. Once we’re in, we stay in — and double down when the market gives us the chance.',
-    icon: 'users',
+      ‘Proprietary SigGA model built in-house. Once we\’re in, we stay in — and double down when the market gives us the chance.’,
+    icon: ‘users’,
   },
   {
     title: 'Full Transparency',

@@ -22,7 +22,7 @@ export const MethodologySection: FC = () => {
       <div className="max-w-7xl mx-auto methodology-content">
         <SectionHeader
           mainText="The Smooth Path Edge"
-          subText="We Segregate, Condition, Integrate, Order, Exclude and Concentrate"
+          subText="Six steps. Zero emotion. One disciplined process."
         />
 
         <div className={cardsGridClassName}>

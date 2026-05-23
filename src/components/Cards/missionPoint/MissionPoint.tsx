@@ -75,6 +75,13 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.12),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
       />
 
+      <span
+        aria-hidden="true"
+        className="absolute top-4 right-5 text-[11px] font-semibold tracking-[0.14em] text-[var(--muted-text)]/40 sm:top-6 sm:right-7 lg:top-8 lg:right-9"
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
+
       <div
         className="
           relative z-10
