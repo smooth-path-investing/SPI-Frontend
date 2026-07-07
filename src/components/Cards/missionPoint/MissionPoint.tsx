@@ -67,7 +67,7 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
   return (
     <Card
       className="
-        relative mb-6 min-h-fit overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
+        relative mb-6 flex h-full min-h-fit flex-col justify-center overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
       "
     >
       <div

@@ -1,5 +1,6 @@
 import { ApproachSection } from '@/components/home/Approach';
 import { HeroSection } from '@/components/home/HeroSection';
+import { LivePickPreview } from '@/components/home/LivePickPreview';
 import { MethodologySection } from '@/components/home/MethodologySection';
 import { MissionSection } from '@/components/home/MissionSection';
 import { StatsSection } from '@/components/home/StatsSection';
@@ -14,6 +15,7 @@ export const Home: React.FC = () => {
       />
       <div className="relative">
         <HeroSection />
+        <LivePickPreview />
         <MissionSection />
         <MethodologySection />
         <ApproachSection />

@@ -13,7 +13,7 @@ export const MainTitleComponent = (): JSX.Element => {
 
       <span className="mt-6 h-px w-24 bg-gradient-to-r from-transparent via-[var(--accent)] to-transparent sm:mt-8 sm:w-32" />
 
-      <p className="mt-6 max-w-2xl text-base leading-relaxed text-white/82 sm:mt-8 sm:text-lg sm:leading-8">
+      <p className="mt-6 max-w-2xl text-base leading-relaxed text-white [text-shadow:0_2px_14px_rgba(0,0,0,0.6)] sm:mt-8 sm:text-lg sm:leading-8">
         {HERO_SUBHEAD}
       </p>
 

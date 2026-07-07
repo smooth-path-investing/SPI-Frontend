@@ -21,7 +21,7 @@ export const APPROACH_CONTENT: ApproachContentBlock[] = [
     id: 'model',
     type: 'paragraph',
     text:
-      'Our DR-SigGA model uses signature methods — a technique from rough-path mathematics that captures a price path\'s full shape, speed, and memory — combined with genetic algorithms to surface the five strongest predictive signals for each stock. Tail-risk filters keep the model adaptive when market conditions shift.',
+      'We built a model that reads a stock\'s price history the way an expert reads a heartbeat — the shape of the move, how fast, and how far it has come all matter. It automatically finds the five signals that best predict each stock\'s next move, then recalibrates whenever the market changes character.',
   },
   {
     id: 'rules',
@@ -29,13 +29,13 @@ export const APPROACH_CONTENT: ApproachContentBlock[] = [
     items: [
       'Buy and sell in three staged entries and exits, each triggered at predefined portfolio thresholds.',
       'Keep position weights between 2.5% and 20%, with a focused portfolio of 10 to 12 stocks.',
-      'Split exposure into two sub-portfolios — Anchor and Twin — with 5 to 6 stocks each for strategic and tactical views.',
+      'Split exposure into two sleeves — Anchor and Twin — each holding 5 to 6 high-conviction stocks.',
     ],
   },
   {
     id: 'principles',
     type: 'paragraph',
     text:
-      'Our SCIŒC process structures every decision: Segregate data sources, Condition models to current market regimes, Integrate company and macro signals, Order positions by probability, Exclude neutral stocks, and Concentrate into high-conviction views — with symmetry and iteration built in at each step.',
+      'Every decision runs through the same six-step checklist: pull apart the right data, adjust for current market conditions, combine company and economic signals, rank ideas by probability, cut anything sitting on the fence, and concentrate capital into the strongest views.',
   },
 ];

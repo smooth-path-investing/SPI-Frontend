@@ -10,7 +10,8 @@ export const METHODOLOGY_CARDS: MethodologyCardItem[] = [
   {
     icon: 'cpu',
     title: 'Indicator',
-    description: 'Five predictive signals, calibrated to each stock\'s own behavior pattern.',
+    description:
+      "Five predictive signals, each calibrated to the individual stock's own behavior pattern and price rhythm.",
   },
   {
     icon: 'trending-up',

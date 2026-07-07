@@ -16,14 +16,14 @@ export const FOOTER_STATS: FooterStatItem[] = [
   {
     title: 'Risk-aligned Strategy',
     description:
-      'We only use hyper-liquid universes (S&P 500, IWM, …) and cap tracking error to a pre-set band (6–12%).',
+      'We only use hyper-liquid universes (S&P 500, IWM, ...) and cap tracking error to a pre-set band (6-12%).',
     icon: 'shield',
   },
   {
-    title: ‘Conviction-Driven’,
+    title: 'Conviction-Driven',
     description:
-      ‘Proprietary SigGA model built in-house. Once we\’re in, we stay in — and double down when the market gives us the chance.’,
-    icon: ‘users’,
+      "Proprietary SigGA model built in-house. Once we're in, we stay in — and double down when the market gives us the chance.",
+    icon: 'users',
   },
   {
     title: 'Full Transparency',

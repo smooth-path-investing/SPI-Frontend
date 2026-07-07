@@ -14,7 +14,7 @@ export const MissionSection: React.FC = () => {
       >
         <div className="mx-auto max-w-7xl mission-content">
           <TooltipProvider delayDuration={140} skipDelayDuration={80}>
-            <SectionHeader mainText="The SPI Advantage" subText="Four things we put directly in your hands." />
+            <SectionHeader mainText="The SPI Advantage" subText="Your edge, in four parts." />
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
               {MISSION_POINTS.map((point, index) => (

@@ -1,7 +1,7 @@
 import type { StockData, StockPricePoint } from '@/features/stocks/types';
 
 export const STOCK_PREVIEW_SAMPLE: StockData = {
-  ticker: 'SPIX',
+  ticker: 'SPI',
   name: 'SPI Sample Holdings',
   sector: 'Technology',
   price: 124.38,

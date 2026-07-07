@@ -14,7 +14,7 @@ const rulesWrapperClassName =
   'mx-auto max-w-5xl rounded-[24px] border border-white/25 bg-[linear-gradient(180deg,rgba(250,204,21,0.08),rgba(0,0,0,0.2))] px-5 py-5 shadow-[0_14px_32px_rgba(0,0,0,0.16)] transition-all duration-300 hover:border-[var(--accent)]/55 hover:shadow-[0_18px_40px_rgba(0,0,0,0.2)] sm:px-6 sm:py-6';
 const rulesGridClassName = 'grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4';
 const ruleCardClassName =
-  'group/rule rounded-[22px] border border-white/25 bg-[var(--card-bg)]/90 px-4 py-4 text-left shadow-[0_12px_24px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/55 hover:bg-[var(--card-bg)] sm:px-5 sm:py-5';
+  'group/rule flex h-full flex-col rounded-[22px] border border-white/25 bg-[var(--card-bg)]/90 px-4 py-4 text-left shadow-[0_12px_24px_rgba(0,0,0,0.14)] transition-all duration-300 hover:-translate-y-1 hover:border-[var(--accent)]/55 hover:bg-[var(--card-bg)] sm:px-5 sm:py-5';
 
 export const ApproachSection = () => {
   return (
