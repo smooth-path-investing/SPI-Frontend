@@ -67,13 +67,20 @@ export const MissionPoint: React.FC<MissionPointProps> = ({ point, index }) => {
   return (
     <Card
       className="
-        relative mb-6 min-h-fit overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
+        relative mb-6 flex h-full min-h-fit flex-col justify-center overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 px-5 py-6 shadow-[0_14px_32px_rgba(0,0,0,0.18)] transition-all duration-300 sm:mb-0 sm:min-h-fit sm:hover:-translate-y-0.5 sm:p-8 hover:border-[var(--accent)]/70 hover:shadow-[0_18px_38px_rgba(0,0,0,0.24)] lg:p-12
       "
     >
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(250,204,21,0.12),transparent_32%),radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.04),transparent_44%)]"
       />
+
+      <span
+        aria-hidden="true"
+        className="absolute top-4 right-5 text-[11px] font-semibold tracking-[0.14em] text-[var(--muted-text)]/40 sm:top-6 sm:right-7 lg:top-8 lg:right-9"
+      >
+        {String(index + 1).padStart(2, '0')}
+      </span>
 
       <div
         className="

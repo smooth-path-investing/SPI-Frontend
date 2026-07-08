@@ -10,17 +10,17 @@ export const METHODOLOGY_CARDS: MethodologyCardItem[] = [
   {
     icon: 'cpu',
     title: 'Indicator',
-    description: 'Five decisive predictors no stock escapes',
+    description:
+      "Five predictive signals, each calibrated to the individual stock's own behavior pattern and price rhythm.",
   },
   {
     icon: 'trending-up',
     title: 'Behavior',
-    description: 'Crowd psychology distilled into trend investing, reverting, or indexing.',
+    description: 'Each stock is classified as a trend rider, mean reverter, or market tracker — then traded on its own terms.',
   },
   {
     icon: 'brain',
     title: 'Allocator',
-    description:
-      'Mathematical sophistication applied to stock selection, that is, to what, when, and how much.',
+    description: 'Precise sizing rules determine what to buy, when to enter, and exactly how much capital to deploy.',
   },
 ];

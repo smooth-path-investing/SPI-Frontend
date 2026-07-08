@@ -1,27 +1,39 @@
+export type StoryCardIconKey = 'layers' | 'binary' | 'brain-circuit' | 'activity';
+
 interface StoryCardItem {
+  icon: StoryCardIconKey;
+  label: string;
   title: string;
   subtitle: string;
 }
 
 export const STORY_CARDS: StoryCardItem[] = [
   {
-    title: 'Stock Stories Signature Investment Framework',
+    icon: 'layers',
+    label: 'Framework',
+    title: 'Stock Stories Investment Framework',
     subtitle:
-      'A structured collection of investment philosophies that translates market narratives into disciplined, probability-based portfolio decisions.',
+      'Stocks are assigned a narrative — trend rider, mean reverter, or market tracker — so every trade follows a repeatable, probability-based philosophy.',
   },
   {
-    title: 'Dimension Reduction Signature Genetic Algorithm',
+    icon: 'binary',
+    label: 'DR-SigGA',
+    title: 'Dimension Reduction',
     subtitle:
-      'We deploy signatures (ML, rough path theory) with genetic algorithm (AI, optimization) to find Five Best Indicator Predictors.',
+      'Signature methods from rough-path theory, paired with genetic algorithms, surface the five strongest predictive signals for each stock.',
   },
   {
-    title: 'Adaptive Learning Signature Genetic Algorithm',
+    icon: 'brain-circuit',
+    label: 'Adaptive',
+    title: 'Adaptive Learning Model',
     subtitle:
-      "Stocks to indicators adaptive linkage of people's behavior onto stock's path geometric properties (linear, nonlinear, complex).",
+      "Maps each stock's path geometry — linear, nonlinear, or complex — to the right behavior model, and updates as market conditions shift.",
   },
   {
-    title: 'Informational Inefficiencies Signature Genetic Algorithm',
+    icon: 'activity',
+    label: 'Inefficiencies',
+    title: 'Informational Edge Detection',
     subtitle:
-      "Stock's path calibration into new behavior (ML), indicators, and higher frequencies.",
+      'Converts price-path geometry into real-time buy/sell signals and identifies shorter windows of exploitable market inefficiency.',
   },
 ];
