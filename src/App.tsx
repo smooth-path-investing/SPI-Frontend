@@ -11,6 +11,7 @@ import NotFound from '@/pages/NotFound';
 import { PortfolioDetail } from '@/pages/PortfolioDetail';
 import { StockDetail } from '@/pages/StockDetail';
 import { Stocks } from '@/pages/Stocks';
+import TchartsExtraPage from '@/pages/tcharts-extra';
 
 // Keep one React Query client for the lifetime of the SPA.
 const queryClient = new QueryClient();
@@ -34,6 +35,10 @@ const AppShell = () => {
           <Route path="/portfolio/stock/:ticker" element={<StockDetail />} />
           <Route path="/portfolio/:portfolioId" element={<PortfolioDetail />} />
           <Route path="/portfolio/:portfolioId/stock/:ticker" element={<StockDetail />} />
+          <Route 
+                  path="/tcharts-extra"
+                  element={<TchartsExtraPage />}
+          />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

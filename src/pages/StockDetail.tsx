@@ -543,12 +543,23 @@ export const StockDetail: React.FC = () => {
               }
             >
               {normalizedIndicatorChart.data.length > 0 &&
-              normalizedIndicatorChart.indicators.length > 0 ? (
-                <NormalizedIndicatorChart
-                  data={normalizedIndicatorChart.data}
-                  indicators={normalizedIndicatorChart.indicators}
-                />
-              ) : (
+normalizedIndicatorChart.indicators.length > 0 ? (
+  <div className="space-y-4">
+    <NormalizedIndicatorChart
+      data={normalizedIndicatorChart.data}
+      indicators={normalizedIndicatorChart.indicators}
+    />
+
+    <div className="flex justify-center">
+      <Button
+        onClick={() => navigate('/tcharts-extra')}
+        className="border border-[var(--accent)] bg-[var(--accent)] text-black hover:bg-[var(--accent-light)]"
+      >
+        Open Advanced Charts
+      </Button>
+    </div>
+  </div>
+) : (
                 <ChartStatusMessage
                   message={
                     isLoadingNormalizedIndicators
