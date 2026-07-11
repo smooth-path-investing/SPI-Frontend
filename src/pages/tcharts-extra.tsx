@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as XLSX from 'xlsx';
-import Tcharts from './Tcharts';
+import Tcharts from './TCharts';
 
 export default function TchartsExtraPage() {
   const [excelData, setExcelData] = useState<any[]>([]);
