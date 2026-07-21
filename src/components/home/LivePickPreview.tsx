@@ -1,4 +1,4 @@
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, FileDown } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ScrollSection } from '../animations/scrollSection';
 import { SectionHeader } from '../sectionHeaders/reusableHeaders/sectionHeader';
@@ -7,6 +7,12 @@ import { Button } from '@/components/ui/button';
 
 const cardClass =
   'relative overflow-hidden rounded-[28px] border border-white/25 bg-gradient-to-b from-[var(--card-bg)] to-black/35 p-6 shadow-[0_18px_36px_rgba(0,0,0,0.18)] sm:p-8 lg:p-10';
+
+const ANNUAL_REPORTS = [
+  { year: '2023', href: '/reports/eyeland-r2s-2023.pdf' },
+  { year: '2024', href: '/reports/eyeland-r2s-2024.pdf' },
+  { year: '2025', href: '/reports/eyeland-r2s-2025.pdf' },
+] as const;
 
 export const LivePickPreview = () => {
   return (
@@ -29,12 +35,26 @@ export const LivePickPreview = () => {
 
             <div className="relative z-10 flex flex-col gap-4">
               <p className="text-center text-xs uppercase tracking-[0.12em] text-[var(--muted-text)]">
-                2025 Cumulative Return vs. Market
+                2026 Cumulative Return vs. Market
               </p>
               <HedgeFundPerformanceChart heightClassName="h-[340px] w-full sm:h-[420px] lg:h-[480px]" />
               <p className="text-center text-[11px] text-[var(--muted-text)]/60">
-                EyeLand R2S Partners, LP · Jan 1 – Nov 27, 2025 · Past performance does not guarantee future results
+                EyeLand R2S Partners, LP · Jan 1 – Jul 10, 2026 · Past performance does not guarantee future results
               </p>
+
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                {ANNUAL_REPORTS.map((report) => (
+                  <a
+                    key={report.year}
+                    href={report.href}
+                    download
+                    className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/[0.04] px-3.5 py-1.5 text-xs font-medium text-[var(--muted-text)] transition-colors hover:border-[var(--accent)]/40 hover:text-[var(--foreground)]"
+                  >
+                    <FileDown className="h-3.5 w-3.5" />
+                    {report.year} IB Report
+                  </a>
+                ))}
+              </div>
 
               <Button
                 asChild
