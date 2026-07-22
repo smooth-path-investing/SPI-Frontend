@@ -19,6 +19,10 @@ const DEVELOPMENT_PROXY = {
     target: 'http://127.0.0.1:3000',
     changeOrigin: true,
   },
+  '/api': {
+    target: 'http://127.0.0.1:3000',
+    changeOrigin: true,
+  },
 } as const;
 
 // https://vitejs.dev/config/

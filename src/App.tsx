@@ -17,6 +17,9 @@ const StockDetail = lazy(() =>
   import('@/pages/StockDetail').then((module) => ({ default: module.StockDetail })),
 );
 const Stocks = lazy(() => import('@/pages/Stocks').then((module) => ({ default: module.Stocks })));
+const StockDriving = lazy(() =>
+  import('@/pages/StockDriving').then((module) => ({ default: module.StockDriving })),
+);
 
 // Keep one React Query client for the lifetime of the SPA.
 const queryClient = new QueryClient();
@@ -87,6 +90,7 @@ const AppShell = () => {
             <Route path="/stock" element={<Stocks />} />
             <Route path="/stock/:ticker" element={<StockDetail />} />
             <Route path="/stocks" element={<Stocks />} />
+            <Route path="/stock-driving" element={<StockDriving />} />
             <Route path="/portfolio" element={<PortfolioDetail />} />
             <Route path="/portfolio/stock/:ticker" element={<StockDetail />} />
             <Route path="/portfolio/:portfolioId" element={<PortfolioDetail />} />
