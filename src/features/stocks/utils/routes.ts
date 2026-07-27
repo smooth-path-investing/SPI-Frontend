@@ -11,6 +11,8 @@ export const isStockPreviewDetailPath = (pathname: string) => pathname.startsWit
 export const isStockInvestingPath = (pathname: string) =>
   pathname === '/stock' ||
   pathname.startsWith('/stock/') ||
+  pathname === '/stock-investing' ||
+  pathname === '/hedge-fund-investing' ||
   pathname === '/portfolio' ||
   pathname.startsWith('/portfolio/');
 
@@ -21,7 +23,7 @@ export const buildPortfolioStockDetailPath = (portfolioId: string, ticker: strin
 
 export const getStockDetailBackPath = (pathname: string, portfolioId: string) =>
   isStockPreviewDetailPath(pathname)
-    ? '/stock'
+    ? '/stock-investing'
     : portfolioId === DEFAULT_PORTFOLIO_ID
       ? '/portfolio'
       : `/portfolio/${portfolioId}`;

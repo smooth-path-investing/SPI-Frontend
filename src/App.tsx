@@ -20,6 +20,12 @@ const Stocks = lazy(() => import('@/pages/Stocks').then((module) => ({ default: 
 const StockDriving = lazy(() =>
   import('@/pages/StockDriving').then((module) => ({ default: module.StockDriving })),
 );
+const StockInvestingLanding = lazy(() =>
+  import('@/pages/StockInvestingLanding').then((module) => ({ default: module.StockInvestingLanding })),
+);
+const HedgeFundInvesting = lazy(() =>
+  import('@/pages/HedgeFundInvesting').then((module) => ({ default: module.HedgeFundInvesting })),
+);
 
 // Keep one React Query client for the lifetime of the SPA.
 const queryClient = new QueryClient();
@@ -87,7 +93,9 @@ const AppShell = () => {
         <Suspense fallback={<RouteLoadingFallback />}>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/stock" element={<Stocks />} />
+            <Route path="/stock" element={<StockInvestingLanding />} />
+            <Route path="/stock-investing" element={<Stocks />} />
+            <Route path="/hedge-fund-investing" element={<HedgeFundInvesting />} />
             <Route path="/stock/:ticker" element={<StockDetail />} />
             <Route path="/stocks" element={<Stocks />} />
             <Route path="/stock-driving" element={<StockDriving />} />

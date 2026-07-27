@@ -129,7 +129,7 @@ export default function Chat({ messages, setMessages }: ChatProps) {
       <div className="flex-1 space-y-5 overflow-y-auto px-2 py-4 sm:px-4">
         {messages.length === 0 && !loading && (
           <div className="mx-auto max-w-xl pt-10 text-center">
-            <h2 className="text-xl font-semibold text-[var(--foreground)]">Research Analytics System</h2>
+            <h2 className="text-xl font-semibold text-[var(--foreground)]">Regime Adaptive System</h2>
             <p className="mt-2 text-sm text-[var(--muted-text)]">
               Ask about stocks, indicators, predictions, and live trading signals.
             </p>

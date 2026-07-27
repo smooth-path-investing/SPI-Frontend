@@ -41,7 +41,7 @@ export const PortfolioDetail: React.FC = () => {
 
   useEffect(() => {
     if (!portfolio) {
-      navigate('/stock');
+      navigate('/stock-investing');
     }
   }, [portfolio, navigate]);
 
@@ -79,7 +79,7 @@ export const PortfolioDetail: React.FC = () => {
           <div className="relative mx-auto max-w-[88rem] px-4 pb-20 pt-6 sm:px-6 sm:py-20 lg:px-8">
             <Button
               variant="outline"
-              onClick={() => navigate('/stock')}
+              onClick={() => navigate('/stock-investing')}
               className="mb-5 rounded-full border-white/15 bg-black/25 px-4 text-[var(--foreground)] hover:border-[var(--accent)]/60 hover:bg-[var(--accent)] hover:text-black"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
