@@ -10,6 +10,9 @@ export default function FactorCorrelationPanel() {
   return (
     <div className="flex h-full flex-col">
       <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+        <span className="text-[10px] font-bold uppercase tracking-[0.14em] text-[var(--muted-text)]">
+          Ticker
+        </span>
         <input
           className="w-32 rounded-lg border border-white/15 bg-white/[0.04] px-3 py-1.5 text-sm text-[var(--foreground)] placeholder:text-[var(--muted-text)]/60 focus:border-[var(--accent)]/50 focus:outline-none"
           placeholder="AAPL"
@@ -22,8 +25,9 @@ export default function FactorCorrelationPanel() {
           className="rounded-lg border border-[var(--accent)] bg-[var(--accent)] px-3.5 py-1.5 text-xs font-semibold text-black hover:bg-yellow-300"
           onClick={() => setActiveTicker(ticker.trim().toUpperCase() || 'AAPL')}
         >
-          Open
+          RUN
         </button>
+        <span className="ml-2 text-sm font-semibold tracking-wide text-white">Factor Correlation</span>
       </div>
       <iframe src={src} className="w-full flex-1 border-0 bg-black" title="Factor Correlation" />
     </div>
