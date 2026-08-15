@@ -28,7 +28,7 @@ export default function StockMechanicPanel() {
             ← Back
           </button>
           <span className="text-sm font-medium text-[var(--foreground)]">
-            Stock Mechanic — {launchedTicker}
+            Stock Performance — {launchedTicker}
           </span>
         </div>
         <iframe src={src} className="w-full flex-1 border-0 bg-black" title="Stock Mechanic" />

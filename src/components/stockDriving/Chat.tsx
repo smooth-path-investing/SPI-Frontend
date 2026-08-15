@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import MessageRenderer from './MessageRenderer';
+import StockMechanicPanel from './StockMechanicPanel';
 import { RUNTIME_CONFIG, buildApiUrl } from '@/lib/runtimeConfig';
 
 interface ChatMessage {
@@ -13,6 +14,9 @@ const SUGGESTIONS = [
   'Live trading overview',
   'Analyze GOOGL predictions',
 ];
+
+
+const STOCK_PANEL_SUGGESTION = { label: '📈 Stock Performance' };
 
 function TypingIndicator() {
   return (
@@ -44,6 +48,13 @@ export default function Chat({ messages, setMessages }: ChatProps) {
   const [streamingContent, setStreamingContent] = useState('');
   const bottomRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Stock Performance panel embedded inside chat
+  const [showStockPanel, setShowStockPanel] = useState(false);
+
+  const openStockPanel = () => {
+    setShowStockPanel(true);
+  };
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -124,6 +135,26 @@ export default function Chat({ messages, setMessages }: ChatProps) {
     e.target.style.height = `${Math.min(e.target.scrollHeight, 140)}px`;
   };
 
+  // Stock Performance panel is showing — swap it in for the whole chat body,
+  // but keep it inside the same container so the tab/page around us doesn't change.
+  if (showStockPanel) {
+    return (
+      <div className="flex h-full flex-col">
+        <div className="flex items-center gap-3 border-b border-white/10 px-4 py-3">
+          <button
+            className="rounded-full border border-white/15 bg-white/[0.04] px-3 py-1.5 text-xs font-medium text-[var(--muted-text)] hover:text-[var(--foreground)]"
+            onClick={() => setShowStockPanel(false)}
+          >
+            Back to Chat
+          </button>
+        </div>
+        <div className="flex-1">
+          <StockMechanicPanel />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full flex-col">
       <div className="flex-1 space-y-5 overflow-y-auto px-2 py-4 sm:px-4">
@@ -143,6 +174,16 @@ export default function Chat({ messages, setMessages }: ChatProps) {
                   {s}
                 </button>
               ))}
+            </div>
+
+            {/* Stock Performance suggestion — opens the panel instead of sending a message */}
+            <div className="mt-3 flex flex-wrap justify-center gap-2">
+              <button
+                className="rounded-full border border-[var(--accent)]/40 bg-[var(--accent)]/10 px-3.5 py-1.5 text-xs font-medium text-[var(--accent)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent)]/20"
+                onClick={() => openStockPanel()}
+              >
+                {STOCK_PANEL_SUGGESTION.label}
+              </button>
             </div>
           </div>
         )}
@@ -181,6 +222,15 @@ export default function Chat({ messages, setMessages }: ChatProps) {
       </div>
 
       <div className="flex items-end gap-3 border-t border-white/10 px-2 py-3 sm:px-4">
+        {/* Always-available way to jump to Stock Performance, even mid-conversation */}
+        <button
+          type="button"
+          title="Open Stock Performance"
+          onClick={() => openStockPanel()}
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/15 bg-white/[0.04] text-[var(--muted-text)] transition-colors hover:border-[var(--accent)]/40 hover:text-[var(--accent)]"
+        >
+          📈
+        </button>
         <textarea
           ref={textareaRef}
           rows={1}
@@ -196,7 +246,7 @@ export default function Chat({ messages, setMessages }: ChatProps) {
           disabled={loading || !input.trim()}
           className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[var(--accent)] bg-[var(--accent)] text-black transition-all hover:bg-yellow-300 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          ↑
+          
         </button>
       </div>
     </div>
