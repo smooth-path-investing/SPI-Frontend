@@ -10,10 +10,7 @@ export const SuccessStories = () => {
       triggerClass="stories-content"
     >
       <div className="max-w-7xl mx-auto stories-content">
-        <SectionHeader
-          mainText="The Research Behind the Edge"
-          subText="The science behind every pick."
-        />
+        <SectionHeader mainText="Research Behind the Edge" />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-7 lg:gap-8">
           {STORY_CARDS.map((story) => (
