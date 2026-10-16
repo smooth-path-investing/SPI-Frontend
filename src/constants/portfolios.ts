@@ -1,3 +1,5 @@
+import type { InvestType } from '@/features/stocks';
+
 interface Portfolio {
   id: string;
   name: string;
@@ -8,6 +10,8 @@ interface Portfolio {
   riskLevel: 'Low' | 'Medium' | 'High';
   holdings: number;
   rebalanceFrequency: string;
+  /** Which `stock_factor_coefvec.invest_type` bucket this list is driven by. */
+  investType: InvestType;
 }
 
 export const PORTFOLIOS: Portfolio[] = [
@@ -20,6 +24,19 @@ export const PORTFOLIOS: Portfolio[] = [
     riskLevel: 'Medium',
     holdings: 10,
     rebalanceFrequency: 'Quarterly',
+    investType: 'long',
+  },
+  {
+    id: 'watchlist',
+    name: 'Watchlist Stocks List',
+    description:
+      'Watchlist candidates under active monitoring for a disciplined, quarterly entry when conditions align.',
+    price: 99,
+    expectedReturn: 'S&P 500 plus/minus 15%',
+    riskLevel: 'Medium',
+    holdings: 10,
+    rebalanceFrequency: 'Quarterly',
+    investType: 'watchlist',
   },
   {
     id: 'short-contrarian',
@@ -31,5 +48,6 @@ export const PORTFOLIOS: Portfolio[] = [
     riskLevel: 'High',
     holdings: 10,
     rebalanceFrequency: 'Quarterly',
+    investType: 'short',
   },
 ];

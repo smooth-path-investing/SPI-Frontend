@@ -35,6 +35,10 @@ export const RUNTIME_CONFIG = {
     import.meta.env.VITE_STOCK_FUNDAMENTAL_API_BASE_URL,
     'VITE_STOCK_FUNDAMENTAL_API_BASE_URL',
   ),
+  // Supabase is read directly from the browser for DB-driven stock lists.
+  // The anon key is public and read-only by design.
+  supabaseUrl: normalizeBaseUrl(import.meta.env.VITE_SUPABASE_URL, 'VITE_SUPABASE_URL'),
+  supabaseAnonKey: (import.meta.env.VITE_SUPABASE_ANON_KEY ?? '').trim(),
 } as const;
 
 export const buildApiUrl = (requestPath: string, baseUrl = '') => {

@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { PORTFOLIOS } from '@/constants/portfolios';
-import { getStocksForPortfolio } from '@/constants/stockData';
 import { Button } from '@/components/ui/button';
-import { Lock, ArrowLeft } from 'lucide-react';
+import { Lock, ArrowLeft, ArrowRight } from 'lucide-react';
 import { StockCard } from '@/components/stocks/StockCard';
 import { PortfolioMetricCard } from '@/components/portfolio/PortfolioMetricCard';
 import { Calendar, Package } from 'lucide-react';
 import { AuthModal, type OfferType, useAuth } from '@/features/auth';
-import { buildPortfolioStockDetailPath, StockOffersDialog } from '@/features/stocks';
+import {
+  buildPortfolioStockDetailPath,
+  fetchStocksByInvestType,
+  StockOffersDialog,
+  type InvestTypeStock,
+} from '@/features/stocks';
 import { AccentPill, FeatureSurface } from '@/components/ui/feature-surface';
 
 const PORTFOLIO_DETAIL_TEXT = {
@@ -20,6 +24,21 @@ const PORTFOLIO_DETAIL_TEXT = {
   loginPurchase: 'Login to Purchase',
   currentHoldings: 'Current Holdings',
 };
+
+// Friendly URL slugs → portfolio id. The existing `/portfolio/:portfolioId`
+// route already serves these, so no new routes are needed.
+const PORTFOLIO_ALIASES: Record<string, string> = {
+  short: 'short-contrarian',
+  long: 'long-contrarian',
+};
+
+// Links between the three DB-driven lists. Watchlist/Short wording is the exact
+// text the boss specified; the Long link mirrors that phrasing.
+const LIST_LINKS: { id: string; path: string; label: string }[] = [
+  { id: 'long-contrarian', path: '/portfolio', label: 'To Access the Long (Current Stock Picks), Please Click Here.' },
+  { id: 'watchlist', path: '/portfolio/watchlist', label: 'To Access the Watchlist Stocks, Please Click Here.' },
+  { id: 'short-contrarian', path: '/portfolio/short', label: 'To Access the Short (for short-selling) Stocks, Please Click Here.' },
+];
 
 export const PortfolioDetail: React.FC = () => {
   const { portfolioId } = useParams<{ portfolioId?: string }>();
@@ -35,15 +54,48 @@ export const PortfolioDetail: React.FC = () => {
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isOffersModalOpen, setIsOffersModalOpen] = useState(false);
   const [selectedOffer, setSelectedOffer] = useState<OfferType | null>(null);
-  const resolvedPortfolioId = portfolioId ?? 'long-contrarian';
+  const [stocks, setStocks] = useState<InvestTypeStock[]>([]);
+  const [isLoadingStocks, setIsLoadingStocks] = useState(true);
+  const [stocksError, setStocksError] = useState<string | null>(null);
+  const resolvedPortfolioId =
+    (portfolioId && PORTFOLIO_ALIASES[portfolioId]) || portfolioId || 'long-contrarian';
 
   const portfolio = PORTFOLIOS.find((p) => p.id === resolvedPortfolioId);
+  const investType = portfolio?.investType;
 
   useEffect(() => {
     if (!portfolio) {
       navigate('/stock-investing');
     }
   }, [portfolio, navigate]);
+
+  // DB-driven holdings: read the stocks for this list's `invest_type` straight
+  // from Supabase (stock_factor_coefvec.invest_type + security_master names).
+  useEffect(() => {
+    if (!investType) return;
+
+    let isCancelled = false;
+    setIsLoadingStocks(true);
+    setStocksError(null);
+
+    fetchStocksByInvestType(investType)
+      .then((rows) => {
+        if (!isCancelled) setStocks(rows);
+      })
+      .catch((error: unknown) => {
+        if (!isCancelled) {
+          setStocks([]);
+          setStocksError(error instanceof Error ? error.message : 'Failed to load stocks.');
+        }
+      })
+      .finally(() => {
+        if (!isCancelled) setIsLoadingStocks(false);
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [investType]);
 
   if (!portfolio) {
     return null;
@@ -168,8 +220,9 @@ export const PortfolioDetail: React.FC = () => {
     );
   }
 
-  // Purchased view - show actual portfolio content
-  const stocks = getStocksForPortfolio(portfolio.id);
+  // Purchased view - show actual portfolio content.
+  // `stocks` is loaded from the DB (by invest_type) via the effect above.
+  const holdingsCount = stocks.length > 0 ? stocks.length : portfolio.holdings;
   // TODO(subscription-flow): set to `true` when you re-enable locked/blurred tickers.
   // Current requirement is to show all tickers unblurred after bundle selection.
   const shouldLockTickers = false;
@@ -194,7 +247,7 @@ export const PortfolioDetail: React.FC = () => {
                 <PortfolioMetricCard
                   icon={Package}
                   label={PORTFOLIO_DETAIL_TEXT.holdings}
-                  value={portfolio.holdings}
+                  value={holdingsCount}
                 />
                 <PortfolioMetricCard
                   icon={Calendar}
@@ -208,33 +261,60 @@ export const PortfolioDetail: React.FC = () => {
 
         <FeatureSurface>
           <div className="px-5 py-6 sm:px-6 sm:py-7">
-            <div className="grid w-full grid-cols-1 gap-3 lg:grid-cols-3 lg:auto-rows-fr lg:gap-4">
-              {stocks.map((stock, index) => {
-                const shouldCenterLastCard = stocks.length % 3 === 1 && index === stocks.length - 1;
+            {isLoadingStocks ? (
+              <p className="py-8 text-center text-sm text-[var(--muted-text)]">Loading stocks…</p>
+            ) : stocksError ? (
+              <p className="py-8 text-center text-sm text-[var(--muted-text)]">
+                Could not load stocks right now. Please try again shortly.
+              </p>
+            ) : stocks.length === 0 ? (
+              <p className="py-8 text-center text-sm text-[var(--muted-text)]">
+                No stocks are currently listed for this selection.
+              </p>
+            ) : (
+              <div className="grid w-full grid-cols-1 gap-3 lg:grid-cols-3 lg:auto-rows-fr lg:gap-4">
+                {stocks.map((stock, index) => {
+                  const shouldCenterLastCard =
+                    stocks.length % 3 === 1 && index === stocks.length - 1;
 
-                return (
-                  <div
-                    key={stock.ticker}
-                    className={shouldCenterLastCard ? 'lg:col-start-2' : undefined}
-                  >
-                    <StockCard
-                      stock={stock}
-                      // TODO(subscription-flow): use `blurred={shouldLockTickers}` when lock returns.
-                      blurred={false}
-                      disableViewAnalysis={shouldLockTickers}
-                      cardClassName="border-white/35 hover:border-white/70"
-                      tickerClassName="text-[var(--accent)]"
-                      compact
-                      onViewDetails={() =>
-                        navigate(buildPortfolioStockDetailPath(portfolio.id, stock.ticker))
-                      }
-                    />
-                  </div>
-                );
-              })}
-            </div>
+                  return (
+                    <div
+                      key={stock.ticker}
+                      className={shouldCenterLastCard ? 'lg:col-start-2' : undefined}
+                    >
+                      <StockCard
+                        stock={stock}
+                        // TODO(subscription-flow): use `blurred={shouldLockTickers}` when lock returns.
+                        blurred={false}
+                        disableViewAnalysis={shouldLockTickers}
+                        cardClassName="border-white/35 hover:border-white/70"
+                        tickerClassName="text-[var(--accent)]"
+                        compact
+                        onViewDetails={() =>
+                          navigate(buildPortfolioStockDetailPath(portfolio.id, stock.ticker))
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </FeatureSurface>
+
+        {/* Links to the other DB-driven lists (Watchlist / Short / Long). */}
+        <div className="mt-6 flex flex-col gap-3">
+          {LIST_LINKS.filter((link) => link.id !== portfolio.id).map((link) => (
+            <Link
+              key={link.id}
+              to={link.path}
+              className="group flex items-center justify-between gap-3 rounded-[20px] border border-[var(--accent)]/35 bg-black/20 px-5 py-4 text-sm font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent)]/10 sm:text-base"
+            >
+              <span>{link.label}</span>
+              <ArrowRight className="h-4 w-4 shrink-0 text-[var(--accent)] transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          ))}
+        </div>
       </div>
 
       <AuthModal

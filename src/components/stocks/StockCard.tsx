@@ -5,7 +5,9 @@ import type { StockData } from '@/features/stocks';
 import { cn } from '@/lib/utils';
 
 interface StockCardProps {
-  stock: StockData;
+  // The card only renders the ticker + name, so it accepts either the rich
+  // local StockData or a lightweight DB-driven row ({ ticker, name }).
+  stock: Pick<StockData, 'ticker' | 'name'>;
   onViewDetails: () => void;
   blurred?: boolean;
   disableViewAnalysis?: boolean;

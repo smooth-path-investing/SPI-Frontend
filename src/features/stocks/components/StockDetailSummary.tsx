@@ -5,7 +5,9 @@ import { FeatureSurface } from '@/components/ui/feature-surface';
 import type { StockData } from '../types';
 
 interface StockDetailSummaryProps {
-  stock: StockData;
+  // Only the name/sector/description are rendered, so a DB-driven minimal row
+  // (without the rich local metrics) is accepted too.
+  stock: Pick<StockData, 'name' | 'sector' | 'description'>;
   backLabel: string;
   onBack: () => void;
 }

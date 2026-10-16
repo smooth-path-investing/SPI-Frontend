@@ -28,6 +28,9 @@ import {
   fetchStockAssetChartSeries,
   fetchStockFundamentalChartSeries,
   fetchStockIndicatorWeights,
+  fetchStockMeta,
+  type InvestTypeStock,
+  type StockData,
   formatCoverageDate,
   getStockDetailBackLabel,
   getStockDetailBackPath,
@@ -73,6 +76,10 @@ export const StockDetail: React.FC = () => {
   >([]);
   const [normalizedIndicators, setNormalizedIndicators] = useState<TickerIndicatorMeta[]>([]);
   const [isLoadingNormalizedIndicators, setIsLoadingNormalizedIndicators] = useState(false);
+  // For DB-driven tickers that aren't in the local constants (e.g. RTX, ACN),
+  // resolve the name/sector from Supabase so "View Analysis" still works.
+  const [dbMeta, setDbMeta] = useState<InvestTypeStock | null>(null);
+  const [isLoadingDbMeta, setIsLoadingDbMeta] = useState(false);
   const resolvedPortfolioId = portfolioId ?? DEFAULT_PORTFOLIO_ID;
   const isStockPreviewRoute = isStockPreviewDetailPath(location.pathname);
   const isPortfolioStockRoute = isPortfolioStockDetailPath(location.pathname);
@@ -90,6 +97,13 @@ export const StockDetail: React.FC = () => {
     [isStockPreviewRoute, normalizedRouteTicker, stocks],
   );
   const resolvedTicker = stock?.ticker?.trim().toUpperCase() ?? normalizedRouteTicker;
+  // Prefer the rich local constants; fall back to DB name/sector for tickers
+  // that only exist in the database (the new invest_type lists).
+  const displayStock: Pick<StockData, 'ticker' | 'name' | 'sector' | 'description'> | null =
+    stock ??
+    (dbMeta
+      ? { ticker: dbMeta.ticker, name: dbMeta.name, sector: dbMeta.sector, description: '' }
+      : null);
   const localStockChartData = useMemo(
     () =>
       isStockPreviewRoute
@@ -153,6 +167,33 @@ export const StockDetail: React.FC = () => {
   );
   const chartStart = priceChartData[0];
   const chartEnd = priceChartData[priceChartData.length - 1];
+
+  useEffect(() => {
+    // Only needed when the ticker isn't in the local constants (DB-driven list).
+    if (isStockPreviewRoute || stock || !resolvedTicker) {
+      setDbMeta(null);
+      setIsLoadingDbMeta(false);
+      return;
+    }
+
+    let isCancelled = false;
+    setIsLoadingDbMeta(true);
+
+    fetchStockMeta(resolvedTicker)
+      .then((meta) => {
+        if (!isCancelled) setDbMeta(meta);
+      })
+      .catch(() => {
+        if (!isCancelled) setDbMeta(null);
+      })
+      .finally(() => {
+        if (!isCancelled) setIsLoadingDbMeta(false);
+      });
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [isStockPreviewRoute, stock, resolvedTicker]);
 
   useEffect(() => {
     // Preview routes are fully seeded from local constants; purchased routes call the backend.
@@ -272,21 +313,25 @@ export const StockDetail: React.FC = () => {
     };
   }, [isStockPreviewRoute, resolvedTicker]);
 
-  if (!stock) {
+  if (!displayStock) {
     return (
       <div
         className={`min-h-screen bg-[var(--background)] text-[var(--foreground)] px-4 ${pagePaddingTopClass}`}
       >
         <div className="mx-auto max-w-[88rem]">
-          <p className="text-center text-[var(--muted-text)]">{STOCK_DETAIL_TEXT.notFound}</p>
-          <Button
-            onClick={() => navigate(backPath)}
-            className="mt-4 mx-auto block border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
-            variant="outline"
-          >
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            {backLabel}
-          </Button>
+          <p className="text-center text-[var(--muted-text)]">
+            {isLoadingDbMeta ? 'Loading…' : STOCK_DETAIL_TEXT.notFound}
+          </p>
+          {!isLoadingDbMeta && (
+            <Button
+              onClick={() => navigate(backPath)}
+              className="mt-4 mx-auto block border-[var(--accent)]/50 text-[var(--foreground)] hover:bg-[var(--accent)] hover:text-black"
+              variant="outline"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              {backLabel}
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -298,7 +343,7 @@ export const StockDetail: React.FC = () => {
     >
       <div className="mx-auto max-w-[88rem] px-4 pb-10 pr-4 sm:px-6 sm:pb-12 lg:px-8">
         <StockDetailSummary
-          stock={stock}
+          stock={displayStock}
           backLabel={backLabel}
           onBack={() => navigate(backPath)}
         />
@@ -313,7 +358,7 @@ export const StockDetail: React.FC = () => {
                       {STOCK_DETAIL_TEXT.priceChart}
                     </p>
                     <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-                      {stock.ticker} price path
+                      {displayStock.ticker} price path
                     </h2>
                   </div>
                   {chartStart && chartEnd && (
@@ -326,9 +371,9 @@ export const StockDetail: React.FC = () => {
               }
             >
               {priceChartData.length > 0 ? (
-                <StockPriceChart data={priceChartData} ticker={stock.ticker} />
+                <StockPriceChart data={priceChartData} ticker={displayStock.ticker} />
               ) : isStockPreviewRoute ? (
-                <StockGraphPlaceholder height="h-96" ticker={stock.ticker} />
+                <StockGraphPlaceholder height="h-96" ticker={displayStock.ticker} />
               ) : (
                 <ChartStatusMessage
                   message={
@@ -354,7 +399,7 @@ export const StockDetail: React.FC = () => {
                   <div className="flex flex-wrap gap-2 text-xs text-[var(--muted-text)]">
                     <span className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)]/80 bg-black/20 px-3 py-1">
                       <span className="h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
-                      {stock.ticker}
+                      {displayStock.ticker}
                     </span>
                     <span className="inline-flex items-center gap-2 rounded-full border border-[var(--card-border)]/80 bg-black/20 px-3 py-1">
                       <span className="h-2.5 w-2.5 rounded-full bg-white" />
@@ -365,7 +410,7 @@ export const StockDetail: React.FC = () => {
               }
             >
               {cumulativeReturnsData.length > 0 ? (
-                <CumulativeReturnsChart data={cumulativeReturnsData} ticker={stock.ticker} />
+                <CumulativeReturnsChart data={cumulativeReturnsData} ticker={displayStock.ticker} />
               ) : (
                 <ChartStatusMessage
                   message={
@@ -389,7 +434,7 @@ export const StockDetail: React.FC = () => {
                     </h2>
                   </div>
                   <p className="text-sm text-[var(--muted-text)]">
-                    Relative weight assigned to the main drivers behind the current {stock.ticker}{' '}
+                    Relative weight assigned to the main drivers behind the current {displayStock.ticker}{' '}
                     view.
                   </p>
                 </div>
@@ -447,7 +492,7 @@ export const StockDetail: React.FC = () => {
 
       <StockChatSidebar
         isOpen={isChatOpen}
-        ticker={stock.ticker}
+        ticker={displayStock.ticker}
         panelPositionClass={chatPanelPositionClass}
         onToggle={() => setIsChatOpen((previousState) => !previousState)}
       />
