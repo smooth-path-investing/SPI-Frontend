@@ -10,6 +10,8 @@ export {
 } from './api/stockAnalyticsApi';
 export { fetchStocksByInvestType, fetchStockMeta } from './api/investTypeStocks';
 export type { InvestType, InvestTypeStock } from './api/investTypeStocks';
+export { fetchStockFactorSeries } from './api/factorSeries';
+export type { FactorChart, FactorChartPoint, StockFactorSeries } from './api/factorSeries';
 export type { StockAssetChartSeries } from './api/types';
 export type { StockData, StockPricePoint } from './types';
 export type {

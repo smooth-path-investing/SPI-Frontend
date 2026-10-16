@@ -16,6 +16,9 @@ const PortfolioDetail = lazy(() =>
 const StockDetail = lazy(() =>
   import('@/pages/StockDetail').then((module) => ({ default: module.StockDetail })),
 );
+const StockFactorCharts = lazy(() =>
+  import('@/pages/StockFactorCharts').then((module) => ({ default: module.StockFactorCharts })),
+);
 const Stocks = lazy(() => import('@/pages/Stocks').then((module) => ({ default: module.Stocks })));
 const StockDriving = lazy(() =>
   import('@/pages/StockDriving').then((module) => ({ default: module.StockDriving })),
@@ -97,6 +100,12 @@ const AppShell = () => {
             <Route path="/stock-investing" element={<Stocks />} />
             <Route path="/hedge-fund-investing" element={<HedgeFundInvesting />} />
             <Route path="/stock/:ticker" element={<StockDetail />} />
+            <Route path="/stock/:ticker/factors" element={<StockFactorCharts />} />
+            <Route path="/portfolio/stock/:ticker/factors" element={<StockFactorCharts />} />
+            <Route
+              path="/portfolio/:portfolioId/stock/:ticker/factors"
+              element={<StockFactorCharts />}
+            />
             <Route path="/stocks" element={<Stocks />} />
             <Route path="/stock-driving" element={<StockDriving />} />
             <Route path="/portfolio" element={<PortfolioDetail />} />

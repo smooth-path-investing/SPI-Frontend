@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { StockGraphPlaceholder } from '@/components/ui/stock-graph-placeholder';
 import { StockPriceChart } from '@/components/graph/StockPriceChart';
 import {
@@ -487,6 +487,18 @@ export const StockDetail: React.FC = () => {
               )}
             </ChartCard>
           </div>
+
+          {!isStockPreviewRoute && (
+            <Link
+              to={`${location.pathname}/factors`}
+              className="group flex items-center justify-between gap-3 rounded-[20px] border border-[var(--accent)]/35 bg-black/20 px-5 py-4 text-sm font-medium text-[var(--foreground)] transition-colors hover:border-[var(--accent)] hover:bg-[var(--accent)]/10 sm:text-base"
+            >
+              <span>
+                View the 5 factor charts — {displayStock.ticker} vs each driving factor over time
+              </span>
+              <ArrowRight className="h-4 w-4 shrink-0 text-[var(--accent)] transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          )}
         </div>
       </div>
 
